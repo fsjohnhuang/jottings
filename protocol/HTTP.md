@@ -9,6 +9,8 @@
 >空行<br/>
 >可选消息体<br/>
 
+![请求格式](./http.d/reqMsg.png)
+
 __注意__：<br/>
 1. 各部分必须以`<CR><LF>`作为结尾（就是回车换行符）；<br/>
 2. 空行仅含`<CR><LF>`；<br/>
@@ -32,13 +34,16 @@ __注意__：<br/>
 >空行<br/>
 >可选的消息体<br/>
 
-示例：<br/>
-	HTTP/1.1 200 OK<CR><LF><br/>
-	Cache-Control:private,max-age=30<CR><LF><br/>
-	Content-Type:text/html;charset=utf-8<CR><LF><br/>
-	Content-Length:12341<CR><LF><br/>
-	<CR><LF><br/>
-	消息体<br/>
+示例：
+
+	HTTP/1.1 200 OK<CR><LF>
+	Cache-Control:private,max-age=30<CR><LF>
+	Content-Type:text/html;charset=utf-8<CR><LF>
+	Content-Length:12341<CR><LF>
+	<CR><LF>
+	消息体
+
+![响应示例](./http.d/rspMsg.jpg)
 
 
 ## 上传文件时的请求报文
