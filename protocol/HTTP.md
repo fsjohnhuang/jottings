@@ -70,6 +70,24 @@ __注意：__
 2. `boundary`用于标识分割不同filed的边界，其值是随机生成的<br/>
 3. `Content-Disposition`是MIME协议的扩展，用于设置文件的处理方式（下载、在当前网页上打开）。值为inline、attachment、form-data<br/>
 4. `application/octet-stream`表示任意的二进制数据<br/>
+5. `Content-Length`表示整个消息体字节数
+
+## 不含文件上传的表单提交
+	POST / HTTP/1.1<CR><LF>
+	Host: localhost:53355<CR><LF>
+	Connection: keep-alive<CR><LF>
+	Content-Length: 254<CR><LF>
+	Cache-Control: max-age=0<CR><LF>
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8<CR><LF>
+	Origin: http://localhost:53355<CR><LF>
+	User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36<CR><LF>
+	Content-Type: application/x-www-form-urlencoded<CR><LF>
+	Referer: http://localhost:53355/<CR><LF>
+	Accept-Encoding: gzip,deflate,sdch<CR><LF>
+	Accept-Language: zh-CN,zh;q=0.8,en;q=0.6<CR><LF>
+	<CR><LF>
+	__VIEWSTATE=%2FwEPDwULLTE1MDUxNDI4MjRkZFH4baIyUptiw7TvIIJzeKxOZRz1rqFK%2BRWTfmokhxY%2F&__EVENTVALIDATION=%2FwEdAANCICmcUc84%2Buo4wSo1bd7dwjP1kt%2BseU12iVakwziMpc2EIlRoRDoXrxwdHSKZMyrrVwsDZGTTGIGSGxEHAhAbnbOpmPrsh4LHtOcTI6P2iA%3D%3D&txtCmd=test&txtStr=str
+
 
 
 ## 请求头类型
