@@ -14,11 +14,12 @@ __注意__：<br/>
 2. 空行仅含`<CR><LF>`；<br/>
 3. 在HTTP/1.1协议中，请求头中除Host外，其他均为可选。<br/>
 
-示例：
+示例：<br/>
+
 	GET /index.aspx?msg=helloworld HTTP/1.1<CR><LF>
-	Host:fsjohnhuang.cnblogs.com<CR><LF>
+	Host:fsjohnhuang.cnblogs.com<CR><LF><
 	User-Agent:Mozilla/5.0<CR><LF>
-	Accept:*/*<CR><LF>
+	Accept:*/*<CR><LF><br/>
 	Accept-Language:en-us,en;q=0.5<CR><LF>
 	Accept-Encoding:gzip,deflate<CR><LF>
 	Accept-Charset:utf-8<CR><LF>
@@ -31,13 +32,13 @@ __注意__：<br/>
 >空行<br/>
 >可选的消息体<br/>
 
-示例：
-	HTTP/1.1 200 OK<CR><LF>
-	Cache-Control:private,max-age=30<CR><LF>
-	Content-Type:text/html;charset=utf-8<CR><LF>
-	Content-Length:12341<CR><LF>
-	<CR><LF>
-	消息体
+示例：<br/>
+	HTTP/1.1 200 OK<CR><LF><br/>
+	Cache-Control:private,max-age=30<CR><LF><br/>
+	Content-Type:text/html;charset=utf-8<CR><LF><br/>
+	Content-Length:12341<CR><LF><br/>
+	<CR><LF><br/>
+	消息体<br/>
 
 
 ## 上传文件时的请求报文
@@ -60,10 +61,10 @@ __注意__：<br/>
 
 
 __注意：__
-1. `Content-Type`用于设置MIME，multipart是大类，form-data是小类
-2. `boundary`用于标识分割不同filed的边界，其值是随机生成的
-3. `Content-Disposition`是MIME协议的扩展，用于设置文件的处理方式（下载、在当前网页上打开）。值为inline、attachment、form-data
-4. `application/octet-stream`表示任意的二进制数据
+1. `Content-Type`用于设置MIME，multipart是大类，form-data是小类<br/>
+2. `boundary`用于标识分割不同filed的边界，其值是随机生成的<br/>
+3. `Content-Disposition`是MIME协议的扩展，用于设置文件的处理方式（下载、在当前网页上打开）。值为inline、attachment、form-data<br/>
+4. `application/octet-stream`表示任意的二进制数据<br/>
 
 
 ## 请求头类型
