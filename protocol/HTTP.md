@@ -1,7 +1,7 @@
 ## 书籍
->O'Reilly - HTTP Pocket Reference：这是一本比较简短的介绍HTTP协议的书，可以作为入门读物<br/>
->O'Reilly - HTTP The Definitive Guide：这是一本宝典级别的书，因为它包含的内容实在多，可以作为全面学习的HTTP协议的首选读物<br/>
->Sams - HTTP Developers Handbook：这是比HTTP The Definitive Guide稍微比HTTP The Definitive Guide简单。不过从我的感觉，这本书比HTTP The Definitive Guide要好，因为它篇幅比较少，介绍的是HTTP精髓，我认为这本书应该是web程序员的首选读物<br/>
+>1. O'Reilly - HTTP Pocket Reference：这是一本比较简短的介绍HTTP协议的书，可以作为入门读物<br/>
+>2. O'Reilly - HTTP The Definitive Guide：这是一本宝典级别的书，因为它包含的内容实在多，可以作为全面学习的HTTP协议的首选读物<br/>
+>3. Sams - HTTP Developers Handbook：这是比HTTP The Definitive Guide稍微比HTTP The Definitive Guide简单。不过从我的感觉，这本书比HTTP The Definitive Guide要好，因为它篇幅比较少，介绍的是HTTP精髓，我认为这本书应该是web程序员的首选读物<br/>
 
 ## 请求格式
 >HTTP请求行<br/>
@@ -14,7 +14,7 @@ __注意__：<br/>
 2. 空行仅含`<CR><LF>`；<br/>
 3. 在HTTP/1.1协议中，请求头中除Host外，其他均为可选。<br/>
 
-示例：<br/>
+示例：
 	GET /index.aspx?msg=helloworld HTTP/1.1<CR><LF>
 	Host:fsjohnhuang.cnblogs.com<CR><LF>
 	User-Agent:Mozilla/5.0<CR><LF>
@@ -31,7 +31,7 @@ __注意__：<br/>
 >空行<br/>
 >可选的消息体<br/>
 
-示例：<br/>
+示例：
 	HTTP/1.1 200 OK<CR><LF>
 	Cache-Control:private,max-age=30<CR><LF>
 	Content-Type:text/html;charset=utf-8<CR><LF>
