@@ -97,3 +97,37 @@ __注意：__<br/>
 4. Cache
 5. Entity
 
+请求头：<br/>
+`Host`：用于指定客户端所访问的资源所在的主机名和端口号。<br/>
+`Range`：客户端通知服务器传输一部分Web资源（用于断点续传）。<br/>
+共有三种格式：<br/>
+[a]. `Range: bytes=1000-2000`：传输范围从第1000到第2000字节<br/>
+[b]. `Range: bytes=1000-`：传输从第1000字节以后的所有数据<br/>
+[c]. `Range: bytes=1000`：传输最后的1000个字节<br/>
+
+`Connection`：仅在HTTP/1.1下有效，用于指定客户端在读完Web资源后，是立即返回，还是等待直到超时后才返回。Close表示立即返回，Keep-Alive表示等待直到超时。
+
+响应头：<br/>
+`Accept-Ranges`：HTTP Server表明自己是否接受获取某个实体的一部分的请求（即断点续传功能）。bytes表示接受，none表示不接受；<br/>
+`Content-Range`：表示当前会话中的实体为所请求的资源的字节范围，其值格式是 **bytes 开始字节位置-结束字节位置/资源的总字节数**<br/>
+示例：
+
+	// 请求报文
+	GET /test.txt HTTP/1.1<CR><LF>
+	Host: fsjohnhuang.cnblogs.com<CR><LF>
+	Range: bytes=1000-<CR><LF>
+	<CR><LF>
+
+	// 响应报文
+	HTTP/1.1 206 Partial<CR><LF>
+	Content-Type: application/octet-stream<CR><LF>
+	Content-Range: bytes 1000-3759/3760<CR><LF>
+	Accept-Ranges: bytes<CR><LF>
+	Content-Length: 2760<CR><LF>
+	<CR><LF>
+	文件二进制数据
+
+`Location`：当Web资源更换URL后，当客户端请求旧URL时，通过Location通知客户端从新URL获取Web资源。
+
+
+
