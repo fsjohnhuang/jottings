@@ -89,6 +89,19 @@ __注意：__<br/>
 	__VIEWSTATE=%2FwEPDwULLTE1MDUxNDI4MjRkZFH4baIyUptiw7TvIIJzeKxOZRz1rqFK%2BRWTfmokhxY%2F&__EVENTVALIDATION=%2FwEdAANCICmcUc84%2Buo4wSo1bd7dwjP1kt%2BseU12iVakwziMpc2EIlRoRDoXrxwdHSKZMyrrVwsDZGTTGIGSGxEHAhAbnbOpmPrsh4LHtOcTI6P2iA%3D%3D&txtCmd=test&txtStr=str
 
 
+## 请求方式
+1. HTTP/1.0<br/>
+  [a]. GET：请求指定资源，并返回实体主题<br/>
+  [b]. POST：向指定资源提交数据并进行处理请求（如提交表单和上传文件），数据被包含在请求体中。POST请求会导致新资源的建立或已有资源被修改。<br/>
+  [c]. HEAD：与GET类似，但仅返回响应报头<br/>
+2. HTTP/1.1<br/>
+  [a]. PUT：向HTTP Server传送数据取代指定的资源数据<br/>
+  [b]. DELETE：请求服务器删除指定的资源<br/>
+  [c]. CONNECT：HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器<br/>
+  [d]. OPTIONS：允许客户端查看服务器性能<br/>
+  [e]. TRACE：回显服务器收到的请求，主要用于测试或诊断<br/>
+  
+
 
 ## 请求头类型
 1. Client
@@ -97,15 +110,20 @@ __注意：__<br/>
 4. Cache
 5. Entity
 
+通用头：<br/>
+`Connection`：仅在HTTP/1.1下有效，告诉HTTP Server完成本次请求的响应后，是马上断开连接还是等待本次连接的后续请求。close表示断开，keepalive表示保持连接。响应头中的`Connection: close`表示链接已断开，`Connection: keepalive`表示等待本次连接的后续请求<br/>
+`Date`：表示请求消息和响应消息被创建的时间，使用GMT时间，如Date: Tue, 15 Nov 2007 08:12:31 GMT
+
+
 请求头：<br/>
 `Host`：用于指定客户端所访问的资源所在的主机名和端口号。<br/>
+`Keep-Alive`：配置`Connection: keepalive`使用，用于设置保持链接的时间（单位：秒）<br/>
 `Range`：客户端通知服务器传输一部分Web资源（用于断点续传）。<br/>
 共有三种格式：<br/>
 [a]. `Range: bytes=1000-2000`：传输范围从第1000到第2000字节<br/>
 [b]. `Range: bytes=1000-`：传输从第1000字节以后的所有数据<br/>
 [c]. `Range: bytes=1000`：传输最后的1000个字节<br/>
 
-`Connection`：仅在HTTP/1.1下有效，用于指定客户端在读完Web资源后，是立即返回，还是等待直到超时后才返回。Close表示立即返回，Keep-Alive表示等待直到超时。
 
 响应头：<br/>
 `Accept-Ranges`：HTTP Server表明自己是否接受获取某个实体的一部分的请求（即断点续传功能）。bytes表示接受，none表示不接受；<br/>
@@ -127,7 +145,8 @@ __注意：__<br/>
 	<CR><LF>
 	文件二进制数据
 
-`Location`：当Web资源更换URL后，当客户端请求旧URL时，通过Location通知客户端从新URL获取Web资源。
+`Location`：当Web资源更换URL后，当客户端请求旧URL时，通过Location通知客户端从新URL获取Web资源。<br/>
+`Content-Encoding`：HTTP Server表示使用哪种压缩方式（gzip，deflate）压缩响应中的消息体。<br/>
 
 
 
