@@ -16,12 +16,12 @@ __注意__：<br/>
 2. 空行仅含`<CR><LF>`；<br/>
 3. 在HTTP/1.1协议中，请求头中除Host外，其他均为可选。<br/>
 
-示例：<br/>
+示例：
 
 	GET /index.aspx?msg=helloworld HTTP/1.1<CR><LF>
-	Host:fsjohnhuang.cnblogs.com<CR><LF><
+	Host:fsjohnhuang.cnblogs.com<CR><LF>
 	User-Agent:Mozilla/5.0<CR><LF>
-	Accept:*/*<CR><LF><br/>
+	Accept:*/*<CR><LF>
 	Accept-Language:en-us,en;q=0.5<CR><LF>
 	Accept-Encoding:gzip,deflate<CR><LF>
 	Accept-Charset:utf-8<CR><LF>
@@ -65,7 +65,7 @@ __注意__：<br/>
 	----Abcdefg<CR><LF>
 
 
-__注意：__
+__注意：__<br/>
 1. `Content-Type`用于设置MIME，multipart是大类，form-data是小类<br/>
 2. `boundary`用于标识分割不同filed的边界，其值是随机生成的<br/>
 3. `Content-Disposition`是MIME协议的扩展，用于设置文件的处理方式（下载、在当前网页上打开）。值为inline、attachment、form-data<br/>
