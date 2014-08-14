@@ -23,3 +23,11 @@
 &emsp;\+  keymap<br/>
 &emsp;\+  plugin<br/>
 &emsp;\+  syntax<br/>
+
+\[b\].
+```
+系统 vimrc 文件: "/etc/vimrc"
+用户 vimrc 文件: "$HOME/.vimrc"
+用户 exrc 文件: "$HOME/.exrc"
+$VIM 预设值: "/usr/share/vim"
+```
