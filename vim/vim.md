@@ -44,5 +44,8 @@ $VIM 预设值: "/usr/share/vim"
 // 设置默认解码
 set fenc=utf-8
 set fencs=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
+
+// 不使用vi的键盘模式
+set nocompatible
 ````
 
