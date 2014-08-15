@@ -35,7 +35,7 @@ $VIM 预设值: "/usr/share/vim"
 `$VIM`:<br/>
 `$HOME`:<br/>
 `:scriptname`:<br/>
-`:set rtp`:<br/>
+`:set rtp`:显示vim的配置信息加载的优先顺序<br/>
 3. **ex命令**<br/>
 3.1. 引用外部配置信息`source <外部配置信息绝对路径.vim>`<br/>
 &emsp;示例：`source /etc/basic.vim`<br/>
@@ -47,5 +47,41 @@ set fencs=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
 
 // 不使用vi的键盘模式
 set nocompatible
+
+// history文件中记录的行数
+set history=100
+
+// 在处理未保存和只读文件时出现二次确认
+set confirm
+
+// 与windows共享剪贴板
+set clipboard+=unnamed
+
+// 侦探文件类型
+filetype on
+
+// 载入文件类型插件
+filetype plugin on
+
+// 为特定文件类型载入相关缩进文件
+filetype indent on
+
+// 保存全局变量
+set viminfo+=!
+
+// 带有如下符号的单词不要被换行分割
+set iskeyword+=$,@,%,#,-
+
+// 语法高亮
+syntax on
+
+// 高亮字符，使其不受100列的限制
+:hightlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white
+:match OverLength '\%101v.\*'
+
+// 状态行颜色
+hightlight StatusLine guifg=SlateBlue guibg=Yellow
+hightlight StatusLIneNC guifg=Gray guibg=White
 ````
+
 
