@@ -13,11 +13,11 @@ var createXHR = function(){
 ````
 2. 对象状态
   xhr对象有一个readyState属性，用于表示xhr对象当前的请求/响应状态。
-  >0──表示"未初始化"状态，仅仅创建了xhr对象，而未调用open方法。
-  >1──表示"准备"状态，已经调用了open方法。仅在该状态下才能设置请求头的个字段
-  >2──表示"发送"状态，已经调用了send方法
-  >3──表示"正在接收响应"状态，此时xhr已经接收到响应消息的起始行和响应头，但响应体还未接收完整
-  >4──表示"已接收完成"状态，此时响应消息已经接收完整了。
+  >0──表示"未初始化"状态，仅仅创建了xhr对象，而未调用open方法。<br/>
+  >1──表示"准备"状态，已经调用了open方法。仅在该状态下才能设置请求头的个字段<br/>
+  >2──表示"发送"状态，已经调用了send方法<br/>
+  >3──表示"正在接收响应"状态，此时xhr已经接收到响应消息的起始行和响应头，但响应体还未接收完整<br/>
+  >4──表示"已接收完成"状态，此时响应消息已经接收完整了。<br/>
 
 3. 方法
 (a). **open方法**
@@ -96,14 +96,14 @@ xhr.send("name=fsjohnhuang&age=27");
 
 ### 各浏览器实现的XHR
 1. FF
-onreadystatechange:默认值null
-readyState:默认值0
-timeout:默认值0
-withCredentials:默认值false
-upload:默认值XMLHttpRequestUpload
-status:默认值0
-statusText:默认值空字符串
-responseType:默认值空字符串
-response:默认值空字符串
-responseText:默认值空字符串
+onreadystatechange:默认值null<br/>
+readyState:默认值0<br/>
+timeout:默认值0<br/>
+withCredentials:默认值false<br/>
+upload:默认值XMLHttpRequestUpload<br/>
+status:默认值0<br/>
+statusText:默认值空字符串<br/>
+responseType:默认值空字符串<br/>
+response:默认值空字符串<br/>
+responseText:默认值空字符串<br/>
 
