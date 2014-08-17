@@ -83,4 +83,57 @@ hightlight StatusLIneNC guifg=Gray guibg=White
 :hightlight OverLength ctermbg=red ctermfg=white guibg=red guifg=white<br/> 
 :match OverLength '\%101v.\*'<br/>
 
+````
+// 文件设置
+// 不备份文件 
+set nobackup
 
+// 不生成swap文件，当buffer被丢弃时隐藏它
+setlocal noswapfile
+set bufhidden=hide
+
+// 命令行高度（默认为1）
+set cmdheight=2
+
+// 在buffer的任意地方使用鼠标（像在office中一样） 
+set mouse=a
+set selection=exclusive
+set selectmode=mouse,key
+
+````
+````
+// 搜索和匹配
+// 高亮显匹配的括号
+set showmatch
+
+// 匹配括号高亮的时间（单位是十分之一秒）
+set matchtime=5
+
+// 搜索不区分大小写
+set ignorecase
+
+// 不要高亮被搜索的句子
+set nohlsearch
+
+// 在搜索时，输入的词句是逐个字符高亮
+set incsearch
+````
+
+````
+// 文字格式与排版
+// 自动格式化
+set formatoptions=tcrqn
+
+// 继承前一行的缩进方式，特别使用与多行注释
+set autoindent
+
+// 制表符
+set tabstop=4
+
+// 统一缩进
+set softtabstop=4
+set shiftwidth=4
+
+// 不要用空格代替制表符
+set noexpandtab
+````
