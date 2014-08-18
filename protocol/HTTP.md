@@ -123,7 +123,9 @@ __注意：__<br/>
 [a]. `Range: bytes=1000-2000`：传输范围从第1000到第2000字节<br/>
 [b]. `Range: bytes=1000-`：传输从第1000字节以后的所有数据<br/>
 [c]. `Range: bytes=1000`：传输最后的1000个字节<br/>
-
+`If-Modified-Since`：其值为上次响应头的`Last-Modified`的字段值，用于告诉服务器上次请求时，Web资源的修改时间，若服务器检测到该Web资源被修改过，或缓存超时则重新返回该Web资源的完整响应消息;否则仅返回HTTP状态码为304的响应头。浏览器接收到304的HTTP状态码后，会读取本地缓存获取Web资源。格式为GMT时间(如：Fri,12 May 2006 18:53:33 GMT)。
+<font style="color:red;">注意：nignx中是只要If-MOdified-Since的值与Web资源的当前修改时间不同则返回完整的响应消息，而apache是Web资源的当前修改时间晚于If-Modified-Since时间才返回完整的响应消息</font>
+`If-None-Match`：返回最近一次响应消息的`ETag`响应头字段值，如（W/"50b1c1d4f775c61:dt"）
 
 响应头：<br/>
 `Accept-Ranges`：HTTP Server表明自己是否接受获取某个实体的一部分的请求（即断点续传功能）。bytes表示接受，none表示不接受；<br/>
@@ -147,6 +149,5 @@ __注意：__<br/>
 
 `Location`：当Web资源更换URL后，当客户端请求旧URL时，通过Location通知客户端从新URL获取Web资源。<br/>
 `Content-Encoding`：HTTP Server表示使用哪种压缩方式（gzip，deflate）压缩响应中的消息体。<br/>
-
-
-
+`Last-Modified`：当服务器返回一个完整的响应消息时，通过该响应头告诉当前Web资源的最后更新时间以便缓存Web资源。格式为GMT时间。
+`ETag`:服务器用于与Web资源版本关联的记号,若请求头的`If-None-Match`头与该Web资源当前的记号不同则返回完整的响应消息，否则返回304HTTP状态码（如，50b1c1d4f775c61:df3）
