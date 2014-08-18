@@ -13,13 +13,14 @@ var createXHR = function(){
 ````
 2. 对象状态
   xhr对象有一个readyState属性，用于表示xhr对象当前的请求/响应状态。
-  >0──表示"未初始化"状态，仅仅创建了xhr对象，而未调用open方法。<br/>
-  >1──表示"准备"状态，已经调用了open方法。仅在该状态下才能设置请求头的个字段<br/>
-  >2──表示"发送"状态，已经调用了send方法<br/>
-  >3──表示"正在接收响应"状态，此时xhr已经接收到响应消息的起始行和响应头，但响应体还未接收完整<br/>
-  >4──表示"已接收完成"状态，此时响应消息已经接收完整了。<br/>
+  >0（UNSENT）──表示"未初始化"状态，仅仅创建了xhr对象，而未调用open方法。<br/>
+  >1（OPENED）──表示"准备"状态，已经调用了open方法。仅在该状态下才能设置请求头的个字段<br/>
+  >2（HEADERS_RECEIVED）──表示"发送"状态，已经调用了send方法<br/>
+  >3（LOADING）──表示"正在接收响应"状态，此时xhr已经接收到响应消息的起始行和响应头，但响应体还未接收完整<br/>
+  >4（DONE）──表示"已接收完成"状态，此时响应消息已经接收完整了。<br/>
 
-3. 方法
+3. 方法与属性
+**方法**
 (a). **open方法**
 ````
 xhr.open(DOMString method, DOMString uri, boolean async, DOMString username, DOMString password)
@@ -68,6 +69,15 @@ xhr.abort()
 <font style="color:red;">注意：</font>
 调用`abort`后，会暂停与xhr相关联的HTTP请求，并将对象复原为未初始化状态。
 
+**属性**
+(a). `xhr.readyState`：xhr对象的状态
+(b). `xhr.status`：服务器返回的状态码
+(c). `xhr.statusText`：服务器返回的状态文本
+(d). `xhr.responseXML`：服务器返回的XML格式的数据，当响应头Content-Type为text/xml,application/xml或application/以+xml结尾，且readyState为4，并且符合xml格式时返回XMLDocument对象；否则为null
+(e). `xhr.responseText`：服务器返回的文本格式的数据。
+(f). `xhr.response`：服务器返回的响应消息实体，其值类型将根据`xhr.responseType`的指定。如果请求未完成或失败，则返回null。
+
+
 4. GET请求示例
 ````
 var xhr = createXHR();
@@ -93,6 +103,31 @@ xhr.setRequestHeader('If-Modified-Since', '0'); // 设置缓存
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // 设置消息体格式类型
 xhr.send("name=fsjohnhuang&age=27");
 ````
+
+6. 缺点：
+(1). 只支持文本数据的传送，无法用来读取和上传二进制文件。
+(2). 传送和接收数据时，没有进度信息，只能提示有没有完成。
+(3). 收到同源策略限制，只能请求同域的资源。（IE下可通过Response Header——Access-Control-Allow-Origin来设置跨域请求）
+
+### Zepto.js
+
+
+
+## XMLHttpRequest Level2研究
+### FormData类型
+1. 作用：序列化表单数据。
+示例1：将form元素的数据整体序列化
+```
+var fd = new FormData(doucment.forms[0]);
+```
+示例2：逐个键值对加入
+```
+var fd = new FormData();
+fd.append("name", "fsjohnhuang");
+```
+2. 浏览器支持：FF4+,Safari5+,chrome,android3+
+
+
 
 ### 各浏览器实现的XHR
 1. FF
