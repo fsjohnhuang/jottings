@@ -243,10 +243,28 @@ UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等
 **2. 构造方法**
 `var reader = new FileReader()`
 **3. 方法**
-`void abort()`
-`void readAsArrayBuffer(Blob blob)`
-`void readAsBinaryString(Blob blob)`
-`void readAsDataURL(Blob blob)`
+`void abort()`：中止读取操作，返回时，readyState值为DONE。
+<font style="color:red;">注意：当FileReader对象没有在进行读取操作时，调用`abort()`会抛DOM_FILE_ABORT_ERR异常</font>
+`void readAsArrayBuffer(Blob blob)`：读取指定的Blob或File对象，读取完时，readyState值为DONE，并触发onload事件，result属性为ArrayBuffer对象。
+`void readAsBinaryString(Blob blob)`：读取完后，result属性为文件的原始二进制数据。
+`void readAsDataURL(Blob blob)`：读取完后，result属性为data:URL格式的字符串。
 `void readAsText(Blob blob[, DOMString encoding])`
+**4. 属性**
+`error`：类型DOMError，表示在读取文件时发生的错误，只读。
+`readyState`：类型unsigned short，表示FileReader对象的当前状态（EMPTY——0，还没有加载任何数据；LOADING——1，数据正在加载；DONE——2，已完成全部的读取请求），只读。
+`result`：读取到的文件内容，只读。
+**5. 事件**
+`onabort`
+`onerror`
+`onload`
+`onloadend`
+`onloadstart`
+`onprogress`
+
+
+https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader
+https://developer.mozilla.org/zh-CN/docs/%E6%89%A9%E5%B1%95/Using_the_DOM_File_API_in_chrome_code
+**6. 浏览器支持**
+FF3.6+，Chrome7+，IE10+
 
 
