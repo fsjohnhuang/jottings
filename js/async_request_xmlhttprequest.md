@@ -247,7 +247,7 @@ UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等
 <font style="color:red;">注意：当FileReader对象没有在进行读取操作时，调用`abort()`会抛DOM\_FILE\_ABORT\_ERR异常</font>
 `void readAsArrayBuffer(Blob blob)`：读取指定的Blob或File对象，读取完时，readyState值为DONE，并触发onload事件，result属性为ArrayBuffer对象。
 `void readAsBinaryString(Blob blob)`：读取完后，result属性为文件的原始二进制数据。
-`void readAsDataURL(Blob blob)`：读取完后，result属性为data:URL格式的字符串。
+`void readAsDataURL(Blob blob)`：读取完后，result属性为data uri schemem字符串。
 `void readAsText(Blob blob[, DOMString encoding="utf-8"])`:读取完后，result属性为所读取文件内容的字符串。
 **4. 属性**
 `error`：类型DOMError，表示在读取文件时发生的错误，只读。
@@ -262,12 +262,130 @@ UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等
 `onprogress`: 在读取数据的过程中周期性触发
 
 
-https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader
-https://developer.mozilla.org/zh-CN/docs/%E6%89%A9%E5%B1%95/Using\_the\_DOM\_File\_API\_in\_chrome\_code
+http://www.cnblogs.com/suiqirui19872005/archive/2007/06/03/769431.html
 **6. 浏览器支持**
 FF3.6+，Chrome7+，IE10+
 
 **7. 示例：预览**
+html片段
+````
+<style type="text/css">
+#preview{
+	width: 100px;
+	height: 100px;
+}
+</style>
+<!--[if lte IE 9]>
+<style type="text/css">
+	#preview{
+		filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+	}
+</style>
+<![endif]-->
+
+<input type="file" onchange="showPreview(this);"/>
+<div id="preview">
+</div>
+````
+js片段
+````
+var preview = function(el){
+	var pv = document.getElementById("preview");
+	// IE5.5~9使用滤镜
+	if (pv.filters && typeof(pv.filters.item) === 'function'){
+		pv.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = el.value;
+	}
+	else{
+		// 其他浏览器和IE10+（不支持滤镜）则使用FileReader
+		var fr = new FileReader();
+		fr.onload = function(evt){
+			var pvImg = new Image();
+			pvImg.style.width = pv.offsetWidth + 'px';
+			pvImg.style.height = pv.offsetHeight + 'px';
+			pvImg.src = evt.target.result;
+			pv.removeChild(0);
+			pv.appendChild(pvImg);
+		};
+		fr.readAsDataURL(el.files[0]);
+	}
+};
+````
+**8. 相关知识**
+**(1). 滤镜：DXImageTransform.Microsoft.AlphaImageLoader**
+作用：主要作用是对图片进行透明处理。ie5.5~6是不支持透明的PNG图片
+语法：filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(\[enabled=<enabled>\]\[,sizingMethod=<size>\]\[,src=<src>\])
+说明：
+`enabled`：可选项，设置滤镜是否激活。值范围true(默认)，false<br/>
+`sizingMethod`：可选项，设置滤镜作用的图片在容器边界内的显示方式，值范围crop（剪切图片以适应容器尺寸），image（默认值，增大或缩小容器尺寸以适应图片的尺寸），scale（缩放图片以适应容器尺寸）
+`src`：必填项，使用绝对或相对URL指向背景图片。当URL为用户计算机本地地址时有效, 而img元素的src为用户计算机本地地址时会抛不允许访问本地文件系统的异常。
+**(2). Image类型**
+js中对应img标签的类型，使用方式与img标签一致。
+````
+var i = new Image();
+console.log(Object.prototype.toString.call(i)); // 返回 [object HTMLImageElement]
+````
 
 
+**(3). IE条件注释**
+非IE浏览器会将整体视为注释，忽略掉。
+格式：
+````
+<!--[if !IE]>
+	内容
+<![endif]-->
+````
+示例：
+````
+<!--[if lte IE 7]>
+<script type="text/javascript" src="dummy.js"></scrpt>
+<![endif]-->
+````
 
+**9. 坑**
+1. IE11下，设置文档模式为ie5.5~9
+通过点方式、getAttinput和outerHTML获取[type="file"]元素的value值永远是c:\fakepath\文件名。无法获取真实路径。
+2. js操作滤镜
+````
+var span = document.getElementById('span');
+span.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src='test.jpg')";
+````
+
+## HTML5 的File元素
+**1. 指定文件类型**
+`<input type="file" accept="<MIME>"/>`
+通过设置MIME值限定初始化时，仅能选择某些类型的文件。
+示例：
+````
+<input type="file" accept="application/msword"/>
+
+<input type="file" accept="application/msexecl, audio/x-aiff"/>
+
+<input type="file" accept="application/*, audio/*"/>
+
+<input type="file" accept="*/*"/>
+````
+
+
+## 输入法控制
+1. IE和FF下
+通过ime-mode样式控制。
+````
+<!-- 不显示输入法，不能切换输入法 -->
+<input type="text" style="ime-mode:disabled;"/>
+<!-- 自动切换到英文输入法，还可以再手动切换输入法 -->
+<input type="text" style="ime-mode:inactive;"/>
+<!-- 自动切换到中文输入法，还可以再手动切换输入法 -->
+<input type="text" style="ime-mode:active;"/>
+<!-- 不干预当前的输入法，默认值 -->
+<input type="text" style="ime-mode:auto;"/>
+````
+脚本访问
+````
+var name = document.getElementById("name");
+name.currentStyle.imemode;
+name.style.imemode;
+````
+2. Webkit下
+通过脚本控制
+<input type="text" onkeyup="this.value=this.value.replace(/\[\\u4e00-\\u9fa5\]/g, '')"/>
+\u4e00-\u9fa5为中文的编码范围
