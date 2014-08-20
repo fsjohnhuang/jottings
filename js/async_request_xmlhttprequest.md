@@ -224,17 +224,29 @@ Chrome、FF、IE10+、Opera、Safari
 ## ArrayBufferView(typed array——类型数组)
 **作用：**ArrayBuffer的局部视图，一个ArrayBuffer可以有多个ArrayBufferView。ArrayBufferView是基类，一般使用其子类。
 **属性：**
-`buffer`：类型ArrayBuffer,视图指向的ArrayBuffer对象，只读。
-`byteLength`：类型unsigned long，视图中数据的字节数，只读。
-`byteOffset`：类型unsigined long，视图首字节位于所指向的ArrayBuffer的位置，只读。
+`buffer`：类型ArrayBuffer,视图指向的ArrayBuffer对象，只读。<br/>
+`byteLength`：类型unsigned long，视图中数据的字节数，只读。<br/>
+`byteOffset`：类型unsigined long，视图首字节位于所指向的ArrayBuffer的位置，只读。<br/>
 **子类：**
 Int8Array,Uint8Array,Int16Array,Uint16Array,Int32Array,Uint32Array,Float32Array,Float64Array。
 
 
 ## DOMString
-UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等同于js的String
+UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等同于js的String<br/>
 
 ## File
+**1. 属性**
+`lastModifiedDate`：文件的最后修改时间<br/>
+`name`:不含文件路径的文件名称<br/>
+`size`:文件的字节数，只读<br/>
+`type`:文件的MIME类型，空字符串表示未知类型<br/>
+`fileName`(已被废弃):不含文件路径的文件名称<br/>
+`fileSize`(已被废弃):文件的字节数，只读<br/>
+
+**2. 方法**
+`getAsBinary`(已被废弃)<br/>
+`getAsDataURL`(已被废弃)<br/>
+`getAsText(string encoding)`(已被废弃)<br/>
 
 ## URL.createObjectURL(Blob blob)创建一个指向入参blob对象的别名，比Data URI更省内存。
 
@@ -243,23 +255,23 @@ UTF-16的字符串，js就是使用这种编码的字符串，因此DOMString等
 **2. 构造方法**
 `var reader = new FileReader()`
 **3. 方法**
-`void abort()`：中止读取操作，返回时，readyState值为DONE。
-<font style="color:red;">注意：当FileReader对象没有在进行读取操作时，调用`abort()`会抛DOM\_FILE\_ABORT\_ERR异常</font>
-`void readAsArrayBuffer(Blob blob)`：读取指定的Blob或File对象，读取完时，readyState值为DONE，并触发onload事件，result属性为ArrayBuffer对象。
-`void readAsBinaryString(Blob blob)`：读取完后，result属性为文件的原始二进制数据。
-`void readAsDataURL(Blob blob)`：读取完后，result属性为data uri schemem字符串。
-`void readAsText(Blob blob[, DOMString encoding="utf-8"])`:读取完后，result属性为所读取文件内容的字符串。
+`void abort()`：中止读取操作，返回时，readyState值为DONE。<br/>
+<font style="color:red;">注意：当FileReader对象没有在进行读取操作时，调用`abort()`会抛DOM\_FILE\_ABORT\_ERR异常</font><br/>
+`void readAsArrayBuffer(Blob blob)`：读取指定的Blob或File对象，读取完时，readyState值为DONE，并触发onload事件，result属性为ArrayBuffer对象。<br/>
+`void readAsBinaryString(Blob blob)`：读取完后，result属性为文件的原始二进制数据。<br/>
+`void readAsDataURL(Blob blob)`：读取完后，result属性为data uri schemem字符串。<br/>
+`void readAsText(Blob blob[, DOMString encoding="utf-8"])`:读取完后，result属性为所读取文件内容的字符串。<br/>
 **4. 属性**
-`error`：类型DOMError，表示在读取文件时发生的错误，只读。
-`readyState`：类型unsigned short，表示FileReader对象的当前状态（EMPTY——0，还没有加载任何数据；LOADING——1，数据正在加载；DONE——2，已完成全部的读取请求），只读。
-`result`：读取到的文件内容，只读。
+`error`：类型DOMError，表示在读取文件时发生的错误，只读。<br/>
+`readyState`：类型unsigned short，表示FileReader对象的当前状态（EMPTY——0，还没有加载任何数据；LOADING——1，数据正在加载；DONE——2，已完成全部的读取请求），只读。<br/>
+`result`：读取到的文件内容，只读。<br/>
 **5. 事件**
-`onabort`: 当读取操作被终止时触发
-`onerror`: 当读取操作发生错误时触发
-`onload`: 当读取操作成功完成时触发
-`onloadend`: 当读取操作完成时触发，在onload和onerror后被触发
-`onloadstart`: 当读取操作开始前触发
-`onprogress`: 在读取数据的过程中周期性触发
+`onabort`: 当读取操作被终止时触发<br/>
+`onerror`: 当读取操作发生错误时触发<br/>
+`onload`: 当读取操作成功完成时触发<br/>
+`onloadend`: 当读取操作完成时触发，在onload和onerror后被触发<br/>
+`onloadstart`: 当读取操作开始前触发<br/>
+`onprogress`: 在读取数据的过程中周期性触发<br/>
 
 
 http://www.cnblogs.com/suiqirui19872005/archive/2007/06/03/769431.html
@@ -316,8 +328,8 @@ var preview = function(el){
 语法：filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(\[enabled=<enabled>\]\[,sizingMethod=<size>\]\[,src=<src>\])
 说明：
 `enabled`：可选项，设置滤镜是否激活。值范围true(默认)，false<br/>
-`sizingMethod`：可选项，设置滤镜作用的图片在容器边界内的显示方式，值范围crop（剪切图片以适应容器尺寸），image（默认值，增大或缩小容器尺寸以适应图片的尺寸），scale（缩放图片以适应容器尺寸）
-`src`：必填项，使用绝对或相对URL指向背景图片。当URL为用户计算机本地地址时有效, 而img元素的src为用户计算机本地地址时会抛不允许访问本地文件系统的异常。
+`sizingMethod`：可选项，设置滤镜作用的图片在容器边界内的显示方式，值范围crop（剪切图片以适应容器尺寸），image（默认值，增大或缩小容器尺寸以适应图片的尺寸），scale（缩放图片以适应容器尺寸）<br/>
+`src`：必填项，使用绝对或相对URL指向背景图片。当URL为用户计算机本地地址时有效, 而img元素的src为用户计算机本地地址时会抛不允许访问本地文件系统的异常。<br/>
 **(2). Image类型**
 js中对应img标签的类型，使用方式与img标签一致。
 ````
