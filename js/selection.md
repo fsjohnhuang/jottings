@@ -35,23 +35,24 @@ document.selection.clear();
 选中区对象类型
 [object Selection]
 FF下
-属性：
-anchorNode, 只读,返回包含"起点"的节点
-anchorOffset,只读,返回"起点"在anchorNode中的偏移量
-focusNode,只读,返回包含"结束点"的节点
-focusOffset,只读,返回"结束点"在focusNode中的偏移量
-isCollapsed,只读,返回起点和结束点在同一个节点上里
-rangeCount,只读,selection对象中含有的range对象数目
-方法：
+**属性：**<br/>
+anchorNode, 只读,返回最后一个range对象"起点"所在的节点<br/>
+anchorOffset,只读,返回"起点"在anchorNode中的偏移量<br/>
+focusNode,只读,返回最后一个range对象"结束点"所在的节点<br/>
+focusOffset,只读,返回"结束点"在focusNode中的偏移量<br/>
+isCollapsed,只读,返回起点和结束点在同一个节点上里<br/>
+rangeCount,只读,selection对象中含有的range对象数目<br/>
+**方法：**<br/>
 addRange(arg1)
-collapse({HTMLElement} parentNode, {Number} offset):将开始点和结束点合并成一点，位于到parentNode的offset位置上。offset为取值范围是[0,1,....,parentNode.childNodes.lenth]
-collapseToEnd()
-collapseToStart()
-containsNode(arg1, arg2)
-deleteFromDocument()
-extend(arg1, arg2)
-getRangeAt({Number} index):从当前selection对象中获取一个range对象。
-modify(arg1, arg2, arg3)
+collapse({HTMLElement} parentNode, {unsigned int} offset):将开始点和结束点合并成一点，位于到parentNode的offset位置上。offset为取值范围是[0(第一个子元素前),1(第一个子元素后),....,parentNode.childNodes.lenth(最后一个子元素后)]。<br/>
+collapseToEnd():将起点移动到selection的结束点，多个range的话就合并成一个range，且起点和结束点均在最后一个range对象的结束点上。<br/>
+collapseToStart():将结束点移动到selection的起点,多个range的话就会合并成一个range，且起点和结束点均在第一个range对象的起点上。<br/>
+containsNode({HTMLElement} aNode, {Boolean}aPartlyContained):用于判断aNode节点是否属于selection的一部分。aPartlyContained为true时,aNode部分属于也返回true;aPartlyContained为false时，aNode部分属则返回false，全部属于则返回true。<br/>
+deleteFromDocument():将selection下rang对象中的TextNode内容从文档中删除。注意，1.作用于所有range对象;2. 仅删除TextNode的全部或部分内容，而不会删除其他元素<br/>
+extend({HTMLElement} parentNode, {unsigned int} offset):起点不动，将结束点移动到parentNode的offset位置上。当有多个range对象时，则仅对最后一个range对象生效。<br/> 
+getRangeAt({Number} index):从当前selection对象中获取一个range对象。 <br/>
+modify({DOMString} alter, {DOMString} direction, {DOMString} granularity):用于改变焦点的位置，或扩展、缩小selection的大小。alter(改变的方式)取值范围：move（移动焦点）,extend（改变selection大小）;direction（移动的方向）,取值范围：forward、backword或left、right;granularity（移动的单位活尺寸）,取值范围：character,word<br/>
+toString():仅返回selection不含节点信息的纯文本内容。<br/>
 removeAllRanges()
 removeRange(arg1)
 selectAllChildren(arg1)
