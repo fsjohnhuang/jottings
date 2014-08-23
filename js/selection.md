@@ -43,7 +43,7 @@ focusOffset,只读,返回"结束点"在focusNode中的偏移量<br/>
 isCollapsed,只读,返回起点和结束点在同一个节点上里<br/>
 rangeCount,只读,selection对象中含有的range对象数目<br/>
 **方法：**<br/>
-addRange(arg1)
+addRange({Range} range):将range对象添加到selection当中
 collapse({HTMLElement} parentNode, {unsigned int} offset):将开始点和结束点合并成一点，位于到parentNode的offset位置上。offset为取值范围是[0(第一个子元素前),1(第一个子元素后),....,parentNode.childNodes.lenth(最后一个子元素后)]。<br/>
 collapseToEnd():将起点移动到selection的结束点，多个range的话就合并成一个range，且起点和结束点均在最后一个range对象的结束点上。<br/>
 collapseToStart():将结束点移动到selection的起点,多个range的话就会合并成一个range，且起点和结束点均在第一个range对象的起点上。<br/>
@@ -53,6 +53,37 @@ extend({HTMLElement} parentNode, {unsigned int} offset):起点不动，将结束
 getRangeAt({Number} index):从当前selection对象中获取一个range对象。 <br/>
 modify({DOMString} alter, {DOMString} direction, {DOMString} granularity):用于改变焦点的位置，或扩展、缩小selection的大小。alter(改变的方式)取值范围：move（移动焦点）,extend（改变selection大小）;direction（移动的方向）,取值范围：forward、backword或left、right;granularity（移动的单位活尺寸）,取值范围：character,word<br/>
 toString():仅返回selection不含节点信息的纯文本内容。<br/>
-removeAllRanges()
-removeRange(arg1)
-selectAllChildren(arg1)
+removeAllRanges():清除selection中的所有range对象，anchorNode和focusNode将被设置为null。<br/>
+removeRange({Range} range):从selection中移除指定的range对象，该range对象必须属于该selection对象才行，否则会抛异常。<br/>
+selectAllChildren({HTMLElement} parentNode):删除selection中所有range对象，然后将parentNode的后代节点作为一个range对象并加入到selection中。<br/>
+
+## Range类型
+定义：是一种fragment,可包含节点或文本节点的一部分。<br/>
+获取方式：
+1. 通过selection对象的getRangeAt()<br/>
+2. DOM 2 Level中定义了document.createRange()来创建range对象
+````
+if (document.implementation && 
+	document.implementation.hasFeature &&
+	document.implementation.hasFeature('Range', '2.0')){
+	// 支持
+	var range = document.createRange();
+}
+else{
+	// 不支持
+}
+````
+**只读属性**
+startContainer
+endContainer
+startOffset
+endOffset
+commonAncestorContainer
+collapsed
+
+
+## HTML5属性
+document.activeElement，返回当前获得焦点的元素，若没有则返回body元素。<br/>
+
+
+document.designMode = 'on'
