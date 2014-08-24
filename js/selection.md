@@ -74,12 +74,47 @@ else{
 }
 ````
 **只读属性**
-startContainer
-endContainer
-startOffset
-endOffset
-commonAncestorContainer
-collapsed
+startContainer:起点所属的节点<br/>
+endContainer:结束点所属的节点<br/>
+startOffset:起点在startContainer中的偏移量，若startContainer是文本节点、注释节点或CDATA节点，则返回字符偏移量;若startContainer是元素节点，则返回起点在startContainer.childNodes中的词序。<br/>
+endOffset:结束点在endContainer中的偏移量，细节与startOffset一样。<br/>
+commonAncestorContainer:开始和结束点共同的祖先节点。若collapsed为true时，则返回他们所属的节点，否则返回他们所属节点共同的祖先节点<br/>
+collapsed:起点和结束点在同一个节点时或range刚初始化时为true。<br/>
+
+**定位方法**
+setStart({Node} node, {unsigned int} offset):设置起点，node为元素节点时，offset表示起点在node.childNodes的偏移量;node为文本、注释和CDATA节点时，offset表示起点在字符中的偏移量<br/>
+setEnd({Node} node, {unsigned int} offset):设置结束点，具体与setStart一致。<br/>
+<strong style="color:red;">
+关于well-formed(fragment的结构完整)<br/>
+在使用setStart和setEnd方法设置range起点和结束点时，可能仅截取元素的部分内容，因此截取部分的结构并不完整（非well-formed），此时浏览器会自动隐式将其well-formed化。实例：
+````
+<div id="d"><b>hello</b>world</div>
+var r = document.createRange();
+r.setStart(d.firstChild.firstChild, 2);
+r.setEnd(d.lastChild, 3);
+var dr = r.extractContents();
+// 此时dr获取的不是llo</b>wor，而是<b>llo</b>wor
+````
+</strong>
+setStartBefore({Node} referenceNode):将起点设置为referenceNode前<br/>
+setStartAfter({Node} referenceNode):将起点设置为referenceNode后<br/> setEndBefore({Node} referenceNode):将结束点设置为referenceNode前<br/>
+setEndAfter({Node} referenceNode):将结束点设置为referenceNode后<br/>
+selectNode({Node} referenceNode):设置range的范围，包含referenceNode和它的后代节点。<br/>
+selectNodeContents({Node} referenceNode):设置rang的范围，仅包含referenceNode的后代节点<br/>
+collapse({Boolean} toStart):折叠range，使起点和结束点重合。true时折叠到起点，false时折叠到结束点。<br/>
+
+**修改范围的方法**
+cloneContents():返回值是HTMLDocumentFragment对象,复制range内容，但不会删除原有的<br/>
+deleteContents():删除range内容<br/>
+extractContents():返回值是HTMLDocumentFragment对象,提取range内容，文档中相应的部分会被删除<br/>
+insertNode({Node} node):将node插入到range起点处<br/>
+surrondContents({Node} node):将range内容包含在node内,若range对象包含的原内容不是well-formed则会抛BAD_BOUNDARYPOINTS_ERR<br/>
+
+**其他方法**
+cloneRange():返回值是Range对象，用于复制range对象<br/>
+compareBoundaryPoints({unsigned int} how, {Range} sourceRange):比较两个range的边界位置。返回值，0(相等),1(当前range在sourceRange之后),-1(当前range在sourceRange之前); how用于设置比较那些边界点，取值范围Range.START_TO_START(比较两个的开始点),Range.END_TO_END(比较两个的结束点),Range.START_TO_END(比较sourceRange的开始点和当前range的结束点),Range.END_TO_START(比较sourceRange的结束点和当前range的开始点)<br/>
+detach():用于主动释放range资源<br/>
+toString():返回range的纯文本内容，不含标签信息<br/>
 
 
 ## HTML5属性
