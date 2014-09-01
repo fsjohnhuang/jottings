@@ -118,12 +118,28 @@ var dr = r.extractContents();
 
 
 ## TextRange
-  表示用户选择的区域内容，可包含文本和节点，但其操作方式大多以文字为单位。
+  表示用户选择的区域内容，可包含文本和节点，但其操作方式大多以文字为单位。<br/>
+** 获取方式 **
+````
+// 方式一，将根据目前选择返回TextRange或ControlRange对象
+var textRange = document.selection.createRange();
+
+// 方式二，从元素中获取
+var textRange = el.createTextRange();
+````
+
+**方法**
+**collapse({Boolean} toStart):**折叠range，使起点和结束点重合。true时折叠到起点，false时折叠到结束点。<br/>
+**moveToElementText(Nodea a)**
 
 
 ## ControlRange
-  div，img和object等处于编辑状态时，单击就会选中整个控件。
-
+  div，img和object等处于编辑状态时，单击就会选中整个控件。<br/>
+** 获取方式 **
+````
+// 方式一，从元素中获取
+var controlRange = el.createControlRange();
+````
 
 ## HTML5属性
 document.activeElement，返回当前获得焦点的元素，若没有则返回body元素。<br/>
