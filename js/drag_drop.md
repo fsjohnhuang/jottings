@@ -60,7 +60,9 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 >all：允许任意值的dropEffect<br/>
 >none：被拖拽元素不能有任何行为<br/>
 >uninitialized：没有为被拖拽元素设置任何放置的行为<br/>
+
 <font style="color:red;">注意：仅能在`dragstart`中设置`effectAllowed`的值</font><br/>
+
 `dropEffect`：类型为DOMString，设置或返回拖放目录上允许发生的拖放行为。如果与effectAllowed不一致则drop动作将会失败<br/>
 >copy：应该把被拖拽元素复制到目标元素内<br/>
 >link：在目标元素内释放时，会打开被拖拽的元素（被拖拽的元素必须是个超链接或含url地址）<br/>
