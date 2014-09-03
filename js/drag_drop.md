@@ -76,9 +76,10 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 `void addElement({Element} element)`：添加一起跟随拖拽的元素。<br/>
 `void setDataImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
 `void setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/url-list类型<br/>
->FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
->IE10-仅支持Text和URL两种类型<br/>
->text/plain类型则不会对数据进行额外处理，而text/url-list类型则会将数据视为url来使用
+>1. FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
+>2. IE10-仅支持Text和URL两种类型<br/>
+>3. text/plain类型则不会对数据进行额外处理，而text/url-list类型则会将数据视为url来使用
+
 `DOMString getData({DOMString} format)`：从dataTransfer或clipboardData中获取指定格式的数据<br/>
 `void clearData([{DOMString} format])`：从dataTransfer或clipboardData中删除指定格式的数据<br/>
 
@@ -86,3 +87,4 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html
 http://www.kankanews.com/ICkengine/archives/82862.shtml
 http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
+http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
