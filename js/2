@@ -154,6 +154,8 @@ FF33 for linux下
 仅可触发dragstart事件,其他事件一律无效
 
 
+
+
 `items`：类型为DataTransferItemList，代表DataTransfer对象存储的所有数据项<br/>
 >1. FF33 for linux是没有该属性的<br/>
 
@@ -171,13 +173,9 @@ FF33 for linux下
 >2. IE仅支持Text和URL两种类型，不支持text/plain、text/uri-list等类型<br/>
 >3. text/plain类型则不会对数据进行额外处理，而text/uri-list类型则会将数据视为url来使用<br/>
 >4. Chrome和FF支持非空字符串作为format<br/>
->5. 仅在dragstart事件有效<br/>
->6. 当没有填写第二个入参时，则会根据format来删除相应的数据项。<br/>
 
 `DOMString getData({DOMString} format)`：从dataTransfer或clipboardData中获取指定格式的数据<br/>
 `void clearData([{DOMString} format])`：从dataTransfer或clipboardData中删除指定格式的数据<br/>
->1. 清除所有kind为string的数据项<br/>
->2. 仅在dragstart事件中有效，其他事件中调用会报InvalidStateError<br/>
 
 ## [object ClipboardData]
 Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
@@ -189,22 +187,9 @@ Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
 `void clear()`<br/>
 `DataTransferItem add(DOMString data, DOMString type)`<br/>
 `DataTransferItem add(File data)`<br/>
-**说明**<br/>
-在非读写模式下调用`deleter void(unsigned long index)`会报InvalidStateError，添加数据则会不执行。
 
 ## [object DataTransferItem]
 `readonly attribute DOMString kind`<br/>
-`readonly attribute DOMString type`<br/>
-`void getAsString(FunctionStringCallback cb)`<br/>
-`File getAsFile()`<br/>
-**说明**<br/>
-`kind`：表示数据的类型，只能为string或file<br/>
-`type`：实际数据的类型或格式，一般使用mimetype表示,但不强制规定要是mimetype<br/>
-`getAsString(cb)`：当kind为string时，则在只读或读写模式下，则可用该方法读取数据。<br/>
-`getAsFile()`：当kind为file时，则在只读或读写模式下，可用该方法读取数据，无则返回null<br/>
-
-## [object FunctionStringCallback]
-`void handleEvent(DOMString data)`<br/>
 
 
 ## 参考
