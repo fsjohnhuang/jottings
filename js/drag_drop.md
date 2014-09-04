@@ -20,15 +20,29 @@ drag.ondragstart = function(e){
 1. `draggable="true"`,是用于启动HTML5 drag & drop 功能;<br/>
 2. FF下拖拽时，默认不会生成一个被拖拽元素的阴影并跟随鼠标移动，需通过e.dataTransfer.setData来启动该效果。（IE10+和Chrome默认均有阴影效果）<br/>
 
+## draggable属性
+用于指定标签是否可以被拖拽。<br/>
+属性值如下：<br/>
+1. `true`：表示可拖拽<br/>
+2. `false`：表示不可拖拽<br/>
+3. `auto`：img和带href的a标签下表示可拖拽，其他标签表示不可拖拽<br/>
+4. 其他值：表示不可拖拽<br/>
+
 ## 生命周期
 **被拖拽元素的生命周期**<br/>
 1. `dragstart`:当被拖拽元素被开始拖拽时触发;<br/>
+>1. 在该事件中初始化拖拽信息，如effectAllowed和setData<br/>
+>2. 若调用evt.preventDefault()则会阻止拖拽操作<br/>
+
 2. `drag`: 当被拖拽元素被拖拽时触发；<br/>
 3. `dragend`:当被拖拽元素被释放且拖拽操作完成后触发(在`drop`后触发）<br/>
 **目标元素的生命周期**<br/>
 1. `dragenter`:当被拖拽元素进入目标元素时触发<br/>
+>1. 可以在这设置dropEffect的值<br/>
+
 2. `dragover`:当被拖拽元素在目标元素上移动时触发<br/>
 >1. 默认情况下，无法将数据/元素放置到其他元素中的（即不触发drop事件）。如果需要设置允许放置，则须要再dragover事件中通过evt.preventDefault()来阻止默认行为。（经测试，IE、Chrome和FF的默认行为均与此相符）<br/>
+>2. 可以在这设置dropEffect的值，默认行为是将dropEffect设置为none<br/>
 
 3. `drop`:当被拖拽元素在目标元素上而且释放鼠标时触发<br/>
 >1. drop事件的默认行为是以链接形式打开，因此需要调用evt.preventDefault()阻止默认行为。（经测试，FF31.0下默认行为是以链接形式打开，而IE和Chrome的默认行为是没有任何操作）<br/>
@@ -62,17 +76,33 @@ IE：`mousemove`->`mouseover`->`mouseenter`->`mouseout`->`mouseleave`<br/>
 FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 
 ## \[object DragEvent\]对象
-继承
+  继承自`MouseEvent`,拖拽过程中的所有事件对象均为该类型。
+**从UIEvent继承的属性**<br/>
+`Window view = null`<br/>
+`long detail = 0`<br/>
+**从MouseEvent继承的属性**<br/>
+`long screenX = 0`<br/>
+`long screenY = 0`<br/>
+`long clientX = 0`<br/>
+`long clientY = 0`<br/>
+`boolean ctrlKey = false`<br/>
+`boolean shiftKey = false`<br/>
+`boolean metaKey = false`<br/>
+`unsigined short button = 0`<br/>
+`unsigined short buttons = 0`<br/>
+`EventTarget relatedTarget = null`<br/>
+**从DragEvent独有的属性**<br/>
+`DataTransfer dataTransfer`<br/>
 
 ## \[object DataTransfer\]对象
   拖拽生命周期的各个事件的事件对象中均有DataTransfer对象，用于在拖拽过程中传递信息。而它可以存储两种数据类型：字符串、文件。DataTransfer对象在dragend事件触发后将被销毁。<br/>
-**数据的访问模式**<br/>
+**数据的存储模式**<br/>
 1. Read/Write mode：在`dragstart`事件中，可读写数据<br/>
 2. Read-only mode：在`drop`事件中，仅能读取数据<br/>
 3. Protected mode：在其他DnD事件中，仅能枚举数据<br/>
 
 **属性**<br/>
-`effectAllowed`和`dropEffect`用于设置鼠标在目标元素上的样式，在不同的浏览器和操作系统上得到的样式是不同的。<br/>
+`effectAllowed`和`dropEffect`用于设置鼠标在目标元素上的样式以便用户通过鼠标样式了解可执行的操作，在不同的浏览器和操作系统上得到的样式是不同的。<br/>
 `effectAllowed`设置允许在目标元素上的样式，而`dropEffect`则表示为鼠标在目标元素上的实际样式。<br/>
 当`dropEffect`<br/>
 
@@ -96,6 +126,10 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 >none：不能把被拖拽元素放在这里。除文本框外其他元素默认为none<br/>
 
 <font style="color:red;">注意：`dropEffect`的值不能由js代码来设置的</font><br/>
+
+IE10-下
+仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。
+
 IE10+下
 `effectAllowed`
 默认值是uninitialized, `dropEffect`为copy
@@ -117,8 +151,7 @@ all，默认使用move, `dropEffect`为copy
 
 
 FF33 for linux下
-
-
+仅可触发dragstart事件,其他事件一律无效
 
 
 
