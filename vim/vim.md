@@ -168,3 +168,6 @@ set noexpandtab
 `P`
 **刷新当前目录**
 `r`
+
+## 插件emmet
+地址https://github.com/mattn/emmet-vim
