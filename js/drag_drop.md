@@ -28,7 +28,25 @@ drag.ondragstart = function(e){
 **目标元素的生命周期**<br/>
 1. `dragenter`:当被拖拽元素进入目标元素时触发<br/>
 2. `dragover`:当被拖拽元素在目标元素上移动时触发<br/>
+>1. 默认情况下，无法将数据/元素放置到其他元素中的（即不触发drop事件）。如果需要设置允许放置，则须要再dragover事件中通过evt.preventDefault()来阻止默认行为。（经测试，IE、Chrome和FF的默认行为均与此相符）<br/>
+
 3. `drop`:当被拖拽元素在目标元素上而且释放鼠标时触发<br/>
+>1. drop事件的默认行为是以链接形式打开，因此需要调用evt.preventDefault()阻止默认行为。（经测试，FF31.0下默认行为是以链接形式打开，而IE和Chrome的默认行为是没有任何操作）<br/>
+
+示例代码<br/>
+````
+<div id="drag" style="width:50px;height:50px;background-color:red;">Test</div>
+<div id="drop" style="width:100px;height:100px;border:solid 1px red;"></div>
+<script type="text/javascript">
+  var drag = document.getElementById('drag'), drop = document.getElementById('drop');
+  drag.ondragstart = function(evt){
+  	evt.dataTransfer.setData('Text', 'www.baidu.com');
+  };
+  drop.ondragover = function(evt){
+  	evt.preventDefault(); // 这样才能触发drop的drop事件
+  };
+</script>
+````
 
 **整体生命周期**<br/>
 `dragstart` -> `drag` -> `dragenter` -> `dragover` -> `drop` -> `dragend`<br/>
@@ -43,14 +61,17 @@ Chrome36：`mouseenter`->`mouseover`->`mousemove`->`mouseleave`->`mouseout`<br/>
 IE：`mousemove`->`mouseover`->`mouseenter`->`mouseout`->`mouseleave`<br/>
 FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 
+## \[object DragEvent\]对象
+继承
+
 ## \[object DataTransfer\]对象
-  拖拽生命周期的各个事件的事件对象中均有DataTransfer对象，用于在拖拽过程中传递信息。而它可以存储两种数据类型：字符串、文件<br/>
+  拖拽生命周期的各个事件的事件对象中均有DataTransfer对象，用于在拖拽过程中传递信息。而它可以存储两种数据类型：字符串、文件。DataTransfer对象在dragend事件触发后将被销毁。<br/>
 **数据的访问模式**<br/>
 1. Read/Write mode：在`dragstart`事件中，可读写数据<br/>
 2. Read-only mode：在`drop`事件中，仅能读取数据<br/>
 3. Protected mode：在其他DnD事件中，仅能枚举数据<br/>
 
-****<br/>
+**属性**<br/>
 `effectAllowed`：类型为DOMString，用于设置或返回被拖拽元素允许发生的拖动行为。取值范围如下：<br/>
 >copy：只允许值为copy的dropEffect<br/>
 >link：只允许值位link的dropEffect<br/>
@@ -73,18 +94,25 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 `files`：类型为FileList，<br/>
 `types`：类型为DOMStringList，代表DataTransfer对象存储的所有数据类型<br/>
 
+**方法**<br/>
 `void addElement({Element} element)`：添加一起跟随拖拽的元素。<br/>
-`void setDataImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
-`void setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/url-list类型<br/>
+`void setDragImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，若image不是图片元素则会元素临时转换为图片；x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
+`void setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/uri-list类型<br/>
 >1. FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
->2. IE10-仅支持Text和URL两种类型<br/>
->3. text/plain类型则不会对数据进行额外处理，而text/url-list类型则会将数据视为url来使用
+>2. IE仅支持Text和URL两种类型，不支持text/plain、text/uri-list等类型<br/>
+>3. text/plain类型则不会对数据进行额外处理，而text/uri-list类型则会将数据视为url来使用<br/>
+>4. Chrome和FF支持非空字符串作为format<br/>
 
 `DOMString getData({DOMString} format)`：从dataTransfer或clipboardData中获取指定格式的数据<br/>
 `void clearData([{DOMString} format])`：从dataTransfer或clipboardData中删除指定格式的数据<br/>
 
+## [object ClipboardData]
+Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
+
 ## 参考
+http://www.w3school.com.cn/html5/html_5_draganddrop.asp
 http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html
 http://www.kankanews.com/ICkengine/archives/82862.shtml
 http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
 http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
+http://my.oschina.net/caixw/blog/102845
