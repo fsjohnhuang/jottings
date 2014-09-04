@@ -72,11 +72,16 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 3. Protected mode：在其他DnD事件中，仅能枚举数据<br/>
 
 **属性**<br/>
+`effectAllowed`和`dropEffect`用于设置鼠标在目标元素上的样式，在不同的浏览器和操作系统上得到的样式是不同的。<br/>
+`effectAllowed`设置允许在目标元素上的样式，而`dropEffect`则表示为鼠标在目标元素上的实际样式。<br/>
+当`dropEffect`<br/>
+
 `effectAllowed`：类型为DOMString，用于设置或返回被拖拽元素允许发生的拖动行为。取值范围如下：<br/>
 >copy：只允许值为copy的dropEffect<br/>
 >link：只允许值位link的dropEffect<br/>
 >move：只允许值为move的dropEffect<br/>
 >copylink：只允许值为copy或link的dropEffect<br/>
+>copyMove：只允许值为copy或move的dropEffect<br/>
 >linkmove：只允许值为move或link的dropEffect<br/>
 >all：允许任意值的dropEffect<br/>
 >none：被拖拽元素不能有任何行为<br/>
@@ -89,6 +94,34 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 >link：在目标元素内释放时，会打开被拖拽的元素（被拖拽的元素必须是个超链接或含url地址）<br/>
 >move：应该把被拖拽元素放置在目标元素内<br/>
 >none：不能把被拖拽元素放在这里。除文本框外其他元素默认为none<br/>
+
+<font style="color:red;">注意：`dropEffect`的值不能由js代码来设置的</font><br/>
+IE10+下
+`effectAllowed`
+默认值是uninitialized, `dropEffect`为copy
+copyLink，默认使用link, `dropEffect`为copy
+copyMove，默认使用copy, `dropEffect`为copy
+linkMove，默认使用link, `dropEffect`为copy
+all，默认使用link, `dropEffect`为copy
+none，就不会触发drop事件
+move,`dropEffect`为move
+link,`dropEffect`为link
+copy,`dropEffect`为copy
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+
+
+Chrome29下
+默认值是all
+all，默认使用move, `dropEffect`为copy
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+
+
+FF33 for linux下
+
+
+
+
+
 
 `items`：类型为DataTransferItems，代表DataTransfer对象存储的所有数据项<br/>
 `files`：类型为FileList，<br/>
@@ -115,4 +148,7 @@ http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html
 http://www.kankanews.com/ICkengine/archives/82862.shtml
 http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
 http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
+
 http://my.oschina.net/caixw/blog/102845
+http://blog.csdn.net/shyleoking/article/details/7344514
+http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html
