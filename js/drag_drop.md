@@ -215,5 +215,4 @@ http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
 http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
 
 http://my.oschina.net/caixw/blog/102845
-http://blog.csdn.net/shyleoking/article/details/7344514
 http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html
