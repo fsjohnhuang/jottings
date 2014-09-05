@@ -125,33 +125,71 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 >move：应该把被拖拽元素放置在目标元素内<br/>
 >none：不能把被拖拽元素放在这里。除文本框外其他元素默认为none<br/>
 
-<font style="color:red;">注意:仅能在`dragenter`和`dragover`中设置`dropEffect`的值</font><br/>
+<font style="color:red;">注意:仅能在`dragover`中设置`dropEffect`的值</font><br/>
 
-IE10-下
-仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。
+**浏览器下的实测**<br/>
+**IE6~9下**<br/>
+仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。<br/>
+1. img<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy
+2. a和input<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为none
 
-IE10+下
-`effectAllowed`
-默认值是uninitialized, `dropEffect`为copy
-copyLink，默认使用link, `dropEffect`为copy
-copyMove，默认使用copy, `dropEffect`为copy
-linkMove，默认使用link, `dropEffect`为copy
-all，默认使用link, `dropEffect`为copy
+共性：<br/>
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none
+all，默认使用link, `drop`事件中的`dropEffect`为copy
 none，就不会触发drop事件
 move,`dropEffect`为move
 link,`dropEffect`为link
 copy,`dropEffect`为copy
 无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
-
-Chrome29下
-默认值是all
-all，默认使用move, `dropEffect`为copy
+**IE10+下**<br/>
+`effectAllowed`
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none
+all，默认使用link, `drop`事件中的`dropEffect`为copy
+none，就不会触发drop事件
+move,`dropEffect`为move
+link,`dropEffect`为link
+copy,`dropEffect`为copy
 无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
+**Chrome29下**<br/>
+默认值是all
+all，默认使用move, `drop`事件中的`dropEffect`为copy
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为none
+copyMove，默认使用move, `drop`事件中的`dropEffect`为none
+linkMove，默认使用move, `drop`事件中的`dropEffect`为none
+move,`drop`事件中的`dropEffect`为move
+link,`drop`事件中的`dropEffect`为link
+copy,`drop`事件中的`dropEffect`为copy
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
-FF33 for linux下
-仅可触发dragstart事件,其他事件一律无效
+**FF31 for window下**<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为move
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为copy
+copyMove，默认使用move, `drop`事件中的`dropEffect`为move
+linkMove，默认使用move, `drop`事件中的`dropEffect`为move
+move,`drop`事件中的`dropEffect`为move
+link,`drop`事件中的`dropEffect`为link
+copy,`drop`事件中的`dropEffect`为copy
+`effectAllowed`为copyLink、copyMove和linkMove时,可通过`shift`键切换样式<br/>
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，虽然dropEffect与之对应，但依然显示默认样式，需要通过shift键来切换样式<br/>
+
+**FF33 for linux下**<br/>
+仅可触发dragstart事件,其他事件一律无效<br/>
 
 
 `items`：类型为DataTransferItemList，代表DataTransfer对象存储的所有数据项<br/>
@@ -213,6 +251,5 @@ http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html
 http://www.kankanews.com/ICkengine/archives/82862.shtml
 http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
 http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
-
 http://my.oschina.net/caixw/blog/102845
 http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html
