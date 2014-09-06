@@ -20,6 +20,12 @@ drag.ondragstart = function(e){
 1. `draggable="true"`,是用于启动HTML5 drag & drop 功能;<br/>
 2. FF下拖拽时，默认不会生成一个被拖拽元素的阴影并跟随鼠标移动，需通过e.dataTransfer.setData来启动该效果。（IE10+和Chrome默认均有阴影效果）<br/>
 
+## Safari4下启动拖拽效果
+需要添加CSS样式触发行为
+````
+[draggable=true]{ -webkit-user-drag: element; }
+````
+
 ## draggable属性
 用于指定标签是否可以被拖拽。<br/>
 属性值如下：<br/>
@@ -45,7 +51,7 @@ drag.ondragstart = function(e){
 >2. 可以在这设置dropEffect的值，默认行为是将dropEffect设置为none<br/>
 
 3. `drop`:当被拖拽元素在目标元素上而且释放鼠标时触发<br/>
->1. drop事件的默认行为是以链接形式打开，因此需要调用evt.preventDefault()阻止默认行为。（经测试，FF31.0下默认行为是以链接形式打开，而IE和Chrome的默认行为是没有任何操作）<br/>
+>1. drop事件的默认行为是以链接形式打开，因此需要调用evt.preventDefault()阻止默认行为。（当从外部拖拽图片源、文件源或链接源时，drop的默认行为是令浏览器重定向，所以即使目标对象为iframe或frameset效果当前文档也会被重定向都被拖拽的资源上。）<br/>
 
 示例代码<br/>
 ````
@@ -64,6 +70,9 @@ drag.ondragstart = function(e){
 
 **整体生命周期**<br/>
 `dragstart` -> `drag` -> `dragenter` -> `dragover` -> `drop` -> `dragend`<br/>
+
+**IE5~9整体生命周期**<br/>
+`dragstart` -> `drag` -> `dragenter` -> `drop` -> `dragend`<br/>
 
 <font style="color:red">注意</font><br/>
 1. `dragover`中必须调用`evt.preventDefault()`来阻止事件的默认行为，否则无法触发drop事件。<br/>
@@ -125,42 +134,79 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 >move：应该把被拖拽元素放置在目标元素内<br/>
 >none：不能把被拖拽元素放在这里。除文本框外其他元素默认为none<br/>
 
-<font style="color:red;">注意:仅能在`dragenter`和`dragover`中设置`dropEffect`的值</font><br/>
+<font style="color:red;">注意:仅能在`dragover`中设置`dropEffect`的值</font><br/>
 
-IE10-下
-仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。
+**浏览器下的实测**<br/>
+**IE5~9下**<br/>
+仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。<br/>
+1. img<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy
+2. a和input<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为none
 
-IE10+下
-`effectAllowed`
-默认值是uninitialized, `dropEffect`为copy
-copyLink，默认使用link, `dropEffect`为copy
-copyMove，默认使用copy, `dropEffect`为copy
-linkMove，默认使用link, `dropEffect`为copy
-all，默认使用link, `dropEffect`为copy
+共性：<br/>
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none
+all，默认使用link, `drop`事件中的`dropEffect`为copy
 none，就不会触发drop事件
 move,`dropEffect`为move
 link,`dropEffect`为link
 copy,`dropEffect`为copy
 无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
-
-Chrome29下
-默认值是all
-all，默认使用move, `dropEffect`为copy
+**IE10+下**<br/>
+`effectAllowed`
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none
+all，默认使用link, `drop`事件中的`dropEffect`为copy
+none，就不会触发drop事件
+move,`dropEffect`为move
+link,`dropEffect`为link
+copy,`dropEffect`为copy
 无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
+**Chrome29下**<br/>
+默认值是all
+all，默认使用move, `drop`事件中的`dropEffect`为copy
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为none
+copyMove，默认使用move, `drop`事件中的`dropEffect`为none
+linkMove，默认使用move, `drop`事件中的`dropEffect`为none
+move,`drop`事件中的`dropEffect`为move
+link,`drop`事件中的`dropEffect`为link
+copy,`drop`事件中的`dropEffect`为copy
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
-FF33 for linux下
-仅可触发dragstart事件,其他事件一律无效
+**FF31 for window下**<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为move
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为copy
+copyMove，默认使用move, `drop`事件中的`dropEffect`为move
+linkMove，默认使用move, `drop`事件中的`dropEffect`为move
+move,`drop`事件中的`dropEffect`为move
+link,`drop`事件中的`dropEffect`为link
+copy,`drop`事件中的`dropEffect`为copy
+`effectAllowed`为copyLink、copyMove和linkMove时,可通过`shift`键切换样式<br/>
+在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
+若effectAllowed设置为copyLink、copyMove或linkMove，虽然dropEffect与之对应，但依然显示默认样式，需要通过shift键来切换样式<br/>
 
-
+**FF33 for linux下**<br/>
+仅可触发dragstart事件,其他事件一律无效<br/>
 
 
 `items`：类型为DataTransferItemList，代表DataTransfer对象存储的所有数据项<br/>
 >1. FF33 for linux是没有该属性的<br/>
+>1. IE是没有该属性的<br/>
 
-`files`：类型为FileList，<br/>
-`types`：类型为DOMStringList，代表DataTransfer对象存储的所有数据类型<br/>
+`files`：类型为FileList（ie5~9没有该属性）<br/>
+`types`：类型为DOMStringList，代表DataTransfer对象存储的所有数据类型（ie5~9没有该属性）<br/>
 >1. 仅能在`dragenter`,`dragover`和`drop`中获取types属性<br/>
 
 **方法**<br/>
@@ -168,14 +214,19 @@ FF33 for linux下
 `void setDragImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，若image不是图片元素则会元素临时转换为图片；x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
 >1. 仅在`dragstart`下调用<br/>
 
-`void setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/uri-list类型<br/>
+`boolean setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/uri-list类型<br/>
 >1. FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
 >2. IE仅支持Text和URL两种类型，不支持text/plain、text/uri-list等类型<br/>
 >3. text/plain类型则不会对数据进行额外处理，而text/uri-list类型则会将数据视为url来使用<br/>
 >4. Chrome和FF支持非空字符串作为format<br/>
+>5. 仅在dragstart事件有效<br/>
+>6. 当没有填写第二个入参时，则会根据format来删除相应的数据项。<br/>
+>7. 当设置text/uri-list类型的数据时，数据必须带协议名，如http://fsjohnhuang.cnblogs.com；若仅写为fsjohnhuang.cnblogs.com，那么dataTransfer将自动弃除，在`dragstart`事件还能获取到，但在`drop`事件中将无法获取。
 
 `DOMString getData({DOMString} format)`：从dataTransfer或clipboardData中获取指定格式的数据<br/>
 `void clearData([{DOMString} format])`：从dataTransfer或clipboardData中删除指定格式的数据<br/>
+>1. 清除所有kind为string的数据项<br/>
+>2. 仅在dragstart事件中有效，其他事件中调用会报InvalidStateError<br/>
 
 ## [object ClipboardData]
 Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
@@ -187,18 +238,39 @@ Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
 `void clear()`<br/>
 `DataTransferItem add(DOMString data, DOMString type)`<br/>
 `DataTransferItem add(File data)`<br/>
+**说明**<br/>
+在非读写模式下调用`deleter void(unsigned long index)`会报InvalidStateError，添加数据则会不执行。
 
 ## [object DataTransferItem]
 `readonly attribute DOMString kind`<br/>
+`readonly attribute DOMString type`<br/>
+`void getAsString(FunctionStringCallback cb)`<br/>
+`File getAsFile()`<br/>
+**说明**<br/>
+`kind`：表示数据的类型，只能为string或file<br/>
+`type`：实际数据的类型或格式，一般使用mimetype表示,但不强制规定要是mimetype<br/>
+`getAsString(cb)`：当kind为string时，则在只读或读写模式下，则可用该方法读取数据。<br/>
+`getAsFile()`：当kind为file时，则在只读或读写模式下，可用该方法读取数据，无则返回null<br/>
+
+## [object FunctionStringCallback]
+`void handleEvent(DOMString data)`<br/>
 
 
 ## 参考
-http://www.w3school.com.cn/html5/html_5_draganddrop.asp
-http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html
-http://www.kankanews.com/ICkengine/archives/82862.shtml
-http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html
-http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/
+http://www.w3school.com.cn/html5/html_5_draganddrop.asp<br/>
+http://www.cnblogs.com/wpfpizicai/archive/2012/04/07/2436454.html<br/>
+http://www.kankanews.com/ICkengine/archives/82862.shtml<br/>
+http://jingyan.baidu.com/article/6dad5075cf6e62a123e36e11.html<br/>
+http://www.zhangxinxu.com/wordpress/2011/02/html5-drag-drop-%E6%8B%96%E6%8B%BD%E4%B8%8E%E6%8B%96%E6%94%BE%E7%AE%80%E4%BB%8B/<br/>
+http://my.oschina.net/caixw/blog/102845<br/>
+http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html<br/>
+《HTML5实战》第11章、HTML5中元素的拖放<br/>
+《HTML5用户指南》第8章、拖放<br/>
+http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx
 
-http://my.oschina.net/caixw/blog/102845
-http://blog.csdn.net/shyleoking/article/details/7344514
-http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html
+## 勘误
+《HTML5实战》P292 setData的format参数格式包含text/url-list，**应更正为text/uri-list**<br/>
+
+## 书评
+《HTML5实战》第11章、HTML5中元素的拖放，这一章感觉就一笔带过，纯属印象派。<br/>
+《HTML5用户指南》第8章、拖放，除了简单介绍HTML5 DnD API外，还介绍起源和IE上DnD的特点和作者对DnD API不完美的抱怨，比《HTML5实战》更值得拜读。<br/>
