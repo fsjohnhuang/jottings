@@ -140,59 +140,59 @@ FF31：`mouseover`->`mouseenter`->`mousemove`->`mouseout`->`mouseleave`<br/>
 **IE5~9下**<br/>
 仅支持图片、选中的文字(页面文字和input/textarea元素中的文字)和超链接(普通的和锚点)。<br/>
 1. img<br/>
-默认值是uninitialized, `drop`事件中的`dropEffect`为copy
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy<br/>
 2. a和input<br/>
-默认值是uninitialized, `drop`事件中的`dropEffect`为none
+默认值是uninitialized, `drop`事件中的`dropEffect`为none<br/>
 
 共性：<br/>
-copyLink，默认使用link, `drop`事件中的`dropEffect`为none
-copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
-linkMove，默认使用link, `drop`事件中的`dropEffect`为none
-all，默认使用link, `drop`事件中的`dropEffect`为copy
-none，就不会触发drop事件
-move,`dropEffect`为move
-link,`dropEffect`为link
-copy,`dropEffect`为copy
-无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none<br/>
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none<br/>
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none<br/>
+all，默认使用link, `drop`事件中的`dropEffect`为copy<br/>
+none，就不会触发drop事件<br/>
+move,`dropEffect`为move<br/>
+link,`dropEffect`为link<br/>
+copy,`dropEffect`为copy<br/>
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式<br/>
 在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
 若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
 **IE10+下**<br/>
-`effectAllowed`
-默认值是uninitialized, `drop`事件中的`dropEffect`为copy
-copyLink，默认使用link, `drop`事件中的`dropEffect`为none
-copyMove，默认使用copy, `drop`事件中的`dropEffect`为none
-linkMove，默认使用link, `drop`事件中的`dropEffect`为none
-all，默认使用link, `drop`事件中的`dropEffect`为copy
-none，就不会触发drop事件
-move,`dropEffect`为move
-link,`dropEffect`为link
-copy,`dropEffect`为copy
-无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+`effectAllowed`<br/>
+默认值是uninitialized, `drop`事件中的`dropEffect`为copy<br/>
+copyLink，默认使用link, `drop`事件中的`dropEffect`为none<br/>
+copyMove，默认使用copy, `drop`事件中的`dropEffect`为none<br/>
+linkMove，默认使用link, `drop`事件中的`dropEffect`为none<br/>
+all，默认使用link, `drop`事件中的`dropEffect`为copy<br/>
+none，就不会触发drop事件<br/>
+move,`dropEffect`为move<br/>
+link,`dropEffect`为link<br/>
+copy,`dropEffect`为copy<br/>
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式<br/>
 在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件仍然会被触发;<br/>
 若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
 **Chrome29下**<br/>
-默认值是all
-all，默认使用move, `drop`事件中的`dropEffect`为copy
-copyLink，默认使用copy, `drop`事件中的`dropEffect`为none
-copyMove，默认使用move, `drop`事件中的`dropEffect`为none
-linkMove，默认使用move, `drop`事件中的`dropEffect`为none
-move,`drop`事件中的`dropEffect`为move
-link,`drop`事件中的`dropEffect`为link
-copy,`drop`事件中的`dropEffect`为copy
-无法通过`shift`键切换copyLink、copyMove和linkMove的样式
+默认值是all<br/>
+all，默认使用move, `drop`事件中的`dropEffect`为copy<br/>
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为none<br/>
+copyMove，默认使用move, `drop`事件中的`dropEffect`为none<br/>
+linkMove，默认使用move, `drop`事件中的`dropEffect`为none<br/>
+move,`drop`事件中的`dropEffect`为move<br/>
+link,`drop`事件中的`dropEffect`为link<br/>
+copy,`drop`事件中的`dropEffect`为copy<br/>
+无法通过`shift`键切换copyLink、copyMove和linkMove的样式<br/>
 在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
 若effectAllowed设置为copyLink、copyMove或linkMove，且dropEffect与之对应，则鼠标样式将为dropEffect所设置的样式<br/>
 
 **FF31 for window下**<br/>
-默认值是uninitialized, `drop`事件中的`dropEffect`为move
-copyLink，默认使用copy, `drop`事件中的`dropEffect`为copy
-copyMove，默认使用move, `drop`事件中的`dropEffect`为move
-linkMove，默认使用move, `drop`事件中的`dropEffect`为move
-move,`drop`事件中的`dropEffect`为move
-link,`drop`事件中的`dropEffect`为link
-copy,`drop`事件中的`dropEffect`为copy
+默认值是uninitialized, `drop`事件中的`dropEffect`为move<br/>
+copyLink，默认使用copy, `drop`事件中的`dropEffect`为copy<br/>
+copyMove，默认使用move, `drop`事件中的`dropEffect`为move<br/>
+linkMove，默认使用move, `drop`事件中的`dropEffect`为move<br/>
+move,`drop`事件中的`dropEffect`为move<br/>
+link,`drop`事件中的`dropEffect`为link<br/>
+copy,`drop`事件中的`dropEffect`为copy<br/>
 `effectAllowed`为copyLink、copyMove和linkMove时,可通过`shift`键切换样式<br/>
 在`dragover`下可设置`dropEffect`值, 若设置的值与effectAllowed不对应，则`drop`事件将不会被触发<br/>
 若effectAllowed设置为copyLink、copyMove或linkMove，虽然dropEffect与之对应，但依然显示默认样式，需要通过shift键来切换样式<br/>
@@ -255,6 +255,15 @@ Chrome29提供undefined的evt.clipboardData属性，而IE和FF并提供。
 ## [object FunctionStringCallback]
 `void handleEvent(DOMString data)`<br/>
 
+## 特征检测
+参考Modernizr.draganddrop的实现！<br/>
+https://github.com/Modernizr/Modernizr/blob/master/feature-detects/draganddrop.js<br/>
+````
+var supportDnD = function(){
+		var div = document.createElement('div');
+		return ('draggable' in div) || ('ondragstart' in div && 'ondrop' in div);
+	};
+````
 
 ## 参考
 http://www.w3school.com.cn/html5/html_5_draganddrop.asp<br/>
@@ -266,7 +275,10 @@ http://my.oschina.net/caixw/blog/102845<br/>
 http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html<br/>
 《HTML5实战》第11章、HTML5中元素的拖放<br/>
 《HTML5用户指南》第8章、拖放<br/>
-http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx
+http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
+《HTML5与CSS3权威指南》4.5.拖放<br/>
+《论道HTML5》3.3.Drag & Drop API<br/>
+
 
 ## 勘误
 《HTML5实战》P292 setData的format参数格式包含text/url-list，**应更正为text/uri-list**<br/>
@@ -274,3 +286,5 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx
 ## 书评
 《HTML5实战》第11章、HTML5中元素的拖放，这一章感觉就一笔带过，纯属印象派。<br/>
 《HTML5用户指南》第8章、拖放，除了简单介绍HTML5 DnD API外，还介绍起源和IE上DnD的特点和作者对DnD API不完美的抱怨，比《HTML5实战》更值得拜读。<br/>
+《HTML5与CSS3权威指南》4.5.拖放,内容，深度与《HTML5实战》相似<br/>
+《论道HTML5》3.3.Drag & Drop API,对比上述三本书，它提及到使用Modernizr作DnD特征检测,其他基本相似<br/>
