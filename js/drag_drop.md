@@ -288,3 +288,9 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《HTML5用户指南》第8章、拖放，除了简单介绍HTML5 DnD API外，还介绍起源和IE上DnD的特点和作者对DnD API不完美的抱怨，比《HTML5实战》更值得拜读。<br/>
 《HTML5与CSS3权威指南》4.5.拖放,内容，深度与《HTML5实战》相似<br/>
 《论道HTML5》3.3.Drag & Drop API,对比上述三本书，它提及到使用Modernizr作DnD特征检测,其他基本相似<br/>
+
+## HTML4 下实现拖拽的知识点
+pageX, pageY：以页面左上角为参考点，表示当前元素左上角离页面页面左上角的水平和垂直距离。<br/>
+clientX, clientY：<br/>
+screenX
+offsetX
