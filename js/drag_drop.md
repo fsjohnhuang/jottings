@@ -320,6 +320,6 @@ scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度�
 
 ## dom的offsetParent、offsetTop/Left
 offsetParent：最近一个已进行CSS定位的祖先元素。<br/>
-offsetTop/Left：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，<br/>
+offsetTop/Left：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，且body的position不为relative或absolute时，offsetTop/Left为元素border外边框的左上角离页面左上角的垂直、水平距离。若body的position为relative或absolute时，则为元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。<br/>
 >1. FF,Chrome下，怪异模式和标准模式的最顶层offsetParent均为body元素，body.offsetParent和document.documentElement.offsetParent均为null。<br/>
 
