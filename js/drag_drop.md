@@ -317,3 +317,9 @@ http://www.bbs0101.com/archives/124.html
 
 clientLeft, clientTop：可视区域自身border的水平、垂直长度。<br/>
 scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度。<br/>
+
+## dom的offsetParent、offsetTop/Left
+offsetParent：最近一个已进行CSS定位的祖先元素。<br/>
+offsetTop/Left：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，<br/>
+>1. FF,Chrome下，怪异模式和标准模式的最顶层offsetParent均为body元素，body.offsetParent和document.documentElement.offsetParent均为null。<br/>
+
