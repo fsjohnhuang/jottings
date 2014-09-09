@@ -1,4 +1,4 @@
-# HTML5 Drag and Drop (DnD) API
+﻿# HTML5 Drag and Drop (DnD) API
 ## 开启拖拽效果
 html
 ````
@@ -278,6 +278,9 @@ http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html<br/>
 http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《HTML5与CSS3权威指南》4.5.拖放<br/>
 《论道HTML5》3.3.Drag & Drop API<br/>
+http://shanmao.me/web/js/pagex-clientx-offsetx-layerx-de-qu-bie
+http://www.bbs0101.com/archives/124.html
+
 
 
 ## 勘误
@@ -290,12 +293,27 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《论道HTML5》3.3.Drag & Drop API,对比上述三本书，它提及到使用Modernizr作DnD特征检测,其他基本相似<br/>
 
 ## HTML4 下实现拖拽的知识点
-pageX, pageY：以页面左上角为参考点，表示当前元素左上角离页面左上角的水平和垂直距离。<br/>
->1. 仅FF支持该属性，polyfill方法：pageX = clientX + scrollLeft - clientLeft;
+**鼠标事件触发的区域**<br/>
+盒子模型中的border,padding,content区域会触发鼠标事件,点击margin区域将不触发鼠标事件。<br/>
 
-clientX, clientY：以可视区域左上角为参考点，表示当前元素左上角离可视区域左上角的水平和垂直距离。<br/>
-screenX, screenY：以显示屏左上角为参考点，表示当前元素左上角离显示屏左上角的水平和垂直距离。<br/>
-offsetX, offsetY：<br/>
+**MouseEvent中关于鼠标位置的属性**<br/>
+`evt.pageX/Y`：以页面左上角为参考点，表示当前触发点离页面左上角的水平和垂直距离。<br/>
+>1. IE5.5~8不支持该属性，polyfill方法pageX = clientX + scrollLeft - clientLeft;<br/>
+>2. 页面左上角并不是指html或body标签的盒子模型border外边框的左上角，而是document的左上角，是不能通过css来调整位置的。<br/>
+
+`evt.clientX/Y`：以可视区域左上角为参考点，表示当前触发点离可视区域左上角的水平和垂直距离。<br/>
+>1. 所有浏览器均支持<br/> 
+
+`evt.offsetX/Y`：以触发点所在dom的左上角为参考点，表示当前触发点离触发点所在dom的左上角的水平和垂直距离。<br/>
+>1. Chrome下将以dom的border外边框的左上角作为参考点<br/>
+>2. IE5.5~9下将以dom的content的左上角作为参考点<br/>
+>3. FF不支持该属性<br/>
+
+`evt.screenX/Y`：以屏幕左上角为参考点，表示当前触发点离屏幕左上角的水平和垂直距离。<br/>
+>1. 所有浏览器均支持<br/> 
+
+`evt.layerX/Y`：当触发点所在的dom的position为relative或absolute时，则以dom的border外边框的左上角作为参考点，否则就以页面左上角为参考点(与pageX一致了)。<br/>
+>1. IE5.5~8不支持
+
 clientLeft, clientTop：可视区域自身border的水平、垂直长度。<br/>
 scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度。<br/>
-layerX, layerY：<br/>
