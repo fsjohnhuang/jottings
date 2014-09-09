@@ -290,7 +290,12 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《论道HTML5》3.3.Drag & Drop API,对比上述三本书，它提及到使用Modernizr作DnD特征检测,其他基本相似<br/>
 
 ## HTML4 下实现拖拽的知识点
-pageX, pageY：以页面左上角为参考点，表示当前元素左上角离页面页面左上角的水平和垂直距离。<br/>
-clientX, clientY：<br/>
-screenX
-offsetX
+pageX, pageY：以页面左上角为参考点，表示当前元素左上角离页面左上角的水平和垂直距离。<br/>
+>1. 仅FF支持该属性，polyfill方法：pageX = clientX + scrollLeft - clientLeft;
+
+clientX, clientY：以可视区域左上角为参考点，表示当前元素左上角离可视区域左上角的水平和垂直距离。<br/>
+screenX, screenY：以显示屏左上角为参考点，表示当前元素左上角离显示屏左上角的水平和垂直距离。<br/>
+offsetX, offsetY：<br/>
+clientLeft, clientTop：可视区域自身border的水平、垂直长度。<br/>
+scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度。<br/>
+layerX, layerY：<br/>
