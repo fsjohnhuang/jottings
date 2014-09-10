@@ -313,10 +313,14 @@ http://www.bbs0101.com/archives/124.html
 >1. 所有浏览器均支持<br/> 
 
 `evt.layerX/Y`：当触发点所在的dom的position为relative或absolute时，则以dom的border外边框的左上角作为参考点，否则就以页面左上角为参考点(与pageX一致了)。<br/>
->1. IE5.5~8不支持
+>1. IE5.5~8不支持<br/>
 
-clientLeft, clientTop：可视区域自身border的水平、垂直长度。<br/>
+`HTMLElement.clientLeft/Top`：元素border的水平高度和垂直宽度。<br/>
+`HTMLElement.clientWidth/Height`：元素content+padding的宽度和高度<br/>
+`HTMLElement.offsetWidth/Height`: 元素content+padding+border的宽度和高度<br/>
 scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度。<br/>
+
+![](./cssboxmodel_1.gif)
 
 ## dom的offsetParent、offsetTop/Left
 offsetParent：最近一个已进行CSS定位的祖先元素。<br/>
