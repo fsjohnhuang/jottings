@@ -278,10 +278,6 @@ http://www.cnblogs.com/birdshome/archive/2006/07/22/Drag_Drop.html<br/>
 http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《HTML5与CSS3权威指南》4.5.拖放<br/>
 《论道HTML5》3.3.Drag & Drop API<br/>
-http://shanmao.me/web/js/pagex-clientx-offsetx-layerx-de-qu-bie
-http://www.bbs0101.com/archives/124.html
-
-
 
 ## 勘误
 《HTML5实战》P292 setData的format参数格式包含text/url-list，**应更正为text/uri-list**<br/>
@@ -316,14 +312,17 @@ http://www.bbs0101.com/archives/124.html
 >1. IE5.5~8不支持<br/>
 
 `HTMLElement.clientLeft/Top`：元素border的水平高度和垂直宽度。<br/>
-`HTMLElement.clientWidth/Height`：元素content+padding的宽度和高度<br/>
+`HTMLElement.clientWidth/Height`：元素content+padding-滚动条的宽度和高度<br/>
 `HTMLElement.offsetWidth/Height`: 元素content+padding+border的宽度和高度<br/>
-scrollLeft, scrollTop：页面水平、垂直滚动条切去的宽度和高度。<br/>
+`HTMLElement.scrollLeft/Top`：页面水平、垂直滚动条切去的宽度和高度。<br/>
 
 ![](./cssboxmodel_1.gif)
 
 ## dom的offsetParent、offsetTop/Left
-offsetParent：最近一个已进行CSS定位的祖先元素。<br/>
-offsetTop/Left：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，且body的position不为relative或absolute时，offsetTop/Left为元素border外边框的左上角离页面左上角的垂直、水平距离。若body的position为relative或absolute时，则为元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。<br/>
+`offsetParent`：最近一个已进行CSS定位的祖先元素。<br/>
+`offsetTop/Left`：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，且body的position不为relative或absolute时，offsetTop/Left为元素border外边框的左上角离页面左上角的垂直、水平距离。若body的position为relative或absolute时，则为元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。<br/>
 >1. IE,FF,Chrome下，怪异模式和标准模式的最顶层offsetParent均为body元素，body.offsetParent和document.documentElement.offsetParent均为null。<br/>
 
+## 参考
+http://shanmao.me/web/js/pagex-clientx-offsetx-layerx-de-qu-bie<br/>
+http://www.bbs0101.com/archives/124.html<br/>
