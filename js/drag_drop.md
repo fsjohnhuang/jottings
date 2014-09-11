@@ -294,7 +294,7 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 
 **MouseEvent中关于鼠标位置的属性**<br/>
 `evt.pageX/Y`：以页面左上角为参考点，表示当前触发点离页面左上角的水平和垂直距离。<br/>
->1. IE5.5~8不支持该属性，polyfill方法pageX = clientX + scrollLeft - clientLeft;<br/>
+>1. IE5.5~8不支持该属性，polyfill方法pageX = clientX + scrollLeft<br/>
 >2. 页面左上角并不是指html或body标签的盒子模型border外边框的左上角，而是document的左上角，是不能通过css来调整位置的。<br/>
 
 `evt.clientX/Y`：以可视区域左上角为参考点，表示当前触发点离可视区域左上角的水平和垂直距离。<br/>
@@ -315,6 +315,7 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 `HTMLElement.clientWidth/Height`：元素content+padding-滚动条的宽度和高度<br/>
 `HTMLElement.offsetWidth/Height`: 元素content+padding+border的宽度和高度<br/>
 `HTMLElement.scrollLeft/Top`：页面水平、垂直滚动条切去的宽度和高度。<br/>
+1. FF在W3C标准模式下,`document.documentElement.scrollLeft/Top`获取页面滚动条切去的部分;W3C怪异模式下，则采用`body.scrollLeft/Top`来获取。<br/>
 
 ![](./cssboxmodel_1.gif)
 
@@ -322,6 +323,34 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 `offsetParent`：最近一个已进行CSS定位的祖先元素。<br/>
 `offsetTop/Left`：元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。若offsetParent为body或html标签，且body的position不为relative或absolute时，offsetTop/Left为元素border外边框的左上角离页面左上角的垂直、水平距离。若body的position为relative或absolute时，则为元素border外边框的左上角离offsetParent的padding外边框的左上角的垂直、水平距离。<br/>
 >1. IE,FF,Chrome下，怪异模式和标准模式的最顶层offsetParent均为body元素，body.offsetParent和document.documentElement.offsetParent均为null。<br/>
+
+## CSS定位(position)
+**1.absolute**<br/>
+使得元素脱离文档流，且页面的左上角或offsetParent的border外边框的左上角作为参考点来定位<br/>
+**2.fixed**<br/>
+使得元素脱离文档流，且以浏览器可视区域的左上角作为参考点来定位<br/>
+IE5.5~6不支持该值,使用js来polyfill<br/>
+对于拖动滚动条出现闪烁的bug，可通过下面的css来处理<br/>
+````
+*html{
+	background-image:url(about:blank);
+	background-attachment:fixed;
+}
+/*或者*/
+body{
+	_background-image:url(about:blank);
+	_background-attachment:fixed;
+}
+````
+*
+**3.relative**<br/>
+元素并没有脱离文档流，以元素原来位置border外边框左上角作为参考点来定位<br/>
+其他元素依旧在原有的位置上,并不受影响。<br/>
+**4.static**<br/>
+默认值，按正常文档流进行排列<br/>
+
+脱离文档流即是元素不再占用文档的位置。<br/>
+
 
 ## 参考
 http://shanmao.me/web/js/pagex-clientx-offsetx-layerx-de-qu-bie<br/>
