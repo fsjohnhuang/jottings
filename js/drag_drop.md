@@ -210,7 +210,7 @@ copy,`drop`事件中的`dropEffect`为copy<br/>
 >1. 仅能在`dragenter`,`dragover`和`drop`中获取types属性<br/>
 
 **方法**<br/>
-`void addElement({Element} element)`：添加一起跟随拖拽的元素。<br/>
+`void addElement({Element} element)`：添加一起跟随拖拽的元素, Chrome37下不支持该方法。<br/>
 `void setDragImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，若image不是图片元素则会元素临时转换为图片；x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
 >1. 仅在`dragstart`下调用<br/>
 
