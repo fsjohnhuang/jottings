@@ -49,6 +49,7 @@ drag.ondragstart = function(e){
 2. `dragover`:当被拖拽元素在目标元素上移动时触发<br/>
 >1. 默认情况下，无法将数据/元素放置到其他元素中的（即不触发drop事件）。如果需要设置允许放置，则须要再dragover事件中通过evt.preventDefault()来阻止默认行为。（经测试，IE、Chrome和FF的默认行为均与此相符）<br/>
 >2. 可以在这设置dropEffect的值，默认行为是将dropEffect设置为none<br/>
+>3. 注意，该事件是在目标元素上移动一段距离后才触发<br/>
 
 3. `drop`:当被拖拽元素在目标元素上而且释放鼠标时触发<br/>
 >1. drop事件的默认行为是以链接形式打开，因此需要调用evt.preventDefault()阻止默认行为。（当从外部拖拽图片源、文件源或链接源时，drop的默认行为是令浏览器重定向，所以即使目标对象为iframe或frameset效果当前文档也会被重定向都被拖拽的资源上。）<br/>
@@ -213,6 +214,7 @@ copy,`drop`事件中的`dropEffect`为copy<br/>
 `void addElement({Element} element)`：添加一起跟随拖拽的元素, Chrome37下不支持该方法。<br/>
 `void setDragImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，若image不是图片元素则会元素临时转换为图片；x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
 >1. 仅在`dragstart`下调用<br/>
+>2. {Element} image必须已在DOM树下且dispaly不为none才有效<br/>
 
 `boolean setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/uri-list类型<br/>
 >1. FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
