@@ -18,7 +18,7 @@ drag.ondragstart = function(e){
 ````
 **关键点：**<br/>
 1. `draggable="true"`,是用于启动HTML5 drag & drop 功能;<br/>
-2. FF下拖拽时，默认不会生成一个被拖拽元素的阴影并跟随鼠标移动，需通过e.dataTransfer.setData来启动该效果。（IE10+和Chrome默认均有阴影效果）<br/>
+2. FF下拖拽时，默认不会生成一个被拖拽元素的阴影并跟随鼠标移动，需通过e.dataTransfer.setData来启动该效果,否则不会触发dragstart后的事件。（IE10+和Chrome默认均有阴影效果）<br/>
 
 ## Safari4下启动拖拽效果
 需要添加CSS样式触发行为
@@ -44,7 +44,6 @@ drag.ondragstart = function(e){
 3. `dragend`:当被拖拽元素被释放且拖拽操作完成后触发(在`drop`后触发）<br/>
 **目标元素的生命周期**<br/>
 1. `dragenter`:当被拖拽元素进入目标元素时触发<br/>
->1. 可以在这设置dropEffect的值<br/>
 
 2. `dragover`:当被拖拽元素在目标元素上移动时触发<br/>
 >1. 默认情况下，无法将数据/元素放置到其他元素中的（即不触发drop事件）。如果需要设置允许放置，则须要再dragover事件中通过evt.preventDefault()来阻止默认行为。（经测试，IE、Chrome和FF的默认行为均与此相符）<br/>
@@ -211,10 +210,12 @@ copy,`drop`事件中的`dropEffect`为copy<br/>
 >1. 仅能在`dragenter`,`dragover`和`drop`中获取types属性<br/>
 
 **方法**<br/>
-`void addElement({Element} element)`：添加一起跟随拖拽的元素, Chrome37下不支持该方法。<br/>
+`void addElement({Element} element)`：添加一起跟随拖拽的元素, Chrome37,IE下不支持该方法。<br/>
 `void setDragImage({Element} image, {long} x, {long} y)`：设置拖动时跟随鼠标移动的图片，用来替代默认的元素，若image不是图片元素则会元素临时转换为图片；x用于设置图标与鼠标在水平方向上的距离，y设置图标与鼠标在垂直方向上的距离。<br/>
 >1. 仅在`dragstart`下调用<br/>
 >2. {Element} image必须已在DOM树下且dispaly不为none才有效<br/>
+>3. Chrome37下，若{Element} image效则没有拖拽效果，且不会触发dragstart后的事件<br/>
+>3. IE不支持<br/>
 
 `boolean setData({DOMString} format, {DOMString} data)`：将指定格式的数据赋值给dataTransfer或clipboardData，format值范围为URL、Text（或text）和各种MIME类型，其实Text会被自动映射为text/plain，URL会被自动映射为text/uri-list类型<br/>
 >1. FF5-是不会将text映射为text/plain，而仅仅支持Text映射为text/plain，因此使用Text或直接使用text/plain<br/>
