@@ -20,6 +20,9 @@ import属性所指向的document对象，在调用open,write,close方法时会�
 **参考**<br/>
 http://www.tudou.com/listplay/r0pA0z77CgM/9UZ7gHj8fuM.html
 
+## Custom Elements
 
 
+**参考**<br/>
+http://www.tudou.com/listplay/r0pA0z77CgM/F7oHc5GVG08.html
 
