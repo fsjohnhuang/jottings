@@ -71,9 +71,6 @@ drag.ondragstart = function(e){
 **整体生命周期**<br/>
 `dragstart` -> `drag` -> `dragenter` -> `dragover` -> `drop` -> `dragend`<br/>
 
-**IE5~9整体生命周期**<br/>
-`dragstart` -> `drag` -> `dragenter` -> `drop` -> `dragend`<br/>
-
 <font style="color:red">注意</font><br/>
 1. `dragover`中必须调用`evt.preventDefault()`来阻止事件的默认行为，否则无法触发drop事件。<br/>
 2. 对于图片或其他文件而言，`drop`的默认行为是显示图片或打开文件，所以`drop`下也要调用`evt.preventDefault()`<br/>
@@ -291,6 +288,25 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 《HTML5与CSS3权威指南》4.5.拖放,内容，深度与《HTML5实战》相似<br/>
 《论道HTML5》3.3.Drag & Drop API,对比上述三本书，它提及到使用Modernizr作DnD特征检测,其他基本相似<br/>
 
+
+## IE5~9的DnD API
+
+`dragstart` -> `drag` -> `dragenter` -> `dragover` -> `drop` -> `dragend`<br/>
+`img标签`,`a[href]标签`和`input,textarea中被选中的字`:drop事件默认不作为
+effectAllowed   dropEffect 指针样式
+uninitialized   copy       copy
+copy            copy       copy
+link            link       link
+move            move       move
+copyMove        none       copy
+copyLink        none       link
+linkMove        none       link
+
+
+外部资源拖拽到页面内部
+
+
+
 ## HTML4 下实现拖拽的知识点
 **鼠标事件触发的区域**<br/>
 盒子模型中的border,padding,content区域会触发鼠标事件,点击margin区域将不触发鼠标事件。<br/>
@@ -353,9 +369,6 @@ body{
 默认值，按正常文档流进行排列<br/>
 
 脱离文档流即是元素不再占用文档的位置。<br/>
-
-## CSS盒子模型
-
 
 ## 参考
 http://shanmao.me/web/js/pagex-clientx-offsetx-layerx-de-qu-bie<br/>
