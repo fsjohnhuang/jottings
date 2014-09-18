@@ -290,7 +290,7 @@ http://msdn.microsoft.com/en-us/library/ff974353(v=vs.85).aspx<br/>
 
 
 ## IE5~9的DnD API
-
+**页面内部拖拽**<br/>
 `dragstart` -> `drag` -> `dragenter` -> `dragover` -> `drop` -> `dragend`<br/>
 `img标签`,`a[href]标签`和`input,textarea中被选中的字`:drop事件默认不作为
 effectAllowed   dropEffect 指针样式
@@ -302,9 +302,43 @@ copyMove        none       copy
 copyLink        none       link
 linkMove        none       link
 
+**外部资源拖拽到页面内部**<br/>
+file和http协议下，默认情况下
+文件、链接资源释放时会令到浏览器重定向到该资源
+文本内容会被剪切到input/textarea元素上
 
-外部资源拖拽到页面内部
+可对目标对象的`drop`事件设置了阻止默认行为,但无法获取文件、链接资源等信息,Text和URL均为null。
+而文字就可被拖拽进来，会自动这是Text格式
 
+**拖拽到页面内部元素到桌面**<br/>
+http,file协议下
+可将img和a元素拖拽桌面，而input/textarea元素中选中的文字不能被拖拽到桌面,但可以拖动到操作系统和其他软件的文本编辑器上
+
+
+**拖拽到页面内部元素到其他页面**<br/>
+img、a和input/textarea元素中选中的文字均可拖放到其他页面。
+img和a默认情况下释放的效果和从外部拖拽到页面内部的效果是一样的
+文字的效果要分为file协议和http协议。
+file协议下就和从外部拖拽到页面内部的效果是一样的
+http协议下，同域才能放置，否则不能放置。
+
+http协议下，同域时<br/>
+dataTransfer对象多个页面是共用的。
+且拖拽img时会自动将图片地址写入setData的Text和URL格式中
+a元素时会自动将资源地址写入setData的Text和URL格式中
+input/textarea中选中的文字时会自动将文本写入setData的Text格式中(URL格式返回null)
+
+假设一个网页域名为a.test.com，另一个为b.test.com。那么默认情况下两者是不同域的。
+但通过修改document.domain可修改域名。
+现在将a.test.com的`document.domain='test.com'`，那么现在可以从a.test.com拖拽到b.test.com。但不能从b.test.com拖拽到a.test.com了。
+
+
+**DataTransfer类型**
+dropEffect
+effectAllowed
+cleareData
+getData
+setData
 
 
 ## HTML4 下实现拖拽的知识点
