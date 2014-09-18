@@ -309,6 +309,7 @@ file和http协议下，默认情况下
 
 可对目标对象的`drop`事件设置了阻止默认行为,但无法获取文件、链接资源等信息,Text和URL均为null。
 而文字就可被拖拽进来，会自动这是Text格式
+将文件拖拽到input[type=file]上释放，文件路径无法附加到input[type=file]上
 
 **拖拽到页面内部元素到桌面**<br/>
 http,file协议下
@@ -339,6 +340,27 @@ effectAllowed
 cleareData
 getData
 setData
+
+## Chrome
+**外部资源拖拽到页面内部**<br/>
+file和http协议下，默认情况下
+文件、链接资源释放时会令到浏览器重定向到该资源
+文本内容会被剪切到input/textarea元素上
+
+可对目标对象的`drop`事件设置了阻止默认行为,可通过dataTransfer.files获取[object File]对象，和通过URL格式获取超链接url
+而文字就可被拖拽进来，会自动这是Text格式
+将文件拖拽到input[type=file]上释放，文件路径将附加到input[type=file]上
+
+**拖拽到页面内部元素到桌面**<br/>
+http,file协议下，默认情况
+可将img和a元素拖拽桌面，而input/textarea元素中选中的文字不能被拖拽到桌面,但可以拖动到操作系统和其他软件的文本编辑器上
+其他[draggable=true]元素均不可拖拽到桌面来释放
+
+其他[draggable=true]元素设置了Text格式后，可拖放到桌面的文本编辑器中。
+其他[draggable=true]元素设置了URL格式后，可作为超链接拖放到桌面和拖放到其他页面导致该页面重定向
+
+**拖拽到页面内部元素到其他页面**<br/>
+与IE5~9相同，就是扩展到所有[draggable=true]元素而已。
 
 
 ## HTML4 下实现拖拽的知识点
