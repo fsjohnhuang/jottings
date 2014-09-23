@@ -127,9 +127,9 @@ public String getQueryString(String url){
   return segments.length == 2 ? segments[1] : "";
 }
 ````
-通过任务管理器可以迅速查找TODO和FIXME标记的代码位置
-[./todotaks.jpg]
-[./todotaks2.jpg]
+通过任务管理器可以迅速查找TODO和FIXME标记的代码位置<br/>
+![](./todotaks.jpg)<br/>
+![](./todotaks2.jpg)<br/>
 **任务标签**<br/>
 1. `FIXME`<br/>
 2. `TODO`<br/>
@@ -137,6 +137,7 @@ public String getQueryString(String url){
 4. 自定义任务标签<br/>
 **管理任务标签**<br/>
 进入`Windows->Preference->Java->Compile->Task Tags`，可自定义任务标签，和设置任务标签的级别（High,Normal和Low）
+![](tasksetting1.jpg)
 
 
 
