@@ -21,6 +21,11 @@ public class Dummy{}
 ````
 javadoc仅提取文档注释<br/>
 
+**快捷键**<br/>
+1. 格式化：`Ctrl+Shift+F`<br/>
+2. 添加行注释：`Ctrl+/`<br/>
+3. 取消行注释：`Ctrl+\`<br/>
+
 
 ## javadoc
 javadoc用于提取注释生成API文档，它不仅提取注释本身，还会将毗邻的类名和方法名一同提取到API文档中。<br/>
