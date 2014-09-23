@@ -82,25 +82,93 @@ public class Test{
 }
 ````
 
+
+
 ## 参考
 http://blog.csdn.net/Silver6wings/article/details/5394226<br/>
 
 ## 注释模板
 **作用：**定义文件、类、方法等默认的注释格式<br/>
 **设置注释模板的入口：**`Window->Preference->Java->Code Style->Code Template`，然后展开Comments节点。<br/>
-**Comments节点下的元素**</br>
-`Files`节点（文件注释标签）</br>
-`Types`节点（类注释标签）</br>
-`Fields`节点（字段注释标签）</br>
-`Constructor`节点（构造函数注释标签）</br>
-`Method`节点（方法注释标签）</br>
-`Overriding Methods`节点（覆盖方法注释标签）</br>
-`Delegate Methods`节点（代理方法注释标签）</br>
-`getter`节点（getter方法注释标签）</br>
-`setter`节点（setter方法注释标签）</br>
+**Comments节点下的元素**<br/>
+`Files`节点（文件注释标签）<br/>
+````
+/**   
+* @Title: ${file_name} 
+* @Package ${package_name} 
+* @Description: ${todo}(用一句话描述该文件做什么) 
+* @author fsjohnhuang
+* @date ${date} ${time} 
+* @version V1.0   
+*/
+````
+`Types`节点（类注释标签）<br/>
+````
+/** 
+* @ClassName: ${type_name} 
+* @Description: ${todo}(这里用一句话描述这个类的作用) 
+* @author fsjohnhuang
+* @date ${date} ${time} 
+* 
+* ${tags} 
+*/
+````
+`Fields`节点（字段注释标签）<br/>
+````
+/** 
+* @Fields ${field} : ${todo}(用一句话描述这个变量表示什么) 
+*/ 
+````
+`Constructor`节点（构造函数注释标签）<br/>
+````
+/** 
+* <p>Title: </p> 
+* <p>Description: </p> 
+* ${tags} 
+*/
+````
+`Method`节点（方法注释标签）<br/>
+````
+/** 
+* @Title: ${enclosing_method} 
+* @Description: ${todo}(这里用一句话描述这个方法的作用) 
+* @param ${tags}  参数说明 
+* @return ${return_type}    返回类型 
+* @throws 
+*/
+````
+`Overriding Methods`节点（覆盖方法注释标签）<br/>
+````
+/*
+* Title: ${enclosing_method}
+*Description: 
+* ${tags} 
+* ${see_to_overridden} 
+*/
+````
+`Delegate Methods`节点（代理方法注释标签）<br/>
+````
+/** 
+* ${tags} 
+* ${see_to_target} 
+*/ 
+````
+`getter`节点（getter方法注释标签）<br/>
+````
+/** 
+* @return ${bare_field_name} 
+*/
+````
+`setter`节点（setter方法注释标签）<br/>
+````
+/** 
+* @param ${param} 要设置的 ${bare_field_name} 
+*/
+````
 
-**导出注释模板**<br/>
-**导入注释模板**<br/>
+**导入，导出注释模板**<br/>
+在`Window->Preference->Java->Code Style->Code Template`下可导入导出注释模板<br/>
+
 
 
 ## Eclipse的任务管理器
