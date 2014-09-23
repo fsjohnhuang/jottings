@@ -128,8 +128,8 @@ public String getQueryString(String url){
 }
 ````
 通过任务管理器可以迅速查找TODO和FIXME标记的代码位置
-[./todotaks.jpg]
-[./todotaks2.jpg]
+![](./todotaks.jpg)
+![](./todotaks2.jpg)
 **任务标签**<br/>
 1. `FIXME`<br/>
 2. `TODO`<br/>
