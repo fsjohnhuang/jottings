@@ -35,7 +35,7 @@ javadoc命令只能出现在文档注释当中。<br/>
 注意：javadoc仅为访问控制符为public和protected的成员生成注释文档。<br/>
 
 **2. 文档标记(Doc tags)**<br/>
-`@see`：引用其他类。javadoc在生成文档时会自动加入一个超链接“see also”条目，且javadoc不会检查超链接的有效性<br/>
+`@see`：参考转向，也就是相关主题。javadoc在生成文档时会自动加入一个超链接“see also”条目，且javadoc不会检查超链接的有效性<br/>
 示例：<br/>
 ````
 /**
@@ -82,8 +82,35 @@ public class Test{
 }
 ````
 
+**javadoc命令生成文档**<br/>
+命令格式：`javadoc [options] [packagenames] [sourcefiles]`<br/>
+`[options]`值：<br/>
+````
+  -public // 仅显示public类和成员
+  -protected // 显示protected、public类和成员（缺省值）
+  -package // 显示package、protected、public类和成员
+  -private // 显示所有类和成员
+  -d <directory> 输出文件的目标目录
+  -version 包含@version字段
+  -author 包含@author字段
+  -splitindex 将索引分为每隔字母对应一个文件
+  -windowtitle <text> 文档的浏览器窗口标题
+````
+示例：<br/>
+为多个java文件生成文档<br/>
+````
+javadoc demo\Test.java demo\ECommand.java demo\EView.java
+````
+中文乱码问题??<br/>
+
+
+
+
+
+
 ## 参考
 http://blog.csdn.net/Silver6wings/article/details/5394226<br/>
+http://kelaocai.iteye.com/blog/227822
 
 ## 注释模板
 **作用：**定义文件、类、方法等默认的注释格式<br/>
