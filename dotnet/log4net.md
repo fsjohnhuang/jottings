@@ -305,3 +305,4 @@ if (log.IsDebugEnabled) log.Debug("message.....");
 
 ## ²Î¿¼
 http://www.cnblogs.com/jams742003/archive/2009/12/10/1620861.html
+http://zhoufoxcn.blog.51cto.com/792419/429988/
