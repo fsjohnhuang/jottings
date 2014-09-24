@@ -146,7 +146,7 @@ ALL&emsp;&emsp;                    0<br/>
 作用：负责日志对象组织结构的维护。对于非框架扩展者，几乎不会用到该组件。<br/>
 
 ## 配置方式
-1. 代码中配置<br/>
+一. 代码中配置<br/>
 通过`log4net.Config.BasicConfigurator.Configre`配置根日志且只能配置根日志而已。<br/>
 示例<br/>
 ````
@@ -160,8 +160,6 @@ log4net.Config.BasicConfigurator.Configure(
 
        [%t]%-5p %c [%x] - %m%n"),"testfile.log"));
 
- 
-
 // using a FileAppender with an XMLLayout
 
 log4net.Config.BasicConfigurator.Configure(
@@ -169,21 +167,15 @@ log4net.Config.BasicConfigurator.Configure(
   new log4net.Appender.FileAppender(
 
     new log4net.Layout.XMLLayout(),"testfile.xml"));
-
  
-
 // using a ConsoleAppender with a PatternLayout
 
 log4net.Config.BasicConfigurator.Configure(
 
   new log4net.Appender.ConsoleAppender(
 
-    new log4net.Layout.PatternLayout("%d
-
-      [%t] %-5p %c - %m%n")));
-
+    new log4net.Layout.PatternLayout("%d [%t] %-5p %c - %m%n")));
  
-
 // using a ConsoleAppender with a SimpleLayout
 
 log4net.Config.BasicConfigurator.Configure(
@@ -192,7 +184,7 @@ log4net.Config.BasicConfigurator.Configure(
 
     log4net.Layout.SimpleLayout()));
 ````
-2. 配置文件(推荐)<br/>
+二. 配置文件(推荐)<br/>
   log4net框架会在`AppDomain.CurrentDomain.BaseDirectory`指向的目录路径下查找配置文件。
 
 **在config文件中配置**<br/>
