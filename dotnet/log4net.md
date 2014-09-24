@@ -75,20 +75,48 @@ namespace Demo{
 自定义Appender时，需要继承`log4net.Appender.AppenderSkeleton`<br/>
 **2. Layout**<br/>
 作用：定义向用户显示最终的经格式化的输出信息。<br/>
-<span style="color:red;">注意：一个Appender对象仅能对应一个Layout对象</span>
+**注意：一个Appender对象仅能对应一个Layout对象**<br/>
 内容的Layout组件:<br/>
-`PatternLayout`
+`PatternLayout`，用户自定义格式<br/>
+参数<br/>
+`%m`(message),输出的日志消息<br/>
+`%n`(new line),换行<br/>
+
+`SimpleLayout`，<br/>
+`ExceptionLayout`，输出时包含Message和Trace信息。Logger方法必须传入Exception对象，否则什么都不输出。<br/>
+`XmlLayout`，中文会有问题<br/>
 自定义Layout时，需要继承`log4net.Layout.LayoutSkeleton`<br/>
 
 **3. Appender Filter**<br/>
 作用：默认情况下Appender对象会将所有日志信息都输出到相应的介质中，通过Appender Filter对象（命令空间：log4net.Filter）可以按照不同的标准过滤日志事件或内容。<br/>
 内置的Filter组件：<br/>
+`DenyAllFilter`，阻止所有的日志事件被记录<br/>
+`LevelMatchFilter`，只有指定等级的日志事件才被记录<br/>
+`LevelRangeFilter`，日志等级在指定范围内的事件才被记录<br/>
+`LoggerMatchFilter`，Logger名称匹配才被记录<br>
+`PropertyFilter`，消息匹配指定的属性值才被记录<br/>
+`StringMatchFilter`，消息匹配指定的字符串才被记录<br/>
 
-**4. Repository**<br/>
+**4. Logger**<br/>
+作用：直接与应用交互的组件，用于触发日志事件<br/>
+级别（日志事件）     优先级<br/>
+OFF                    6<br/>
+FATAL                  5<br/>
+ERROR                  4<br/>
+WARN                   3<br/>
+INFO       	       2<br/>
+DEBUG                  1<br/>
+ALL                    0<br/>
+
+**5. Object Render**<br/>
+作用：输出根据Layout格式化的日志消息。Render必须实现log4net.ObjectRender.IObjectRender接口<br/>
+**6. Repository**<br/>
 作用：负责日志对象组织结构的维护。对于非框架扩展者，几乎不会用到该组件。<br/>
 
 ## 配置方式
 1. 代码中配置<br/>
-2. 配置文件<br/>
+2. 配置文件(推荐)<br/>
+  log4net框架会在`AppDomain.CurrentDomain.BaseDirectory`指向的目录路径下查找配置文件。
 
-
+## 参考
+http://www.cnblogs.com/jams742003/archive/2009/12/10/1620861.html
