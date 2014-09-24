@@ -62,12 +62,21 @@ namespace Demo{
 内置的Appdner组件:<br/>
 `ConsoleAppender`，输出介质为控制台<br/>
 `FileAppender`，输出介质为文件<br/>
+示例<br/>
+````
+<appender name="FileAppender" type="log4net.Appender.FileAppender"
+ file="logs/log.txt" appendToFile="true">
+  <layout type="log4net.Layout.PatternLayout">
+    ..........
+  </layout>
+</appender>
+````
 `RollingFileAppender`,将日志以回滚文件的形式写入文件中。<br/>
 可以指定文件最大容量，当超过就生成一个新文件来记录，且可以指定最多生成日志文件数量，当超过时则覆盖从第一个日志文件开始循环覆盖。<br/>
 示例1<br/>
 ````
 <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender" 
-file="logs/log.txt" appendToFile="true" rollingStyle="Size" maxSizeRollBackups="10" maximumFileSize="100KB" staticLogFileName="true">
+ file="logs/log.txt" appendToFile="true" rollingStyle="Size" maxSizeRollBackups="10" maximumFileSize="100KB" staticLogFileName="true">
   <layout type="log4net.Layout.PatternLayout">
     ..........
   </layout>
@@ -87,6 +96,52 @@ file="logs/log.txt" appendToFile="true" rollingStyle="Date" datePattern="yyyyMMd
 
 `EventLogAppender`，输出介质为系统日志<br/>
 `AdoNetAppender`，输出介质为数据库<br/>
+示例<br/>
+````
+<appender name="AdoNetAppender_Oracle" type="log4net.Appender.AdoNetAppender"> 
+      <connectionType value="System.Data.OracleClient.OracleConnection, System.Data.OracleClient" /> 
+      <connectionString value="data source=[mydatabase];User ID=[user];Password=[password]" /> 
+      <commandText value="INSERT INTO Log (Datetime,Thread,Log_Level,Logger,Message) VALUES (:log_date, :thread, :log_level, :logger, :message)" /> 
+      <bufferSize value="128" /> 
+      <parameter> 
+        <parameterName value=":log_date" /> 
+        <dbType value="DateTime" /> 
+        <layout type="log4net.Layout.RawTimeStampLayout" /> 
+      </parameter> 
+      <parameter> 
+        <parameterName value=":thread" /> 
+        <dbType value="String" /> 
+        <size value="255" /> 
+        <layout type="log4net.Layout.PatternLayout"> 
+          <conversionPattern value="%thread" /> 
+        </layout> 
+      </parameter> 
+      <parameter> 
+        <parameterName value=":log_level" /> 
+        <dbType value="String" /> 
+        <size value="50" /> 
+        <layout type="log4net.Layout.PatternLayout"> 
+          <conversionPattern value="%level" /> 
+        </layout> 
+      </parameter> 
+      <parameter> 
+        <parameterName value=":logger" /> 
+        <dbType value="String" /> 
+        <size value="255" /> 
+        <layout type="log4net.Layout.PatternLayout"> 
+          <conversionPattern value="%logger" /> 
+        </layout> 
+      </parameter> 
+      <parameter> 
+        <parameterName value=":message" /> 
+        <dbType value="String" /> 
+        <size value="4000" /> 
+        <layout type="log4net.Layout.PatternLayout"> 
+          <conversionPattern value="%message" /> 
+        </layout> 
+      </parameter> 
+    </appender> 
+````
 自定义Appender时，需要继承`log4net.Appender.AppenderSkeleton`<br/>
 **2. Layout**<br/>
 作用：定义向用户显示最终的经格式化的输出信息。<br/>
