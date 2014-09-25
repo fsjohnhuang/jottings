@@ -30,14 +30,30 @@
 
 // 控制程序集中所有类型对COM的可访问性
 [assembly:ComVisible(false)]
-// 配置文件
+// 配置文件，如零售、发布、调试等信息。程序集在运行时不会使用该信息
 [assembly:AssemblyConfiguration("")]
 ````
-对生成的dll文件右键点击属性，即可查看到上述信息
+对生成的dll文件右键点击属性，即可查看到上述信息<br/>
 **具体说明**<br/>
+`assembly`：表示此属性的作用范围是程序集。<br/>
 
+## 程序集读取AssemblyInfo.cs文件中的配置信息
+以读取`[assembly:AssemblyProduct("")]`为例子
+````
+Type t = typeof(Program);
+AssemblyProductAttribute productAttr = t.Assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), true)[0] as AssemblyProductAttribute;
+Console.WriteLine(productAttr.Product);
+````
 
-
+## 定义assembly范围信息不仅仅在AssemblyInfo.cs中
+可以在任意的cs文件中定义，但单个属性仅能在程序集中被设置一次。<br/>
+````
+[assembly:AssemblyProduct("")]
+namespace{
+  public class Demo{
+  }
+}
+````
 
 ## 参考
 http://www.itwis.com/html/net/aspnet/20091211/7123.html
