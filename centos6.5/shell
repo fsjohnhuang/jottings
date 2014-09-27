@@ -1,0 +1,68 @@
+## 进程
+`ps`
+
+## 查找
+**`locate`**<br/>
+  用于模糊搜索文件(目录)的绝对路径。<br/>
+  示例：<br/>
+````
+// 凡是绝对路径当中含jdk字符串的文件（目录）均被搜索出来
+fsjohnhuang@fsjohnhuang~# locate jdk
+````
+失败示例：<br/>
+````
+// 在家目录添加文件mytest.md
+fsjohnhuang@fsjohnhuang~# touch mytest.md
+fsjohnhuang@fsjohnhuang~# locate mytest
+````
+上述例子再添加mytest.md后马上通过locate搜索mytest的绝对路径,但什么都搜不到。那是因为locate命令是从系统db中搜索的，而这个系统db是定时在晚上与文件系统的目录结构同步，因此刚才添加文件信息无法通过locate搜索出来。这也是locate的速度必find高的原因。我们可以通过`sudo updatedb`命令手动方式同步系统db,现在就可以通过locate来搜索了。<br/>
+进阶<br/>
+````
+// 精确查找文件（目录),那么就只有文件或目录名为jdk才匹配成功
+locate -b "\jdk"
+// 精确查找文件（目录),那么就只有文件或目录名含jdk才匹配成功
+locate -b "jdk"
+````
+**`find`**<br/>
+  用于在特定目录(默认是当前目录)下根据文件名称、文件类型等信息搜索文件相对特定目录的相对路径。<br/>
+示例:<br/>
+````
+// 在当前目录下搜索
+find -name "mytest.md"
+// 使用通配符
+find -name "mytest*"
+
+// 在特定目录下搜索
+find /home/fsjohnhuang
+
+// 仅列出普通文件
+find -type f
+// 仅列出目录
+find -type d
+
+// 对find搜索出来的文件或目录执行其他命令 
+// -exec 其他命令 ';'
+// 而'{}'就是代表find搜索出来的文件或目录
+find -exec ls -l '{}' ';'
+````
+**`grep`**<br/>
+  在文本字符串当中查找。<br/>
+````
+// 基本格式:grep 字符串 文件名
+grep hello a.txt
+
+// 不区分大小写
+grep -i hello a.txt
+
+// 显示行号
+grep -n hello a.txt
+````
+**ack-grep**<br/>
+  对于代码的查找可以使用ack-grep。<br/>
+  教学地址:happycasts.net
+**which**<br/>
+  用于搜索命令的可执行文件所在位置。<br/>
+  如`which cat`将返回/bin/cat<br/>
+**whereis**<br/>
+  用于搜索命令的可执行文件、源码文件和man文件所在位置。<br/>
+  如`which cat`将返回`cat: /bin/ls /usr/share/man/man1/ls.1.gz /usr/share/man/man1p/ls.1p.gz`<br/>
