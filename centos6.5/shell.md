@@ -111,15 +111,16 @@ unmask是用于告诉操作系统禁止用户类型的哪些权限，示例：<b
 `/etc/group`：<br/>
 
 **管理用户**<br/>
-`adduser [-u uid] [-g group] [-d home] [-s shell]`，添加用户<br/>
-&emsp;`-u`,用户标识<br/>
+1. **添加用户**<br/>
+命令：`useradd [-u uid] [-g group] [-d home] [-s shell] 用户名`<br/>
+&emsp;`-u`,用户ID，用户ID是给系统使用的，而用户名是给用户使用的，两者是一一对应的关系<br/>
 &emsp;`-g`,用户所属的用户组标识<br/>
 &emsp;`-d`,以已存在的目录作为用户的家目录<br/>
 &emsp;`-s`,定义shell<br/>
 示例:<br/>
 ````
 // 添加用户标识 fsjohnhuang 
-# adduser fsjohnhuang
+# useradd fsjohnhuang
 ````
 通过`/etc/passwd`、`/etc/shadow`和`/etc/group`文件内容，检查用户是否创建成功。<br/>
 ![](./passwd_shadow_group.jpg)<br/>
@@ -129,10 +130,46 @@ unmask是用于告诉操作系统禁止用户类型的哪些权限，示例：<b
 ![](./etc_login_defs2.jpg)<br/>
 `/etc/default/useradd`文件<br/>
 ![](./etc_default_useradd.jpg)<br/>
+SKEL选项是指定用户家目录内容是从`/etc/skel`复制过来的。<br/>
+2.**设置密码**<br/>
+命令：`passwd 用户名 密码`<br/>
+3. **启用、禁用帐号**<br/>
+````
+// 禁用
+# usermod -L 用户名
+// 启用 
+# usermod -U 用户名
+````
+启用禁用实质就是在`/etc/shadow`文件中该用户名对应的记录上，在用户密码前删除、添加!（感叹号）来实现。<br/>
+4. **改变用户的用户组**<br/>
+````
+# usermod -g 用户组名 用户名
+````
+5. **将用户添加到用户组**<br/>
+````
+# usermod -G 用户组名 用户名
+````
+6. **修改用户名**<br/>
+````
+usermod -l 新用户名 旧用户名
+````
+7. **删除用户**<br/>
+````
+# userdel 用户名
+````
 
+**管理用户组**<br/>
+1. **添加用户组**<br/>
+命令：`groupadd [-g gid [-o]] [-r] [-f] 用户组名`<br/>
+2. **修改用户组名称**<br/>
+````
+# groupmod -n 新用户组名 旧用户组名
+````
+3. **删除用户组**<br/>
+````
+# groupdel 用户组名
+````
 
-
-**创建、删除用户组**<br/>
 **参考**<br/>
 http://blog.csdn.net/fan_zhen_hua/article/details/2050009
 http://blog.csdn.net/xsz0606/article/details/5256719
