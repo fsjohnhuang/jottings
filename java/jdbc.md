@@ -336,3 +336,9 @@ String val3 = cs.getString(3);
 
 ## Apache的DBUtils
 对jdbc进行简单的封装，性能比orm框架要好。
+
+##JDBC，DBUtils，MyBatis和Hibernate比较
+JDBC：其他操作数据库方法的基石，性能最高。但需要自行组装sql语句，封装查询结果,和进行优化工作。<br/>
+DBUtils：对JDBC进行简单封装。需要自行组装sql语句，工具库会自动完成查询结果的封装工作，工具库也会进行数据库链接池等的优化工作。<Br/>
+MyBatis：自行组装查询的SQL语句，而新增、修改的等操作均由框架根据实体类的映射元数据生成SQL语句，SQL语句外置到xml配置文件中，框架会自动完成查询结果的封装工作，工具库也会进行数据库链接池等的优化工作。<br/>
+Hibernate：几乎不用写SQL，面向对象的方式操作数据库。<br/>
