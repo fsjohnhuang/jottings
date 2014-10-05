@@ -319,3 +319,71 @@ public class Cls{
 ````
 
 ## 动态SQL和模糊查询
+映射文件中<br/>
+````
+<select>
+ select * from tbl where 1=1
+ <if test="title != null">
+   and title like #{title}
+ </if>
+</select>
+````
+还有`<choosen>,<when>,<otherwise>,<trim>,<where>,<set>,<foreach>`<Br/>
+
+## 存储过程
+映射文件<br/>
+````
+<select id="getUserCount" parameterMap="getUserCountMap" statementType="CALLABLE">
+  CALL get_user_count(?, ?)
+</select>
+<parameterMap type="java.util.Map" id="getUserCountMap">
+  <parameter property="sexid" mode="IN" jdbcType="INTEGER"/>
+  <parameter property="usercount" mode="OUT" jdbcType="INTEGER"/>
+</parameterMap>
+````
+主文件<br/>
+````
+Map<String, Integer> pm = new HashMap<String, Integer>();
+pm.put("sexid", 1);
+pm.put("usercount", -1);
+session.selectOne("getUserCount", pm);
+Integer rs = pm.get("usercount");
+session.close();
+````
+
+## 一级和二级缓存
+1. **一级缓存(默认开启)**<br/>
+作用域为session对象(就是在同一个session上执行的查询语句将从缓存中执行), 缓存存储源为基于PerpetualCache的HashMap。当调用session的clearCache、flush或close方法后，缓存将被清除。当执行CUD操作后，所有select缓存均被清除。<Br/>
+2. **二级缓存(默认关闭)**<br/>
+作用域是映射文件（就是一namespace为作用域）,缓存存储源可自定义（如Ehcache），但默认是使用基于PerpetualCache的HashMap。当执行CUD操作后，所有select缓存均被清除。<Br/>
+启动二级缓存<br/>
+a. 修改实体类<Br/>
+````
+// 实体类需要继承可序列化类
+public class user implements Serializable{}
+````
+b. 修改config.xml<Br/>
+````
+<settings>
+  <setting name="cacheEnabled" value="true"/>
+</settings>
+````
+c. 修改映射文件<Br/>
+````
+<mapper>
+  <!--
+    cahce标签用于表示该mapper使用二级缓存，具体属性如下：
+      1.eviction，回收策略
+          LRU(默认), 移除最长时间不用的对象
+ 	  FIFI，先进先出
+          SOFT，移除基于垃圾回收起状态和软引用规则的对象
+	  WEAK，移除基于垃圾回收起状态和弱引用规则的对象
+      2.flushInterval，刷新缓存的时间，单位为ms，默认不刷新。      
+      3.size，缓存的最大对象数，默认为1024
+      4. readOnly，设置返回缓存的深拷贝还是句柄，true表示句柄（不能修改，性能更好），false表示深拷贝（可修改，安全性好些，但性能差些）,默认使用false
+  -->
+  <cache/>
+</mapper>
+````
+
+## mybatis与Spring整合
