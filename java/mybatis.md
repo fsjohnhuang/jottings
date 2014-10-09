@@ -199,7 +199,7 @@ finally{
 
 ## 优化
 1. **将数据库配置信息外移到properties文件**<br/>
-数据库配置文件db.properties(config.xml和db.properties同级目录）
+数据库配置文件com/test/db.properties
 ````
 driver=com.mysql.jdbc.Driver
 url=jdbc:mysql://localhost:3306/test
@@ -209,13 +209,17 @@ password=root
 config.xml
 ````
 <configuration>
-  <properties resource="db.properties"/>
+  <properties resource="com/test/db.properties"/>
   <!--
-    内部的property标签用于覆盖properties文件中的同名属性
-    <properties resource="db.properties">
-      <property name="" value=""/>
-    </properties>
+    在使用实例化SqlSessionFactory时，还可以通过new SqlSessionFactoryBuilder.build(config.xml的InputStream实例, Properties实例)来设置属性值。
+    优先级从高到低是：
+	1. 通过build方法入参设置
+	2. 通过resource引入的属性
+	3. 通过property标签设置的属性
   -->
+  <properties resource="db.properties">
+    <property name="url" value="sdb"/>
+  </properties>
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
@@ -233,15 +237,22 @@ config.xml
 config.xml文件中<br/>
 ````
   <configuration>
+     <!--
+       若配置文件中存在properties节点，那么typeAliases节点必须在其后，否则会报错
+     -->
      <typeAliases>
 	<typeAlias type="实体类全限定名" alias="别名"/>
         <!--
-	  或通过package标签来自动补全实体类的全限定名（我们只需提供实体类名就可以了）
+	  这时对于包下的类，我们只需写类名或首字母小写的类名
+          当配合@Aliase("别名")使用时，只需写别名即可，且不区分大小写
 	  <package name="包名"/>
 	-->
      </typeAliases>
   </configuration>
 ````
+内置别名<br/>
+`int`,`long`等就是`_int`,`_long`<br/>
+而`Integer`,`String`就是`int`,`string`<br/>
 3. **添加写日志功能**<br/>
 采用log4j
 
@@ -424,6 +435,21 @@ c. 修改映射文件<Br/>
   -->
   <cache/>
 </mapper>
+````
+
+## 生命周期
+**1.`SqlSessionFactoryBuilder`**<br/>
+  由于`SqlSessionFactoryBuilder`实例用于生成`SqlSessionFactory`实例而已，因此并没有必要以应用程序全局作为作用域，并且无必要多线程共享。因此作为函数的局部变量使用即可。<br/>
+**2.`SqlSessionFactory`**<br/>
+  作为数据库连接池和连接池管理器使用，为达到数据库连接复用的效果，`SqlSessionFactory`实例应当以程序全局作为作用域，并且多线程共享。采用单例或静态单例模式较好<br/> 
+**3.`SqlSession`**<br/>
+  由于`SqlSession`实例非线程安全，因此作为函数的局部变量使用。而且由于数据库连接为共享资源，因此必须遵循晚调用早释放原则, 确保调用`close()`函数释放连接。<Br/>
+````
+try{
+}
+finally{
+  sqlSession.close();
+}
 ````
 
 ## mybatis与Spring整合

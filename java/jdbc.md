@@ -11,6 +11,7 @@ JDBC驱动:各DB厂商实现JDBC接口的实现类<br/>
 mysql:`jdbc:mysql(子协议)://主机IP:端口号/数据库名`<br/>
 oracle:`jdbc:oracle(子协议):thin:@主机IP:端口号:数据库名`<br/>
 MSSQL:`jdbc:microsoft:sqlserver//主机IP:端口号;DatabaseName=数据库名`<br/>
+SQLite:`jdbc:sqlite:数据库文件路径`<br/>
 
 `Driver Manager`
 `Connection`<->`Statement`<->`Result`
