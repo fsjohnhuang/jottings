@@ -188,13 +188,9 @@ public interface ThemeMgr{
 InputStream is = this.getClass().getClassLoader().getResourceAsStream("配置文件路径");
 SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 SqlSession session = factory.openSession();
-try{
-  ThemeMgr tm = session.getMapper(ThemeMgr.class);
-  List<Long> ids = tm.getIds();
-}
-finally{
-  session.close();
-}
+ThemeMgr tm = session.getMapper(ThemeMgr.class);
+List<Long> ids = tm.getIds();
+session.close();
 ````
 
 ## 优化
