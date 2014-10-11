@@ -6,6 +6,7 @@ http://wrapper.tanukisoftware.com/doc/english/download.jsp
 以守护进程或windows服务的方式运行java程序。JSW提供四种方案改造原有项目，以实现守护进程或windows服务的方式运行。<br/>
 
 ## 方式一，`WrapperSimpleApp`
+用于通过同一个类实现启动和关闭的程序<br/>
 官方推荐使用该方式加工原有项目，好处是简单，且不用修改原有项目的代码。<br/>
 1. 下载并解压得到工具包，目录结构如下：<br/>
 /<br/>
@@ -59,14 +60,22 @@ wrapper.ntservice.description=AgentService
 
 # 配置系统服务的启动方式，取值范围是AUTO_START或DEMAND_START
 wrapper.ntservice.starttype=AUTO_START
+
+# 配置内存溢出则重启服务
+wrapper.filter.trigger.1001=Exception in thread "*" java.lang.OutOfMemoryError
+wrapper.filter.allow_wildcards.1001=TRUE
+wrapper.filter.action.1001=RESTART
+wrapper.filter.message.1001=The JVM has run out of memory.
 ````
 4. 安装、卸载服务<br/>
 点击Install.bat和Uninstall.bat就可以了。
 
-
 ## 方式二，`WrapperStartStopApp`
+用于像tomcat那样，启动程序和关闭程序是分开的项目。该方式同样不用修改原来项目的代码<br/>
 ## 方式三，`WrapperListener`
+该方式需要修改原来项目的代码，但最灵活<br/>
 ## 方式四，`WrapperJarApp`
+用于原有项目已经打包为jar或war包的情况，配置方式与`WrapperSimpleApp`相似，但`wrapper.app.parameter.1=jar或war包路径`。该方式同样不用修改原来项目的代码<br/>
 
 ## 参考
 http://blog.csdn.net/arjick/article/details/4526392
