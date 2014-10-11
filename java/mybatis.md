@@ -310,7 +310,7 @@ public class Cls{
 <select id="getClass" parameterType="int" resultMap="ClassResultMap">
   select * from class where tid = #{id}
 </select>
-<select id="getTeacher" parameterType="int" returnType="Teacher">
+<select id="getTeacher" parameterType="int" resultType="Teacher">
   select t_id id, t_name name from teacher where t_id = #{id}
 </select>
 <resultMap id="ClassResultMap" type="Cls">
