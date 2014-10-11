@@ -24,6 +24,9 @@ agent
 |-- conf
 &emsp;&emsp;|-- wrapper.conf
 |-- bin
+&emsp;&emsp;|-- wrapper.exe
+&emsp;&emsp;|-- 一堆bat文件
+
 
 ## 方式二，`WrapperStartStopApp`
 ## 方式三，`WrapperListener`
