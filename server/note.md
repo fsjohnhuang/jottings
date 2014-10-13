@@ -1,0 +1,21 @@
+## 多路处理模块（MPM, Mutiple-Process Module）
+1. 单进程服务<br/>
+同一时间仅能处理单个请求。<br/>
+2. 多进程服务<br/>
+主进程接收请求，然后创建子进程并将请求转交到子进程处理，子进程处理完将结果返回给主进程，主进程再向客户端返回响应。子进程不断地生成、销毁，并发量大时会将CPU和内存耗尽。<br/>
+3. 多进程池服务(prefork)<br/>
+进程内为单线程<br/>
+由于Windows平台上进程代价高，因此比较适合在Unix/Linux系统上运用。<br/>
+两种实现方式<br/>
+[a].父进程只管listen，子进程对每个请求accept(Linux才可以多个进程accept同一个socket)<br/>
+[b].父进程负责accept，将得到的confd句柄传递给子进程<br/>
+4. io复用服务(select,poll)<br/>
+5. epoll<br/>
+6. 多线程服务<br/>
+7. 多线程池服务(prethread)<br/>
+8. 信号驱动服务<br/>
+9. 多进程多线程服务（worker）<br/>
+
+## fork()函数理解
+
+
