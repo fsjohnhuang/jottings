@@ -118,8 +118,48 @@ public void include(ServletRequest req, ServletResponse res)
 除了通过`ServletContext`获取外，还可以通过`ServletRequest.getRequestDispatcher(String path)`获取，而且该方法的path入参除了可以相对Web上下文根外，还可以相对当前Servlet路径。<br/>
 
 ## 部署
+**可部署的目录结构**<br/>
+````
+/
+|-- META-INF
+    	|-- MANIFEST.MF
+        |-- context.xml
+|-- WEB-INF
+        |-- web.xml
+        |-- lib
+        |-- classes
+|-- jsp,html等资源
+
+````
 **1. 配置任意目录下的Web应用程序**<br/>
 通过配置虚拟目录（虚拟目录可以映射到任意的物理目录）达成效果。
+[a]. 在$CATALINA/conf/server.xml的Host节点下添加Context节点。<br/>
+````
+<Host>
+  <Context 
+	path="虚拟目录, 空字符串表示为默认的Web应用上下文根" 
+	docBase="物理目录或war包路径，当为相对路径时则以Host的appBase属性值作为基准" 
+	reloadable="true时，tomcat运行时一旦WEB-INF/classes和WEB-INF/lib发生变化则重新加载Web应用，但会增加运行时开销，因此生产环境应设置为false"
+	className="指定实现了org.apache.catalina.Context接口的类名，不设置时默认为org.apache.catalina.core.StandardContext"
+	cookies="指示Cookie应用于Session, 默认值为true"
+	crossContext="指示是否可以通过ServletContext.getContext(String path)获取同一主机的其他Web应用的Web上下文对象，为确保安全默认为false，则上述方法返回null"
+	unpackWAR="指示Tomcat在运行Web应用前是否展开Web应用，默认是true"
+  />
+</Host>
+````
+由于server.xml文件是全局配置文件，因此Tomcat仅在启动时加载一次，因此在Tomcat运行时对该文件的修改需要重启Tomcat才能生效。不建议这种部署方式。<Br/>
+[b]. 添加$CATALINA/conf/[enginename]/[hostname]/应用上下文根.xml<br/>
+上述路径对大小写敏感，Tomcat5.5开始以xml文件名为应用上下文根，以下版本需要在Context节点添加path属性<Br/>
+````
+<?xml version="1.0" encoding="utf-8"?>
+<Context docBase="物理目录或war包路径，当为相对路径时则以Host的appBase属性值作为基准">
+</Context>
+````
+**2. WAR文件**<Br/>
+JAR文件的目录是将类和相关资源压缩为归档文件；WAR文件是将整个Web应用压缩为归档文件。<br/>
+
+
+
 
 **`Enumeration`类**<br/>
 `hasMoreElements()`：判断是否还有元素未读取。<br/>
