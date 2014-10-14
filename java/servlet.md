@@ -38,10 +38,88 @@ Context，表示一个Web应用程序，运行在Host上。一个Host上可以�
  生命周期为：init,service,destroy<br/>
 `ServletConfig接口`<br/>
  Web应用程序的配置信息<br/>
- 其中的`getInitParameter方法`，用于配置在web.xml中的初始化参数。<br/>
-`ServletContext`<Br/>
- 通过`ServletConfig`获取，存放Servlet容器信息。<br/>
+ 其中的`getInitParameter方法`，用于配置在web.xml中的初始化参数,在init初生效，若在Servlet的构造函数中调用将报错。若在init方法中抛ServletException异常，则表示获取初始化参数失败<br/>
+````
+// 初始化参数的定义
+<servlet>
+<servlet-name></servlet-name>
+<servlet-class></servlet-class>
+<init-param>
+  <param-name>初始化参数名</param-name>
+  <param-value>初始化参数值</param-value>
+</init-param>
+</servlet>
+````
+1. 加载和实例化<br/>
+默认情况下Servlet实例都是按需加载的，Servlet容器根据请求从本地文件系统、远程文件系统或网络服务中通过类加载器加载Servlet类，然后通过反射调用默认不带参数的构造函数实例一个Servlet实例（因此不提供带参数的构造函数）<br/>
+2. 初始化，调用init方法<br/>
+3. 请求处理，调用service方法<br/>
+4. 销毁，调用destroy方法，注意Servlet实例会在容器中保留一段时间，就是多个请求会共用一个Servlet实例<br/>
+`ServletContext`, Web应用上下文<Br/>
+ 通过`ServletConfig.getServletContext()`或`GenericServlet.getServletContext()`获取，存放Servlet容器信息。同一Web应用的所有Servlet共用一个ServletContext实例<br/>
+方法：<br/>
+````
+// 获取Web应用程序的上下文根，如应用在$CATALINA/webapps/test下，那么就返回/test;如果部署在root下，则返回空字符串
+public String getContextPath()
+
+// 获取web.xml中<context-param></context-param>的值
+public String getInitParameter(String name)
+
+// 对指定路径(以/开始，且相对于Web上下文根)上的资源封装为RequestDispatcher对象。而RequestDispatcher对象可以将一个请求转发给其他资源处理，或在响应中包含资源。?
+public RequestDispatcher getRequestDispatcher(String path)
+
+// 将相对于Web上下文根的路径转换为文件系统的真实绝对路径
+public String getRealPath(String path)
+
+// 返回包含元信息（内容长度、内容类型等）资源的URL?
+public java.net.URL getResource(String path) throws java.net.MalformedURLException
+
+// 返回不含元信息的资源二进制输入流
+public java.io.InputStream getResourceAsStream(String path)
+````
 `ServletRequest接口`
 `ServletResponse接口`
 
 `web.xml`的url-pattern是以Web应用程序的上下文根作为起始，并且大小写敏感。<br/>
+Servlet2.4之前使用DTD定义web.xml文档结构，因此元素间的次序是有规定的。<br/>
+````
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+  "http://java.sun.com/dtd/web-app_2_3.dtd">
+````
+Servlet2.4开始使用Schema定义web.xml文档结构，元素间的次序不再固定。<Br/>
+````
+<web-app version="2.5"
+  xmlns="http://java.sum.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLoaction="http://java.sun.com/xml/ns/javaee
+  http://java.sum.com/xml/ns/javaee/web-app_2_5.xsd">
+````
+
+HttpServletResponse.sendRedirect(String url)`:用于资源重定向<br/>
+`HttpServletResponse.sendError(int status, String msg)`:用于返回异常的响应状态码（HttpServletResponse下有很多响应状态码）<Br/>
+
+**Servlet的异常**<br/>
+`javax.servlet`下定义了`ServletException`和`UnavaliableException`<br/>
+`ServletException`可以被`init`,`service`和`doXXX`方法抛出。这时返回给客户端的是HTTP 404(请求的资源不可用)<br/>
+`UnavaliableException`是`ServletException`的子类，表示抛出该异常的Servlet暂时或永久不可用。这时返回给客户端的是HTTP 503(服务器暂时忙，不能处理请求)<br/>
+
+**请求转发（RequestDispatcher）**<br/>
+`RequestDispatcher`对象用于封装一个由路由所标识的服务器资源（Servlet、JSP、静态HTML）,然后将请求转发给该资源处理，或包含该资源的处理结果到当前输出流。<br/>
+方法：<br/>
+````
+// 将请求转发给该资源处理并由改资源响应客户端，当前在响应缓存中未提交的内容将被自动清除
+public void forward(ServletRequest req, ServletResponse res)
+
+// 将请求转发给该资源处理，该资源的处理结果会追加到响应缓存中，而当前在响应缓存中未提交的内容将被保留，而且由当前资源响应客户端
+public void include(ServletRequest req, ServletResponse res)
+````
+获取方式<br/>
+除了通过`ServletContext`获取外，还可以通过`ServletRequest.getRequestDispatcher(String path)`获取，而且该方法的path入参除了可以相对Web上下文根外，还可以相对当前Servlet路径。<br/>
+
+## 部署
+**1. 配置任意目录下的Web应用程序**<br/>
+通过配置虚拟目录（虚拟目录可以映射到任意的物理目录）达成效果。
+
+**`Enumeration`类**<br/>
+`hasMoreElements()`：判断是否还有元素未读取。<br/>
