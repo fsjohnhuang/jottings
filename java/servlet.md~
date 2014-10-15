@@ -252,8 +252,6 @@ for (Cookie cookie : cookies){
 ````
 
 ## Servlet异常处理
-**1. 声明式异常处理**<br/>
-**2. 程序式异常处理**<br/>
 
 
 **`Enumeration`类**<br/>
