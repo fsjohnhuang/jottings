@@ -253,7 +253,35 @@ for (Cookie cookie : cookies){
 
 ## Servlet异常处理
 **1. 声明式异常处理**<br/>
+由Servlet容器作处理，我们无法得知发生异常的具体位置。<br/>
+通过web.xml配置文件，设置对HTTP错误代码处理和程序中产生的Java异常处理。<br/>
+````
+<!-- 对HTTP错误代码处理 -->
+<error-page>
+  <error-code>404</error-code>
+  <location>相对于Web上下文根的路径，必须以/开头</location>
+</error-page>
+
+<!-- 对程序中产生的Java异常处理 -->
+<error-page>
+  <exception-type>javax.servlet.ServletException</exception-type>
+  <location>相对于Web上下文根的路径，必须以/开头</location>
+</error-page>
+
+<!--
+  location指定的处理页面可以通过HttpServletRequest.getAttribute(String key)获取异常信息。key分别为：
+  javax.servlet.error.status_code int HTTP状态码
+  javax.servlet.error.exception_type Class 未捕获异常的Class类的对象
+  javax.servlet.error.message String 通过sendError()传递的消息，或未捕获异常的消息
+  javax.servlet.error.exception Throwable 未捕获的异常
+  javax.servlet.error.request_uri String 当前请求的URI
+  javax.servlet.error.servlet_name String 异常发生的Servlet名字
+-->
+````
 **2. 程序式异常处理**<br/>
+通过`try...catch`自由处理。并通过`RequestDispatcher.forward`转向统一的异常处理页面作处理。<br/>
+
+## JSP
 
 
 **`Enumeration`类**<br/>
