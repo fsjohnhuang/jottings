@@ -278,10 +278,27 @@ for (Cookie cookie : cookies){
   javax.servlet.error.servlet_name String 异常发生的Servlet名字
 -->
 ````
+服务器出现未捕获的异常时，均返回HTTP 500，因此可通过配置HTTP 500错误代码处理来统一处理异常，并通过`HttpServletRequest.getAttribute`获取异常发生的位置和调用栈信息。<br/>
 **2. 程序式异常处理**<br/>
 通过`try...catch`自由处理。并通过`RequestDispatcher.forward`转向统一的异常处理页面作处理。<br/>
+需要手动封装异常信息到`HttpServletRequest`上再由统一的异常处理页面提取并记录。<br/>
 
 ## JSP
+请求时才对JSP进行编译、加载、运行。<br/>
+JSP由元素(指令元素、脚本元素和动作元素)和模板数据(非JSP处理的部分)组成<br/>
+**1. 指令元素（directive element）**<br/>
+用于为转换阶段提供整个JSP页面的相关信息，不会产生任何的输出到当前的输出流中。<br/>
+[a]. **page指令**<br/>
+定义与页面相关的属性，用于和JSP容器通信。一个JSP页面可以出现N个page指令<br/>
+````
+<!--指定脚本元素的所用的语言,只能是java-->
+<%@ page language="java"%>
+
+<!--引入类,脚本元素中就可以使用该类了-->
+<%@ page import="java.util.Vector"%>
+````
+**2. 脚本元素（script element）**<br/>
+**3. 动作元素（action element）**<br/>
 
 
 **`Enumeration`类**<br/>
