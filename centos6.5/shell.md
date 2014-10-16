@@ -307,3 +307,6 @@ grep -n hello a.txt
 **whereis**<br/>
   用于搜索命令的可执行文件、源码文件和man文件所在位置。<br/>
   如`which cat`将返回`cat: /bin/ls /usr/share/man/man1/ls.1.gz /usr/share/man/man1p/ls.1p.gz`<br/>
+
+## 自动交互功能
+
