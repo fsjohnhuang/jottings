@@ -295,10 +295,308 @@ JSP由元素(指令元素、脚本元素和动作元素)和模板数据(非JSP�
 <%@ page language="java"%>
 
 <!--引入类,脚本元素中就可以使用该类了-->
-<%@ page import="java.util.Vector"%>
+<%@ page import="java.util.*"%>
+
+<!--指定JSP页面能否使用session对象-->
+<%@ page session="true"%>
+
+<!--指定输出缓存区容量，默认是8kb(kb是唯一可用的容量单位)，若设置为none则不使用缓存-->
+<%@ page buffer="8kb"%>
+
+<!--指定输出缓存区满后是否自动刷新，默认值true，若设置为false，当缓存区满时就会报错-->
+<%@ page autoFlush="true"%>
+
+<!--指定JSP页面是否线程安全，若为true(默认值)则多个线程可同时访问该JSP页面；若为false则JSP生成的Servlet将继承SingleThreadModel接口，同一个时间仅能单个线程操作该JSP页面-->
+<%@ page isThreadSafe="true"%>
+
+<!--指定JSP页面的页面信息，作为getServletInfo()方法的返回值-->
+<%@ page info="页面信息"%>
+
+<!--指定JSP页面出错时跳转到的页面，该属性优先级高于web.xml-->
+<%@ page errorPage="url"%>
+
+<!--指定当前JSP页面是否为出错页面，默认为false-->
+<%@ page isErrorPage="false"%>
+
+<!--指定当前JSP页面MIME类型和字符编码(响应头)-->
+<%@ page contentType="text/html; charset=utf-8"%>
+
+<!--指定当前JSP页面字符编码, 优先级高于contentType的字符编码; 若两者均没有设置则采用ISO-8859-1作为字符编码-->
+<%@ page pageEncoding="utf-8"%>
+
+<!--指定当前JSP页面是否忽略EL表达式, 若web.xml使用Servlet2.3前默认值为true，之前的默认值为false-->
+<%@ page isELIgnored="true|false"%>
+
+<!--指定是否删除指令末端与模板文本间的空白，默认值为false-->
+<%@ page trimDirectiveWhitespaces="true"%>
 ````
-**2. 脚本元素（script element）**<br/>
+[b].**include指令**<br/>
+用于将一个JSP页面、HTML网页、文本或java代码静态插入到当前JSP页面。<br/>
+当前文件和外部资源可以相互访问变量和方法<Br/>
+````
+<%@ include file="外部资源相对于当前JSP的URL"%>
+````
+[c].**taglib指令**<br/>
+用于引入用户定制的标签<br/>
+````
+<%@ taglib (uri="tagLibraryURI" | tagdir="tagDir") prefix="tagPrefix"%>
+````
+属性说明：<br/>
+`uri`: 可为绝对和相对路径，用于定位标签库描述符的位置。<br/>
+`tagdir`: 标识在/WEB-INF/tags/目录或其子目录下的标签文件。有三种情况会发生转换错误：1. tagdir属性值不是以/WEB-INF/tags/开始；2. tagdir属性值没有指向一个已经存在的目录；3. tagdir属性与uri属性一起使用。<Br/>
+`prefix`: 定义一个prefix:tagname形式的字符串前缀，`jsp:,jspx:,java:,javax:,servlet:,sun:和sunw:`为被保留的前缀。<Br/>
+
+**2. 脚本元素（scripting element）**<br/>
+使用Java语法<br/>
+[a].**声明(declaration)**<br/>
+用于声明变量和方法, 作用域为当前JSP页面<Br/>
+````
+<%! int i = 0;%>
+<%! 
+  int j = 0;
+  String name = "john";
+%>
+<%! 
+  public String func(int i){ 
+    return String.valueOf(i); 
+  }
+%>
+````
+[b].**脚本段(scriptlet)**<br/>
+用于在请求处理期间处理逻辑。其实就是Servlet的service函数内执行的内容。<br/>
+````
+<%
+  if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM){
+%>
+  Goode morning<br/>
+<%}else{%>
+  Goode afternoon<br/>
+<%}%>
+````
+[c].**表达式(expression)**<br/>
+表达试的计算结果将被转换为字符串，并插入到当前的输出流中。<br/>
+注意：表达式后一定不能出现任何标点符号。<Br/>
+````
+现在的时间是<%=(new java.util.Date()).toLocaleString()%>
+````
+
 **3. 动作元素（action element）**<br/>
+在JSP转换为Servlet时，JSP容器遇到这个标签就会用预先定义的Java代码替代该标签。标签语法遵循XML，所以是大小写敏感<br/>
+**`<jsp:include>`**<br/>
+用于在当前页面包含静态和动态的资源，和在Servlet中使用`javax.servlet.RequestDispatcher.include()`的效果和约束是一样的。被包含的资源不能修改响应头（Set-Cookie、HTTP状态码等）<br/>
+````
+<jsp:include page="relativeUri" flush="true|false(默认值)"/>
+````
+`<jsp:include>`和`<%@ include file="relativeUri"%>`的区别:<br/>
+`<%@ include file="relativeUri"%>`是在将JSP页面编译为Servlet时，将外部资源包含到当前页面，与当前JSP作为一个整体资源被请求。<br/>
+`<jsp:include>`是在请求处理时，当前Servlet动态引入外部资源到当前输出流中，两者仍然是两个资源被请求，但合成为一个输出而已。<br/>
+
+## JSP的隐含对象
+````
+request HttpServletRequest
+response HttpServletResponse 
+pageContext javax.servlet.jsp.PageContext 
+session HttpSession 
+application ServletContext 
+out javax.servlet.jsp.JspWriter 
+config ServletConfig 
+page Object
+exception Throwable
+````
+`pageContext对象`<br/>
+提供访问其他隐含对象的方法，也提供`forward`和`include`方法，是作为调用Servlet各方法的入口<br/>
+通过`setAttribute(String name, Object value, int scope)`和`getAttribute(String name, int scope)`设置某范围内的属性,scope的取值返回是`PageContext.PAGE_SCOPE(页面范围),PageContext.REQUEST_SCOPE(请求范围),PageContext.SESSION_SCOPE(会话范围),PageContext.APPLICATION_SCOPE(Web应用全局)`, 当调用`pageContext.findAttribute(String name)`获取属性值时，会按照page、request、session、application的顺序搜索，若调用`getAttribute(String name)`则在page范围内获取属性值，注意，即使当前页面通过pageContext.include包含其他资源，其他资源的pageContext和该页面的pageContext是不同的<Br/>
+
+`out对象`<Br/>
+是PrinterWriter对象的带缓冲的版本。<br/>
+
+`page对象`<Br/>
+指向当前的Servlet对象<Br/>
+
+`exception对象`<Br/>
+执行JSP页面运行的异常，仅在`<%@ page isErrorPage="true"%>`的页面该对象才不为空。<br/>
+
+## JSP与JavaBean 
+JavaBean用于将UI和业务逻辑分离，可在JSP直接调用JavaBean类的对象，也可以通过动作元素调用。<br/>
+**JavaBean的标准**<br/>
+1. 是一个public类<Br/>
+2. 提供一个默认不带参数的构造方法<Br/>
+3. 提供get、set方法访问属性<Br/>
+4. 实现了`java.io.Serializable`或`java.io.Externalizable`接口，以支持序列化。<br/>
+**属性和实例变量**<br>
+````
+public class Info{
+  // 实例变量
+  private int age = 1;
+  private int unit = 2;
+ 
+  // 属性
+  public int getHeight(){
+    return age * unit;
+  } 
+}
+````
+**属性类型**<br/>
+1. 简单属性(simple property)<br/>
+就是接受单个值的属性<br/>
+2. 索引属性(indexed property)<br/>
+示例：<br/>
+````
+public String[] getNames(){.....}
+public void setNames(){.....}
+public String getNames(int index){.....}
+public void setNames(int index, String name){.....}
+````
+3. 绑定属性(bound property)<br/>
+4. 约束属性(constrained property)<br/>
+**通过动作元素访问JavaBean**<br/>
+1. `<jsp:useBean>`<br/>
+用于实例化JavaBean或定义一个已存在的JavaBean实例。<Br/>
+示例：<br/>
+````
+<jsp:useBean id="info" scope="page" class="com.test.Info"/>
+````
+语法<br/>
+````
+<jsp:useBean id="变量名" scope="page|request|session|application" typeSpec />
+typeSpec::= class="全限定类名"|
+	class="全限定类名" type="目标类型的全限定类名，默认与class一样"|
+	beanName="Bean名，提供给java.beans.Beans类的instantiate()方法来实例化一个JavaBean对象" type="目标类型的全限定类名，默认与class一样"
+````
+2. `<jsp:setProperty>`<br/>
+用于设置JavaBean的简单属性和索引属性。<Br/>
+示例：<br/>
+````
+<!--从请求参数中自动获取与JavaBean实例属性名相同的值-->
+<jsp:setProperty name="JavaBean实例变量名" property="*"/> 
+
+<!--从请求参数中获取指定名称的参数值赋予到JavaBean实例指定属性中-->
+<jsp:setProperty name="JavaBean实例变量名" property="JavaBean属性名" param="请求参数名"/> 
+
+<!--将值赋予到JavaBean实例指定属性中-->
+<jsp:setProperty name="JavaBean实例变量名" property="JavaBean属性名" value="值"/> 
+````
+3. `<jsp:getProperty>`<br/>
+用于获取JavaBean的简单属性和索引属性，并会自动转换为String类型追加到是输出流中<br/>
+````
+<jsp:setProperty name="JavaBean实例变量名" property="JavaBean属性名"/>
+````
+
+## 开发模型
+**1.Model1**<br/>
+结合JSP和JavaBean开发，JavaBean负责数据封装和主要的业务逻辑处理，JSP负责接收用户请求并调用JavaBean的业务逻辑处理接口，然后控制UI输出。<Br/>
+JSP职责过多，前端与业务逻辑耦合度大。<br/>
+**2.Model2**<br/>
+结合JSP、Servlet和JavaBean开发，Serlvet负责接收用户请求，然后调用JavaBean的业务逻辑接口，并对业务逻辑接口返回的数据进行二次处理，然后将数据传递给相应的JSP，JSP页面则根据数据生成UI返回给用户。JSP仅涉及UI、数据和UI的呈现逻辑，并不涉及业务逻辑。<br/>
+
+## Servlet监听器
+用于监听ServletContext、HttpSession、ServletRequest等对象的声明周期事件。<br/>
+**Servlet API的8个监听器接口**<br/>
+1.`javax.servlet.ServletContextListener接口`：<br/>
+含`contextDestroyed方法`和`contextInitialized方法`，当Servlet上下文对象初始化和销毁（就是Web应用启动和关闭时）触发接口中对应的方法。除实现该接口外，还要在web.xml中配置信息才会生效。<br/>
+可用于初始化数据连接池等<Br/>
+示例：<br/>
+````
+package com.test;
+public class MyServletContextListner implements ServletContextListener{
+  @Override
+  public void contextInitialized(ServletContextEvent sce){
+    ServletContext sc = sce.getServletContext(); 
+    sc.setAttribute("greeting", "hello world");
+  }
+  @Override
+  public void contextDestroyed(ServletContextEvet sce){}
+}
+````
+web.xml的配置<br/>
+````
+<listener>
+  <listener-class>
+    com.test.MyServletContextListener 
+  </listener-class>
+</listener>
+````
+
+2. `javax.servlet.ServletContextAttributeListener接口`<br/>
+含`attributeAdded方法`,`attributeRemoved方法`和`attributeReplaced方法`，当Servlet上下文对象中的属性发生变化时得到通知。除实现该接口外，还要在web.xml中配置信息才会生效。<br/>
+3. `javax.servlet.http.HttpSessionListener接口`<br/>
+含`sessionCreated方法`和`sessionDestroyed方法`，在Session创建后或Session失效前发起通知。除实现该接口外，还要在web.xml中配置信息才会生效。<br/>
+4. `javax.servlet.http.HttpSessionActivationListener接口`<br/>
+含`sessionDidActivate方法`和`sessionWillPassivate方法`, 当session被钝化或激活时触发。无需配置web.xml。<br/>
+5. `javax.servlet.http.HttpSessionAttributeListener接口`<br/>
+含`attributeAdded方法`,`attributeRemoved方法`和`attributeReplaced方法`，当HttpSession对象中的属性发生变化时得到通知。无需配置web.xml。<br/>
+6. `javax.servlet.http.HttpSessionBindingListener接口`<br/>
+含`valueBound方法`和`valueUnbound方法`，当继承该接口的类实例添加到Session或从Session移除时会得到通知。无需配置web.xml。<br/>
+7. `javax.servlet.ServletRequestListener接口`<br/>
+含`requestInitialized方法`和`requestDestroyed方法`，请求对象初始化后或销毁前触发。无需配置web.xml。<br/>
+8. `javax.servlet.ServletRequestAttributeListener接口`<br/>
+含`attributeAdded方法`,`attributeRemoved方法`和`attributeReplaced方法`，当ServletRequest对象中的属性发生变化时得到通知。无需配置web.xml。<br/>
+
+## Filter
+Filter Chain中的各个Filter不一定必须将请求传递到下一个Filter或原目标资源，它可以自行对请求作处理并直接返回给客户端，或者转发到另一个目标资源。<br/>
+应用场景：<Br/>
+统一认证、记录和审核用户请求、过滤用户提交的数据、图片格式转换、压缩响应内容、加密请求和响应、触发资源访问事件、对XML的输出应用XSLT。<br/>
+1. **Filter接口**<br/>
+所有自定义的过滤器必须继承`javax.servlet.Filter接口`。其含如下方法：<Br/>
+`public void init(FilterConfig filterConfig) throws ServletException`，Web容器调用该方法来初始化过滤器，可通过filterConfig获取ServletContext对象, 可在该方法内跑出ServletException异常来通知Web容器过滤器不能正常工作<br/>
+`public void doFilter(ServletRequest request, ServletResposne response, FilterChain chain) throws ServletException, IOException`，相当于Servlet的service方法，在这个方法内直接返回响应，或通过`sendRedirect`、`RequestDispatcher.forward`等转发到其他资源，或通过`chain.doFilter()`将请求传递到下一个过滤器或Servlet处理<br/>
+`public void destroy()`，用于释放资源<br/>
+
+2. **过滤器的部署**<br/>
+通过`<filter>`和`<filter-mapping>`标签来部署过滤器<br/>
+**`<filter>`标签子节点：**<br/>
+`description`:0~N个，Servlet的文本描述<br/>
+`display-name`:0~N个，Servlet的短名称<br/>
+`icon`:0~N个，Servlet的图标<br/>
+`filter-name`:1个，Filter的唯一标识<Br/>
+`filter-class`:1个，Filter的全限定类名<br/>
+`init-param`:0~N个，定义Filter初始化参数，内部必须包含`param-name`和`param-value`节点，可包含0~N个`description`节点<br/>
+
+**`<filter-mapping>`标签子节点：**<br/>
+`filter-name`,1个，Filter的唯一标识<Br/>
+`url-pattern`,0~N个，当请求对应的URL样式时，该过滤器才会被调用<br/>
+`servlet-name`,0~N个，当请求对应的Servlet时，该过滤器才会被调用<br/>
+`dispatcher`,0~4个，用于指定过滤器指定的请求方式，可以是REQUEST(默认值)、INCLUDE、FORWARD和ERROR四种之一。<br/>
+
+**过滤请求参数**<br/>
+无法直接修改ServletRequest对象中的请求参数，但可以通过`ServletRequestWrapper`或`HttpServletRequestWrapper`对`ServletRequest对象`进行二次封装来过滤请求参数.<br/>
+自定义继承`HttpServletRequestWrapper`类<br/>
+````
+// Servlet中获取的HttpServletRequest对象其实就是MyRequestWrapper对象
+public class MyRequestWrapper extends HttpServletRequestWrapper{
+  public MyRequestWrapper(HttpServletRequest request){
+    super(request);
+  }
+
+  public String getQueryString(){
+    String strQry = super.getQueryString();
+    // .......
+    return 处理结果
+  }
+
+  public String getParameter(String name){
+    String val = super.getParameter(name);
+    // .......
+    return 处理结果
+  }
+}
+````
+Filter对象<br/>
+````
+public class MyFilter implements Filter{
+  public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException{
+    chain.doFilter(new MyRequestWrapper((HttpServletRequest)req, res));
+  }
+}
+````
+
+**替换响应内容**<br/>
+首先要理解doFilter函数内部，在调用`chain.doFilter()`前的部分请求过程的处理内容，在调用`chain.doFilter()`后的部分是响应过程的处理内容。因此请求和响应的filter执行顺序是相反的<Br/>
+替换响应内容的思路就是Servlet在调用`HttpServletResponse`对象写入输出流时，输出内容均写入我们预设好的缓存中，然后替换缓存中的敏感信息，再写入响应输出流中。<br/>
+那么我们两步走，第一步：替换响应对象<br/>
+自定义继承`HttpServletResponseWrapper`的类
+````
+````
 
 
 **`Enumeration`类**<br/>
