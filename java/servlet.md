@@ -539,7 +539,7 @@ Filter Chain中的各个Filter不一定必须将请求传递到下一个Filter�
 1. **Filter接口**<br/>
 所有自定义的过滤器必须继承`javax.servlet.Filter接口`。其含如下方法：<Br/>
 `public void init(FilterConfig filterConfig) throws ServletException`，Web容器调用该方法来初始化过滤器，可通过filterConfig获取ServletContext对象, 可在该方法内跑出ServletException异常来通知Web容器过滤器不能正常工作<br/>
-`public void doFilter(ServletRequest request, ServletResposne response, FilterChain chain) throws ServletException, IOException`，相当于Servlet的service方法，在这个方法内直接返回响应，或通过`sendRedirect`、`RequestDispatcher.forward`等转发到其他资源，或通过`chain.doFilter()`将请求传递到下一个过滤器或Servlet处理<br/>
+`public void doFilter(ServletRequest request, ServletResposne response, FilterChain chain) throws ServletException, IOException`，相当于Servlet的service方法，在这个方法内直接返回响应，或通过`sendRedirect`、`RequestDispatcher.forward`等转发到其他资源，或通过`chain.doFilter(req, res)`将请求传递到下一个过滤器或Servlet处理<br/>
 `public void destroy()`，用于释放资源<br/>
 
 2. **过滤器的部署**<br/>
@@ -593,11 +593,104 @@ public class MyFilter implements Filter{
 **替换响应内容**<br/>
 首先要理解doFilter函数内部，在调用`chain.doFilter()`前的部分请求过程的处理内容，在调用`chain.doFilter()`后的部分是响应过程的处理内容。因此请求和响应的filter执行顺序是相反的<Br/>
 替换响应内容的思路就是Servlet在调用`HttpServletResponse`对象写入输出流时，输出内容均写入我们预设好的缓存中，然后替换缓存中的敏感信息，再写入响应输出流中。<br/>
-那么我们两步走，第一步：替换响应对象<br/>
-自定义继承`HttpServletResponseWrapper`的类
+注意：`HttpServletResponse.getOutputStream()`得到的是`ServletOutputStream`实例，因此需要自定义一个继承`ServletOutputStream`的类。<br>
+第一步：自定义一个继承`ServletOutputStream`的类。<br/>
 ````
+public class MyServletOuputStream extends ServletOutputStream{
+  ByteArrayOutputStream baos;
+  public MyServletOutputStream(ByteArrayOutputStream baos){
+    this.baos = baos;
+  }
+  public void write(int data) throws IOException{
+    this.baos.write(data);
+  }
+}
+````
+第二步：自定义一个继承`HttpServletResponseWrapper`的类<br/>
+````
+public class MyHSRW extends HttpServletResponseWrapper{
+  ByteArrayOutputStream baos;
+  ServletOutputStream sos;
+  PrintWriter pw;
+
+  public MyHSRW(HttpServletResponse res){
+    super(res); 
+    baos = new ByteArrayOutputStream();
+    sos = new MyServletOutputStream(baos);
+    pw = new PrintWriter(baos);
+  }
+
+  public PrintWriter getWriter(){
+    return pw;
+  }
+
+  public ServletOutputStream getOutputStream(){ 
+    return sos;
+  }
+  
+  public byte[] toByteArray(){
+    return baos.toByteArray();
+  }
+}
+````
+第三步：在doFilter中调用<br/>
+````
+public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain){
+  MyHSRW myRes = new MyHSRW(res);
+  chain.doFilter(res, myRes); 
+  String content = new String(myRes.toByteArray());
+  // 一系列过滤
+  PrintWriter pw = res.getWriter();
+  pw.println(content);
+  pw.close();
+}
 ````
 
+## EL(表达式语言)
+一般使用`${EL}`在文本模板中使用，若出现在标签属性中还可以使用`#{EL}`,但EL不能在脚本元素中使用。<Br/>
+内部可以使用所有算术运算符、关系运算符、逻辑运算符、三元条件运算符（?:）和empty前置运算符(`${empty A}`,返回true|false，用于判断A是否为null或空字符串)<br/>
+EL中的变量实际上是采用`pageContext.findAttribute(String name)`的方式去获取，因此会依次序查找`page,request,session,application`的属性。<br/>
+**隐含的对象**<br/>
+
+## JSTL(JSP标准标签库)
+由5个标签库组成：<br/>
+Core标签库，前缀为c<br/>
+I18N标签库，前缀为fmt<br/>
+SQL标签库，前缀为sql<br/>
+XML标签库，前缀为x<br/>
+Functions标签库，前缀为fn<br/>
+**1.Core标签库**<br/>
+包含一般用途的标签、条件标签、迭代标签和URL相关的标签。<br/>
+引入标签库:`<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>`<br/>
+[a].`<c:out>输出标签`<Br/>
+````
+<!--
+  value: 被计算的表达式
+  escapeXml: 计算结果是否需要对<,>,',",&等替换为字符引用或预定义实体引用。默认为true
+  default: 当value为null时，返回这个默认值
+-->
+<c:out value="${customer.address}" default="unknown" escapeXml="true"/>
+或者为
+<c:out value="${customer.address}" escapeXml="true">
+unknown
+</c:out>
+````
+[b].`<c:set>赋值标签`<br/>
+用于设置范围变量值或JavaBean对象的属性。<br/>
+设置范围变量<Br/>
+````
+<c:set var="<varName>" value="<value>" [scope="{page(默认值)|request|session|application}"]/>
+<!--
+  当value为null时，底层就会通过pageContext.removeAttribute(String name, String scope)删除变量。
+-->
+````
+设置JavaBean对象的属性或java.util.Map的键值对<br/>
+````
+<c:set target="<target>" property="<property>" value="<value>"/>
+<!--
+  
+-->
+````
 
 **`Enumeration`类**<br/>
 `hasMoreElements()`：判断是否还有元素未读取。<br/>
