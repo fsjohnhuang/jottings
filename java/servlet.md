@@ -688,9 +688,116 @@ unknown
 ````
 <c:set target="<target>" property="<property>" value="<value>"/>
 <!--
-  
+  target必须为java.util.Map对象或支持setter方法的JavaBean对象，否则会抛异常 
+  value为null时，会删除Map对象的键值对，会将JavaBean对象的属性设置为null
 -->
 ````
+[c].`<c:remove>移除范围变量标签`<br/>
+````
+<c:remove var="<var>" [scope="{page(默认值)|request|session|application}"]/>
+````
+[d].`<c:catch>异常处理标签`<br/>
+捕获异常并将异常对象保存到自定义的范围变量中。<Br/>
+````
+<c:catch var="ex">
+<%
+  int k = 1/0;
+%>
+</c:catch>
+<c:out value="${ex}"/>
+<c:out value="${ex.message}"/>
+````
+[e]. URL相关标签<Br/>
+**`<c:import>`**<br/>
+用于导入不同Web应用程序下的资源（`<jsp:include>`只能导入同一个Web应用程序下的资源）<br/>
+资源内容以String对象方式被导出：<br/>
+````
+<c:import url="<url>" [scope="{page(默认值)|request|session|application}"] [context="<context>"] [var="<var>"] [charEncoding="<encoding>"]>
+[<c:param/>]*
+</c:import>
+````
+资源内容以Reader对象方式被导出：<br/>
+````
+<c:import url="<url>" [context="<context>"] [varReader="<varReader>"] [charEncoding="<encoding>"]>
+[<c:param/>]*
+</c:import>
+<!--
+  当url属性值为相对url时，则需要通过context属性来指明url的上下文了。
+  如果指明var或varReader值，那么就会将资源写入JspWriter对象中。
+  varReader对象仅能在<c:import>标签体内使用。
+-->
+<!--
+  引入同一Web应用的资源，使用相对路径，无需context属性
+-->
+<c:import url="b.jsp"/>
+
+<!--
+  引入不同Web应用的资源，使用相对路径，需要context属性，和设置server.xml文件的crossContext为true.
+  <Context path="/otherWeb" docBase="......" crossContext="true"/>
+-->
+<c:import url="/a.jsp" context="/otherWeb"/>
+
+<!--
+  使用绝对路径，被引用的资源无法共享当前资源的Session、Request等环境信息。
+-->
+<c:import url="http://www.google.com"/>
+````
+**`<c:url>`**<br/>
+重新构造URL<br/>
+````
+// 重新构造相对路径
+<c:url value="<相对路径>" [context="<相对路径的上下文(默认是当前Web应用的上下文根)>"] [scope="{page(默认值)|request|session|application}"] [context="<context>"] [var="<var>"]>
+// 设置queryString参数
+[<c:param name="<name>" value="<value>">]*
+</c:url>
+
+// 重新构造绝对路径
+<c:url value="<绝对路径>"  [scope="{page(默认值)|request|session|application}"] [context="<context>"] [var="<var>"]>
+// 设置queryString参数
+[<c:param name="<name>" value="<value>">]*
+</c:url>
+````
+若设置var属性，则结果会写入JspWriter对象中。<Br/>
+**<c:redirect>**<br/>
+重定向请求<Br/>
+````
+<c:redirect url="<url>" [context="<context>"]>
+[<c:param/>]*
+</c:redirect>
+````
+**<c:param>**<br/>
+为URL添加请求参数<br/>
+````
+// 如果name为空，则什么都不做
+// value为空，则返回空字符串
+<c:param name="<name>" value="<value>"/>
+````
+2. 国际化标签<br/>
+引入标签库`<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>`<Br/>
+**国际化标签**<br/>
+[a].**<fmt:setLocale>**<br/>
+
+**日期、时间、数字格式化标签**<br/>
+[a].**`<fmt:timeZone>`**<br/>
+````
+// 用于指定时区，标签体的时间信息将按照这个时区进行格式化或解析
+// 如果value为空，则采用GMT时区
+<fmt:timeZone value="String或java.util.TimeZone枚举值">
+时间信息
+</fmt:timeZone>
+````
+[b].**`<fmt:setTimeZone>`**<br/>
+用于指定时区，并将其保存到范围变量中，或保存到`javax.servlet.jsp.jstl.fmt.timeZone`配置变量中。<br/>
+````
+<fmt:setTimeZone value="String或java.util.TimeZone枚举值" [var="<var"] [scope="{page|request|session|application}"]/>
+````
+[c].**`<fmt:formatNumber>`**<br/>
+按照地区或定制的方式将数字的值格式化为数字、货币或百分比。<br/>
+
+
+
+
+
 
 **`Enumeration`类**<br/>
 `hasMoreElements()`：判断是否还有元素未读取。<br/>
