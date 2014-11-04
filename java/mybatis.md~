@@ -38,7 +38,7 @@ src/config.xml文件<br/>
     注册映射文件
   -->
   <mappers>
-    <mapper resource="映射文件路径(通过qualify name获取)"/>
+    <mapper resource="映射文件的相对路径，以src作为参考点"/>
   </mappers>
 </configuration>
 ````
@@ -310,7 +310,7 @@ public class Cls{
 <select id="getClass" parameterType="int" resultMap="ClassResultMap">
   select * from class where tid = #{id}
 </select>
-<select id="getTeacher" parameterType="int" returnType="Teacher">
+<select id="getTeacher" parameterType="int" resultType="Teacher">
   select t_id id, t_name name from teacher where t_id = #{id}
 </select>
 <resultMap id="ClassResultMap" type="Cls">
@@ -358,7 +358,7 @@ public class Cls{
 <select id="getClass" parameterType="int" resultMap="ClassResultMap">
   select * from class where tid = #{id}
 </select>
-<select id="getStudents" parameterType="int" returnType="Student">
+<select id="getStudents" parameterType="int" resultType="Student">
   select s_id id, s_name name from student where cid = #{id}
 </select>
 <resultMap id="ClassResultMap" type="Cls">
@@ -451,5 +451,39 @@ finally{
   sqlSession.close();
 }
 ````
+
+##  输出sql语句日志
+log4j.rootLogger=DEBUG就可以看到了
+
+## mybatis-cfg.xml的mappers节点
+  用于向mybatis注册sql语句映射信息。mybatis3.2.1起提供4种方法<br/>
+````
+/** Mapper的xml配置文件 **/
+// 1. 通过mapper标签resource属性，指定相对于根类路径下的资源
+<mapper resource="com/test/mapper/UserMapper.xml"/>
+
+// 2. 通过mapper标签url属性
+<mapper url="file:///E:/project/bin/com/test/mapper/UserMapper.xml"/>
+
+/** Mapper接口 **/
+// 3. 通过mapper标签class属性
+<mapper class="com.test.mapper.UserMapper"/>
+
+// 4. 通过package标签name属性
+<package name="com.test.mapper"/>
+````
+
+## mybatis-cfg.xml的typeAliases节点
+  用于为mapper中使用的类定义别名，从而不用使用全限定类型。<Br/>
+````
+<typeAliases>
+  // 1. 使用typeAliases标签逐个添加 
+  <typeAlias type="com.test.entity.EUser" alias="EUser"/>
+ 
+  // 2. 使用package标签批量添加
+  <package name="com.test.entity"/>
+</typeAliases>
+````
+
 
 ## mybatis与Spring整合

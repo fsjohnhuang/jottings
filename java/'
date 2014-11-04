@@ -286,11 +286,9 @@ jar -uvf src.jar other\additional.class
 //追加清单文件，会追加整个目录结构(src.jar会包含META-INF目录)
 jar -uMvf src.jar META-INF\MAINFEST.MF
 ````
-6. 创建自定义MAINFEST.MF的jar包<br/>
+6. 创建自定义MAINFSET.MF的jar包<br/>
 ````
 jar -cMvf src.jar src META-INF
-
-jar -cmvf MAINFEST.MF src.jar src
 ````
 
 ## MAINFSET.MF清单文件
@@ -304,36 +302,7 @@ Class-Path: ext/other.jar
 ````
 `Main-Class`，用于指示入口函数的类名<br/>
 `Class-Path`，用于指示依赖的包，包与包之间用空格隔开或换行写即可（注意每行前空两格）。而路径分隔符采用正斜杆，无论是windows还是unix。<br/>
-**注意：MAINFEST.MF每行长度上限为72个字符**<Br/>
-**注意：MAINFEST.MF每行后面不能有空格，且必须用回车结尾**<Br/>
-**注意：MAINFEST.MF每行的内容如果为上面键的值，则行首必须含2个以上的空格**<Br/>
-package描述定义<br/>
-用于为调用者提供包的版本、开发者信息<br/>
-````
-Name: com/example/myapp/
-Specification-Title: MyApp
-Specification-Version: 2.4
-Specification-Vendor: example.com
-Implementation-Title: com.example.myapp
-Implementation-Version: 2002-03-05-A
-Implementation-Vendor: example.com
-````
-注意：Name用于描述package名，而且一定要以正斜杆为结尾。<br/>
-调用者可以在程序中通过`java.lang.Package`获取package描述定义。<br/>
-````
-Package.getPackages();
-Package.getPackage(String packageName);
-Class.getPackage();
-````
-
-##META-INF/INDEX.LIST文件
-通过`jar`的`-i`选项生成的。作为JarIndex实现的一部分，有类加载器用于加速类装载过程。<br/>
-
-## xxx.SF文件
-JAR包的签名文件，xxx为签名者的占位符。<br/>
-
-## xxx.DSA文件
-与xxx.SF文件关联的签名程序块文件，它存储了用于签名的JAR文件的公共签名。<br/>
+**注意：MAINFEST.MF每行长度上限为72个字符**
 
 
 ## eclipse中生成jar的方法

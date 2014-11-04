@@ -1,4 +1,4 @@
-## 书籍
+﻿## 书籍
 >1. O'Reilly - HTTP Pocket Reference：这是一本比较简短的介绍HTTP协议的书，可以作为入门读物<br/>
 >2. O'Reilly - HTTP The Definitive Guide：这是一本宝典级别的书，因为它包含的内容实在多，可以作为全面学习的HTTP协议的首选读物<br/>
 >3. Sams - HTTP Developers Handbook：这是比HTTP The Definitive Guide稍微比HTTP The Definitive Guide简单。不过从我的感觉，这本书比HTTP The Definitive Guide要好，因为它篇幅比较少，介绍的是HTTP精髓，我认为这本书应该是web程序员的首选读物<br/>

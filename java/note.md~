@@ -233,4 +233,120 @@ public String getQueryString(String url){
 ![](tasksetting1.jpg)<br/>
 
 
+## 打包
+1. **jar**<br/>
+用于将多个class或java文件，和其他资源文件压缩归档<br/>
+````
+jar  [option]* 文件名
+````
+**必选参数（并且仅能选其中一个）**<Br/>
+`-c`，创建一个jar包<br/>
+`-t`，显示jar包中的内容列表<br/>
+`-x`，解压jar包<br/>
+`-u`，添加文件到jar包<br/>
+**可选参数**<br/>
+`-v`，生成详细报告，并输出到标准输出设备<br/>
+`-m`，用于指定manifest.mf文件。（默认情况下会自动生成META-INF/MANIFEST.MF文件）<br/>
+`-O`，创建jar包时不对内容进行压缩<br/>
+`-M`，不产生manifest.mf文件<br/>
+`-i`，创建jar包时创建索引文件<br/>
+`-C`，表示切换到指定目录来执行jar命令<br/>
+`-f`，指定jar包的文件路径<br/>
+常用场景<Br/>
+目录结构：<br/>
+/<Br/>
+|--src<Br/>
+&emsp;|--test.class<Br/>
+|--META-INF<Br/>
+&emsp;|--MAINFEST.MF<Br/>
+|--other
+&emsp;|--additional.class<br/>
+1. 默认打包<br/>
+````
+// 生成的src.jar中就含src目录和jar自动生成的META-INF目录（内含MAINFEST.MF清单文件）
+jar -cvf src.jar src
+````
+2. 查看包内容(jar过大时就无法查看)<Br/>
+````
+jar -tvf src.jar
+````
+3. 解压jar包<br/>
+````
+jar -xvf src.jar
+````
+4. 提取jar包部分内容<br/>
+````
+jar -xvf src.jar src\test.class
+````
+5. 追加内容到jar包<br/>
+````
+//追加MAINFEST.MF清单文件以外的文件，会追加整个目录结构
+jar -uvf src.jar other\additional.class
+
+//追加清单文件，会追加整个目录结构(src.jar会包含META-INF目录)
+jar -uMvf src.jar META-INF\MAINFEST.MF
+````
+6. 创建自定义MAINFEST.MF的jar包<br/>
+````
+jar -cMvf src.jar src META-INF
+
+jar -cmvf MAINFEST.MF src.jar src
+````
+
+## MAINFSET.MF清单文件
+用于描述jar包的版本、厂家、作者、jdk版本等信息，并且对于可执行的jar包，提供执行时所需的入口函数类、依赖关系等信息<br/>
+````
+Mainfest-Version: 1.0
+Created-By: 1.5.0_06 (Sun Microsystems Inc.)
+Main-Class: com.sample.myapp.MyAppMain
+Class-Path: ext/other.jar 
+  ext/addition.jar
+````
+`Main-Class`，用于指示入口函数的类名<br/>
+`Class-Path`，用于指示依赖的包，包与包之间用空格隔开或换行写即可（注意每行前空两格）。而路径分隔符采用正斜杆，无论是windows还是unix。<br/>
+**注意：MAINFEST.MF每行长度上限为72个字符**<Br/>
+**注意：MAINFEST.MF每行后面不能有空格，且必须用回车结尾**<Br/>
+**注意：MAINFEST.MF每行的内容如果为上面键的值，则行首必须含2个以上的空格**<Br/>
+package描述定义<br/>
+用于为调用者提供包的版本、开发者信息<br/>
+````
+Name: com/example/myapp/
+Specification-Title: MyApp
+Specification-Version: 2.4
+Specification-Vendor: example.com
+Implementation-Title: com.example.myapp
+Implementation-Version: 2002-03-05-A
+Implementation-Vendor: example.com
+````
+注意：Name用于描述package名，而且一定要以正斜杆为结尾。<br/>
+调用者可以在程序中通过`java.lang.Package`获取package描述定义。<br/>
+````
+Package.getPackages();
+Package.getPackage(String packageName);
+Class.getPackage();
+````
+
+##META-INF/INDEX.LIST文件
+通过`jar`的`-i`选项生成的。作为JarIndex实现的一部分，有类加载器用于加速类装载过程。<br/>
+
+## xxx.SF文件
+JAR包的签名文件，xxx为签名者的占位符。<br/>
+
+## xxx.DSA文件
+与xxx.SF文件关联的签名程序块文件，它存储了用于签名的JAR文件的公共签名。<br/>
+
+
+## eclipse中生成jar的方法
+1. 右键点击包、类<br/>
+2. "Export"<br/>
+3. "java"->"JAR file"<br/>
+4. 选择要压缩的文件<br/>
+就可以了。<br/>
+
+## 执行jar包
+jar包可以类似于class文件那样被java执行<br/>
+````
+java -jar src.jar
+````
+
 
