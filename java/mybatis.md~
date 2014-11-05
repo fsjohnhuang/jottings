@@ -485,5 +485,216 @@ log4j.rootLogger=DEBUG就可以看到了
 </typeAliases>
 ````
 
+## javaType属性
+
+## JDBC类型
+````
+BIT	FLOAT	CHAR	TIMESTAMP	OTHER	UNDEFINED
+TINYINT	REAL	VARCHAR	BINARY	BLOG	NVARCHAR
+SMALLINT	DOUBLE	LONGVARCHAR	VARBINARY	CLOB	NCHAR
+INTEGER	NUMERIC	DATE	LONGVARBINARY	BOOLEAN	NCLOB
+BIGINT	DECIMAL	TIME	NULL	CURSOR	ARRAY
+````
+
+
+## `resultMap`详解
+Mybatis会将查询结果保存到Map中，键为字段名，值为字段值。然后根据resultType或resultMap的映射信息构造领域模型。<Br/>
+**`resultMap元素`的属性**<br/>
+`id属性`：`resultMap元素`的标识<br/>
+`type属性`：返回值的全限定类名，或类型别名<br/>
+`autoMapping属性`：值范围true（默认值）|false, 设置是否启动自动映射功能，自动映射功能就是自动查找与字段名小写同名的属性名，并调用setter方法。而设置为false后，则需要在`resultMap`内明确注明映射关系才会调用对应的setter方法<br/>
+<br/>
+1. 基本作用，建立SQL查询结果字段与实体属性的映射关系信息。<br/>
+示例1：通过setter构造领域模型<br/>
+````
+public class EStudent{
+  private long id;
+  private String name;
+  private int age;
+  // getter,setter方法
+
+  /**
+   * 必须提供一个无参数的构造函数
+   */
+  public EStudent(){}
+}
+````
+````
+<select id="getStudent" resultMap="getStudentRM">
+  SELECT ID, Name, Age
+    FROM TStudent
+</select>
+<resultMap id="getStudentRM" type="EStudnet">
+  <id property="id" column="ID"/>
+  <result property="studentName" column="Name"/>
+  <result property="studentAge" column="Age"/>
+</resultMap>
+````
+`id元素`：用于设置主键字段与领域模型属性的映射关系<br/>
+`result元素`：用于设置普通字段与领域模型属性的映射关系<br/>
+<br/>
+示例2：通过构造函数构造领域模型<br/>
+````
+public class EStudent{
+  private long id;
+  private String name;
+  private int age;
+  // getter方法
+  public EStudent(long id, String name, int age){
+    this.id = id;
+    this.name = name;
+    this.age = age;
+  }
+}
+````
+````
+<select id="getStudent" resultMap="getStudentRM">
+  SELECT ID, Name, Age
+    FROM TStudent
+</select>
+<resultMap id="getStudentRM" type="EStudnet">
+  <constructor>
+    <idArg column="ID" javaType="_long"/>
+    <arg column="Name" javaType="String"/>
+    <arg column="Age" javaType="_int"/>
+  </constructor>
+</resultMap>
+````
+`constructor元素`：指定使用指定参数列表的构造函数来实例化领域模型。注意：其子元素顺序必须与参数列表顺序对应<Br/>
+`idArg子元素`：标记该入参为主键<br/>
+`arg子元素`：标记该入参为普通字段(主键使用该子元素设置也是可以的)<br/>
+<br/>
+**`id元素`,`result元素`,`idArg元素`,`arg元素`,`discriminator元素`的共同属性**<br/>
+`javaType属性`：Java类的全限定名，或别名<br/>
+`jdbcType属性`：JDBC类型, JDBC类型为CUD操作时列可能为空时进行处理<br/>
+`typeHandler属性`：指定类型处理器的全限定类名或类型别名<br/>
+`column属性`：指定SQL查询结果的字段名或字段别名。将用于JDBC的`resultSet.getString(columnName)`<br/>
+<br/>
+2. `discriminator元素`鉴别器
+用于动态设置映射关系。<br/>
+````
+public class EStudent{
+  private long id;
+  private String name;
+  private String juniorHighSchool;
+  private String seniorHighSchool;
+  private int during; // 在本校就读时间
+  // getter,setter方法
+
+  /**
+   * 必须提供一个无参数的构造函数
+   */
+  public EStudent(){}
+}
+````
+情景：查询学生信息的seniorHighSchool信息，若就读时间during字段值为4、5、6时，则以juniorHighSchool字段作所为seniorHighSchool信息。<br/>
+````
+<select id="getStundent" resultMap="rm">
+  SELECT ID, Name, JuniorHighSchool, SeniorHighSchool, during
+    FROM TStudent
+</select>
+<resultMap id="rm" type="EStudent">
+  // 若不加这句，则当将juniorHighSchool赋予给seniorHighSchool属性时，juniorHighSchool属性将为null
+  <result column="juniorHighSchool" property="juniorHighSchool"/>
+
+  <discriminator column="during" javaType="_int">
+    // 形式1：通过resultType设置动态映射信息
+    <case value="4" resultType="EStudent">
+      <result column="juniorHighSchool" property="seniorHighSchool"/>
+    </case>
+
+   // 形式2: 通过resultMap设置动态映射信息
+   <case value="5" resultMap="dynamicRM"/>
+   <case value="6" resultMap="dynamicRM"/>
+  </discriminator>
+</resultMap>
+<resultMap id="dynamicRM" type="EStudent">
+  <result column="juniorHighSchool" property="seniorHighSchool"/>
+</resultMap>
+````
+注意：上面关于`discriminator元素`的`case元素`的`resultType属性`和`resultMap元素`的`type属性`，均不是直指返回的领域模型类型，而是指定根据判断条件后得到映射关系，可通过`id子元素`和`result子元素`重写映射关系。<br/>
+
+## 分页
+
+
+## 数据库第三范式和BCNF（修正的第三方式）
+**1. 第一范式（1NF）**<br/>
+  就是无重复字段，每个字段是不可再分隔的基本数据项。若出现重复字段则另建一张表并将重复字段归入新表中。<br/>
+具体表现为：<br/>
+1. 无重复字段<Br/>
+````
+// 符合1NF的
+字段1 字段2 字段3
+
+// 不符合1NF的
+字段1 字段1 字段2
+````
+2. 每个字段不可再分隔的基本数据项<br/>
+````
+// 符合1NF的
+字段1 字段2 字段3
+字段1 字段2 字段3
+
+// 不符合1NF的
+字段1 字段2 字段3
+字段1.1 字段1.2 字段3
+````
+对于有scheme的DBMS来说，没可能会出现将一个字段再拆分的情况。<br/>
+<br/>
+**2. 第二范式（2NF）**<br/>
+  就是主键（或主键组合）作为唯一标识，来区分每一个普通字段。对于主键组合，不会出现组合中某N个主键可以独立区分某部分字段，而其余主键则可以独立区分其余字段<br/>
+  术语为非主属性完全依赖候选键（候选键含1~N个主键）。<br/>
+````
+选课关系表
+学号, 姓名, 年龄, 课程名称, 成绩, 学分
+
+以学号+课程名称作为候选键
+````
+上述表是不符合2NF的，因为会出现如下的局部依赖。<br/>
+````
+课程名称 可独立区分 学分
+学号 可独立区分 姓名+年龄 
+````
+因此将其拆分为三个表就会符合2NF了。
+````
+学生表
+学号，姓名，年龄
+
+课程表
+课程名称，学分
+
+选课关联表
+学号，课程名称，成绩
+````
+不遵循2NF，则会出现数据冗余，引发数据不一致的情况。<br/>
+<br/>
+**3. 第三范式（3NF）**<br/>
+ 就是不会出现普通字段以非候选键来唯一区分的情况。<br/>
+ 术语为非主属性都不传递依赖于候选键的依赖。<br/>
+ 具体不符合3NFG的表现有两种:<br/>
+1. 表A除了将表B主键作为外键字段外，还包含表B其他字段<br/>
+2. 表A非候选键的字段可以唯一区分某部分非候选键的字段。<br/>
+````
+学生信息表
+学号, 姓名, 年龄, 所在学院, 学院地点, 学院电话
+
+学号为候选键
+````
+"学号"可唯一区分每条记录，但"所在学院"又可以唯一区分"学院地点"+"学院电话"，因此为符合3NF，则需要拆分为两个表。<br/>
+````
+学生信息表
+学号, 姓名, 年龄, 所在学院
+
+学院表
+所在学院, 学院地点, 学院电话
+````
+<br/>
+**4. BCNF(鲍依斯-科得范式) **<br/>
+ 就是不会出现普通字段和候选键下的字段以非候选键来唯一区分的情况。<br/>
+
+候选键含1~N个字段。<br/>
+
+## DBMS Scheme
+
 
 ## mybatis与Spring整合
