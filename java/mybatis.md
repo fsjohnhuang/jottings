@@ -697,6 +697,109 @@ public class EStudent{
 参考<br/>
 http://jacki6.iteye.com/blog/774889<br/>
 
+## INSERT
+属性：<br/>
+`databaseId`：取值范围oracle|mysql等，表示数据库厂家，元素内部可通过`<if test="_databaseId = 'oracle'">`来为特定数据库指定不同的sql语句<br/>
+`parameterType`：入参的全限定类名或类型别名<br/>
+`keyColumn`：设置数据表自动生成的主键名。对特定数据库（如PostgreSQL），若自动生成的主键不是第一个字段则必须设置<br/>
+`keyProperty`：默认值unset，用于设置getGeneratedKeys方法或selectKey子元素返回值将赋值到领域模型的哪个属性中<br/>
+`statementType`：取值范围STATEMENT,PREPARED（默认值）,CALLABLE<br/>
+`flushCache`：取值范围true(默认值)|false，设置执行该操作后是否会清空二级缓存和本地缓存<br/>
+`timeout`：默认为unset（依赖jdbc驱动器的设置），设置执行该操作的最大时限，超时将抛异常<br/>
+`useGeneratedKeys`：取值范围true|false(默认值)，设置是否使用JDBC的getGenereatedKeys方法获取主键并赋值到keyProperty设置的领域模型属性中。MySQL和SQLServer执行auto-generated key field，因此当数据库设置好自增长主键后，可通过JDBC的getGeneratedKeys方法获取。但像Oralce等不支持auto-generated key field的数据库就不能用这种方法获取主键了<br/>
+auto-generated key field<Br/>
+
+**1. 默认情况：返回值为插入的记录数目**<br/>
+mapper接口<br/>
+````
+int add(EStudent student);
+````
+mapper.xml<br/>
+````
+<insert id="add" parameterType="EStudent">
+  insert into TStudent(name, age) values(#{name}, #{age})
+</insert>
+````
+**2. 获取插入记录的主键值**<br/>
+mapper接口<br/>
+````
+int add(EStudent student);
+````
+当数据库支持auto-generated key field<br/>
+mapper.xml<br/>
+````
+<insert id="add" parameterType="EStudent" useGeneratedKeys="true" keyProperty="id">
+  insert into TStudent(name, age) values(#{name}, #{age})
+</insert>
+````
+或<br/>
+````
+<insert id="add" parameterType="EStudent">
+  // 下面是SQLServer获取最近一次插入记录的主键值的方式
+  <selectKey resultType="_long" keyProperty="id" order="AFTER">
+    select @@IDENTITY as id
+  </selectKey>
+  insert into TStudent(name, age) values(#{name}, #{age})
+</insert>
+````
+注意：mapper接口返回值依然是插入的记录数，而主键值已经赋值到领域模型实体的id中了。
+<br/>
+当数据库不支持auto-generated key field<br/>
+mapper.xml<br/>
+````
+<insert id="add" parameterType="EStudent">
+  <selectKey keyProperty="id" resultType="_long" order="BEFORE">
+    select CAST(RANDOM * 100000 as INTEGER) a FROM SYSTEM.SYSDUMMY1
+  </selectKey>
+  insert into TStudent(id, name, age) values(#{id}, #{name}, #{age})
+</insert>
+````
+**`<selectKey>子元素`**<br/>
+在insert元素和update元素中插入查询语句<Br/>
+其属性如下：
+`keyProperty`：默认值unset，用于设置getGeneratedKeys方法或selectKey子元素返回值将赋值到领域模型的哪个属性中<br/>
+`resultType属性`：keyPropety所指向的属性类全限定类名或类型别名<br/>
+`order属性`：取值范围BEFORE|AFTER，指定是在insert语句前还是后执行selectKey操作<br/>
+`statementType`：取值范围STATEMENT,PREPARED（默认值）,CALLABLE<br/>
+注意：selectKey操作会将操作查询结果赋值到insert元素的parameterType的入参实例下对应的属性中。并提供给insert语句使用<br/>
+<br/>
+**3. 批量插入**<br/> 
+方式1：<br/>
+````
+<insert id="add" parameterType="EStudent">
+  <foreach collection="list" item="item" index="index" separator=";">
+    INSERT INTO TStudent(name,age) VALUES(#{item.name}, #{item.age})
+  </foreach>
+</insert>
+````
+上述方式相当语句逐条INSERT语句执行，将出现如下问题：<br/>
+1. mapper接口的add方法返回值将是最一条INSERT语句的操作成功的记录数目（就是0或1），而不是所有INSERT语句的操作成功的总记录数目<br/>
+2. 当其中一条不成功时，不会进行整体回滚。<br/>
+方式2(仅限MSSQL)：<Br/>
+````
+<insert id="add" parameterType="EStudent">
+  WITH R AS
+  <foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
+    SELECT #{item.name} as a, #{item.age} as b
+  </foreach>
+  INSERT INTO TStudent(name,age) SELECT a, b FROM R
+</insert>
+````
+上述方式解决了方式1中的问题。但该方式仅限于MSSQL<Br/>
+方式3（通用方式）：<Br/>
+````
+<insert id="add" parameterType="EStudent">
+  INSERT INTO TStudent(name,age) 
+  <foreach collection="list" item="item" index="index" open="(" close=")" separator="union all">
+    SELECT #{item.name} as a, #{item.age} as b
+  </foreach>
+</insert>
+````
+该方式与方式2效果一样，而且不仅限于MSSQL<br/>
+
+## UPDATE操作
+
+
 ## DBMS Scheme
 
 
