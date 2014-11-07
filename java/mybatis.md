@@ -797,9 +797,6 @@ mapper.xml<br/>
 ````
 该方式与方式2效果一样，而且不仅限于MSSQL<br/>
 
-## UPDATE操作
-
-
 ## DBMS Scheme
 
 
