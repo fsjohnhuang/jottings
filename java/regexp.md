@@ -1,4 +1,4 @@
-#正则表达式
+﻿#正则表达式
 ## 包和类
 `java.util.regex.Pattern`：模式类，对正则表达式进行编译，效率高。<br/>
 静态方法<br/>
@@ -136,7 +136,74 @@ boolean matches(String regex);
 // 交集，字符d
 [a-d&&[def]]
 ````
+2. **反向引用**<br/>
+`\1`,`\2`.....<br/>
+示例——匹配'java'<br/>
+````
+String regex = "('|\")java\\1";
+String input = "'java'";
+input.matches(regex);
+````
+3. **正向预搜索**<br/>
+`子表达式A(?=子表达式B)`, 正向匹配(零宽先行断言)，表示字符串匹配子表达式A的子字符串右边必须匹配子表达式B才算子表达式A是匹配<br/>
+`子表达式A(?!子表达式B)`, 正向不匹配(零宽负向先行断言)，表示字符串匹配子表达式A的子字符串右边必须不匹配子表达式B才算子表达式A是匹配<br/>
+示例：<br/>
+````
+String regex = "\\w(?=\\w\\w)";
+String input = "test";
+Pattern r = Pattern.compile(regex);
+Matcher m = r.matcher(input);
+while(m.find()){
+ System.out.print(m.group());
+}
+// 输出te
+````
+4. **反向预搜索**<br/>
+`(?<=子表达式B)子表达式A`, 反向匹配(零宽后行断言)，表示字符串匹配子表达式A的子字符串左边必须匹配子表达式B才算子表达式A是匹配<br/>
+`(?<!子表达式B)子表达式A`, 反向不匹配(零宽负向后行断言)，表示字符串匹配子表达式A的子字符串左边必须不匹配子表达式B才算子表达式A是匹配<br/>
+````
+String regex = "(?<=\\w\\w)\\w";
+String input = "test";
+Pattern r = Pattern.compile(regex);
+Matcher m = r.matcher(input);
+while(m.find()){
+	System.out.println(m.group());
+}
+// 输出st
+````
+5. **分组**<br/>
+````
+// 自动命名分组（从1开始以数字来命名）
+(子表达式)
+
+// 命名分组
+(?<name>子表达式)
+
+// 不捕获分组
+(?:子表达式)
+
+// 注释分组，仅供人阅读，不参与匹配操作
+(?#注释)
+````
+6. **平衡组**<br/>
+用于匹配左右两边开始、结束符号数量相等的内容。<Br/>
+示例——萃取“<div>parent<div>child</div></div></div>”中开始结束标签对等的子字符串<br/>
+````
+String regex1 = "<div>.*</div>"; // 获取的是<div>parent<div>child</div></div></div>
+String regex2 = "((?'g'<div>.*?))+(?'-g'</div>)+"; // 获得的是<div>parent<div>child</div></div>
+````
+`(?'name'表达式A)`，当表达式A匹配成功时，则将一个占位符压栈。<br/>
+`(?'-name'表达式A)`，当表达式A匹配成功时，则从栈中的弹出一个占位符。<br/>
+`(?(name)yes表达式|no表达式)`，当name栈为空时，则使用yes表达式，否则使用no表达式匹配。<br/>
+`(?(name)yes表达式)`，当name栈为空时，则使用yes表达式，否则没有表达式匹配。<br/>
+`(?!)`，零宽负向先行断言，由于没有后缀表达式，试图匹配总是失败<br/>
 
 
-## 第三方增强
+
+## 参考
+http://deerchao.net/tutorials/regex/regex-1.htm
+http://www.cnblogs.com/kissdodog/archive/2013/04/25/3043122.html
+
+## 第三方（支持perl5正则写法）
 Jakarta-ORO<br/>
+http://archive.apache.org/dist/jakarta/oro/
