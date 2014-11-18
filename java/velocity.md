@@ -72,3 +72,95 @@
   ##其他操作语句
 #end
 ````
+逻辑运算符<br/>
+````
+== // 用于比较数字、字符串，类（将会调用类的toString()方法,然后比较其结果）
+!= // 用于比较数字、字符串，类（将会调用类的toString()方法,然后比较其结果）
+>
+<
+>=
+<=
+!
+````
+   [c]. 循环<br/>
+````
+#foreach($ref in arg)
+  ##其他操作语句
+#end
+````
+`ref`,为循环范围内有效的变量<br/>
+`arg`,可以为list、collection、map、array或这rang operator<br/>
+````
+#for($item in $items)
+#for($item in ["1","2"])
+#for($item in [1..2])
+````
+在循环体内通过`$foreach.count`获取当前循环的次数。<br/>
+通过设置配置项`directive.foreach.maxloops`可以限制循环次数，默认值为-1表示不限制。<br/>
+  [d]. 引入外部文件且不被解析处理<br/>
+````
+#include(arg[ arg]*)
+````
+`arg`, 是外部文件路径的字面量，或存储外部文件路径的引用。
+````
+#include($foo $bar)
+#include("other.vm" "next.txt")
+````
+  [e]. 引入外部文件并解析处理<Br/>
+````
+#parse(arg)
+````
+`arg`, 是外部文件路径的字面量，或存储外部文件路径的引用。
+````
+#parse($boo)
+#parse("other.vm")
+````
+由于存在递归引用的问题，因此可通过设置配置项`parse_directive.maxdepth`来限制最大递归引用次数,默认值为10.<br/>
+   [f]. 中止解析处理<br/>
+````
+#stop
+````
+中止后续内容被解析处理，一般用于调试。<br/>
+   [g].跳出当前流程<Br/>
+````
+#break
+````
+   [h]. 动态计算文本字面量<br/>
+````
+#evalute('#if(true)yes#{else}no#end')
+````
+   [i]. 打包一组VTL（不带参数）
+````
+#define($ref)
+  ## 其他语句
+#end
+````
+````
+## 调用
+$ref
+````
+   [j]. 打包一组VTL（带参数）
+````
+#marco(vmname [$arg]*)
+````
+`vmname`,宏名称<br/>
+`$arg`, 形参名。若实参和渲染上下文存在同名变量则使用实参。否则则哪个范围有该变量则使用该范围的<br/>
+````
+## 调用
+#vmname($arg1 $arg2)
+#vmname()
+````
+特殊形式：主题内容<br/>
+````
+## 定义
+#macro(vmname)
+$!bodyContent
+#end
+
+## 调用
+#@vmname()主题内容#end
+
+## 结果
+主题内容
+````
+
