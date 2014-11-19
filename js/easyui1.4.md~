@@ -1,4 +1,4 @@
-## 消息提示
+﻿## 消息提示
 **alert**<br/>
 ````
 /**
@@ -122,13 +122,59 @@ buttons: [{
   }
 }]
 ````
+3. 从父类window继承过来重要的属性<br/>
+````
+modal: {Booelean}modal，是否启动模态模式,默认为false
+shadow: {Boolean}shadow, 是否显示阴影, 默认为true
+````
+4. 从父类panel继承过来重要的属性<Br/>
+fit: {Boolean}fit,是否自动适应父容器大小，默认值为false
+tools: {String}selector|{Array}tools, 自定义工具按钮，设置方式与toolbar一样，但显示在对话框的左上角。
+href: {String}href,对话框内容通过href加载来。注意：由于是通过XHR请求的，因此需要遵守同源策略。
+cache: {Boolean}cache,是否缓冲通过href加载来的内容，默认值为true
+queryParams: {Object}queryParams，内容加载的href的querystring键值对
+method: {DOM String}请求方式，默认为get
+loader: {Function}loader(param, success(data),error())，内容加载器，可重写该方法实现自定义的内容加载方式，而不使用XHR来请求内容
+````
 **获取对话框对象**<br/>
 ````
 var dialog = $('#dd').dialog('dialog');
 ````
 
-
 ## 布局
+1. **layout**<br/>
+````
+<div class="easyui-layout">
+  <div data-options="region:'north'">可选</div>
+  <div data-options="region:'west'">可选</div>
+  <div data-options="region:'center'">必须</div>
+  <div data-options="region:'east'">可选</div>
+  <div data-options="region:'south'">可选</div>
+</div>
+````
+2. **accordion**<br/>
+````
+<div class="easyui-accordion">
+  <div data-options="title:'title1'"></div>
+  <div data-options="title:'title2',selected:true"></div>
+</div>
+````
+3. **tabs**<br/>
+````
+<div class="easyui-tabs">
+  <div data-options="title:'title1'"></div>
+  <div data-options="title:'title2',selected:true"></div>
+</div>
+````
+tabs布局的属性<br/>
+````
+tools: {String} selector|{Array} tools, 容器右上方或左上方的工具栏
+toolPosition: {String} position, 工具栏位置，有效取值范围left|right
+tabPosition: {String} position, tab按钮位置，有效取值范围top|left|right|bottom
+````
+动态创建tab<br/>
+````
+````
 
 ## 菜单
 
