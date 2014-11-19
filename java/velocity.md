@@ -23,6 +23,7 @@
 ````
  3. **reference**<br/>
  reference(引用)以`$`符号开始，可引用渲染上下文的变量、属性、方法(名称必须以字母为开头，且仅由英文、数字、_和-组成)。并且分为常规写法和正式写法两种引入格式<br/>
+ 注意：VTL中可以使用的类型多样且均为对象类型（int等会被装箱），但最终输出时会调用`toString()`方法获取字符串值。<br/>
  [a]. **变量**<br/>
   `$变量名`, 常规写法，若渲染上下文中没有对应的变量，则输入字符串"$变量名"<br/> 
   `${变量名}`, 常规写法，若渲染上下文中没有对应的变量，则输入字符串"${变量名}"<br/> 
@@ -34,8 +35,10 @@
  [c]. **方法**<br/>
   `$变量名.方法(入参)`, 常规写法<br/> 
   `${变量名.方法(入参)}`, 正规写法<br/> 
-  入参的数据类型为"变量、属性或方法引用"，"数字类型"，"文本字面量"，"布尔字面量"，"list字面量","map字面量","范围操作"<Br/>
+  入参的数据类型为"变量、属性或方法引用"，"数字类型"，"文本字面量"，"布尔字面量"，"list字面量","map字面量","范围操作(如:[1..3]或[$arg1..$arg2])"<Br/>
   注意：当方法名形如`getMethod(入参)`或`setMethod(入参)`时，可以缩写为`Method(入参)`来引用；若没有入参则直接以属性方式`method`来引用。<Br/>
+  注意：版本1.6后，对于数组引用可以调用其的`isEmpty()`,`size()`,`get(Integer index)`和`set(Integer index, String val)`的方法操作。<br/>
+  而且接受可变入参的方法（如public String test(String[]... args){}）<Br/>
  4. **directive**<Br/>
  [a]. `#set($ref=arg)`:向渲染上下文添加变量，或修改已有变量的值。<Br/>
     `ref`: 必须为变量或对象属性。如`name`或`person.name`<br/>
@@ -61,6 +64,13 @@
 #set($new = {"banana":"good","apple":"very godd"})
 // 支持+-*/%的运算
 #set($new = 1 + $old)
+````
+注意：若赋予的值为null或undefined，则会保留变量或属性引用的原值。<Br/>
+````
+#set($test = "hello")
+$test
+#set($test = $dummy)
+$test
 ````
   [b]. 条件判断<br/>
 ````
@@ -163,4 +173,21 @@ $!bodyContent
 ## 结果
 主题内容
 ````
+## 转义符
+通过`\`对`$`和`#`进行转义，导致解析器不对其进行解析处理。<br/>
+````
+#set($test='hello')
+$test ## 结果：hello
+\$test ## 结果：$test
+\\$test ## 结果：\hello
+\\\$test ## 结果：\$test
 
+$!test ## 结果：hello
+$\!test ## 结果：$!test
+$\\!test ## 结果：$\!test
+$\\\!test ## 结果：$\\!test
+````
+## 严格模式
+
+## 参考
+http://velocity.apache.org/engine/devel/user-guide.html#Velocimacros
