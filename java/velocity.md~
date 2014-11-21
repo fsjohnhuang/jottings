@@ -102,8 +102,8 @@ $test
 `arg`,可以为list、collection、map、array或这rang operator<br/>
 ````
 #foreach($item in $items)
-#foreach($item in ["1","2"])
-#foreach($item in [1..2])
+#forearch($item in ["1","2"])
+#forearch($item in [1..2])
 ````
 在循环体内通过`$foreach.count`获取当前循环的次数。<br/>
 通过设置配置项`directive.foreach.maxloops`可以限制循环次数，默认值为-1表示不限制。<br/>

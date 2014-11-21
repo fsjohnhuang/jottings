@@ -1,0 +1,7 @@
+#`java.util.Enumeration`
+#`java.util.Iterator`
+#`java.util.Iterable`
+#`java.util.Collection`
+#`java.util.Map`
+#`java.util.Vector`
+
