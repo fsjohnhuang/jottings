@@ -1,0 +1,17 @@
+#interface
+接口定义静态字段<br/>
+````
+public interface Engine{
+  String AUTHRO = "fsjohnhuang";
+  int VERSION = 1;
+}
+public class TurboEngineImpl 
+  implements Engine{
+  public String getAuthor(){
+    return TurboEngineImpl.AUTHOR;
+  }
+  public int getVer(){
+    return TurboEngineImpl.VERSION;
+  }
+}
+````

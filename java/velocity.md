@@ -236,6 +236,32 @@ t.merge(ctx, sw);
 System.out.println(sw.toString());
 ````
 两种方式均位于`org.apache.velocity.app包`下。<br/>
+**`org.apache.velocity.app.Velocity`详解**<br/>
+提供resource,logging和其他services。仅第一个配置有效，后续配置将被忽略<br/>
+这是由于`org.apache.velocity.runtime.RuntimeInstance`实例内部通过`initialized`字段作标记，当为true时则不再执行初始化工作。<br/>
+与初始化相关的方法<Br/>
+````
+// 设置配置项，入参o一般为字符串，若多个值时则使用逗号分隔，如：val1,val2
+setProperty(String key, Object o)
+// 获取配置项
+Object getProperty(String key)
+// 使用默认的配置项
+init()
+// 自定义配置项
+init(Properties props)
+init(String filename)
+````
+与渲染模板相关的方法<br/>
+````
+evaluate(Context ctx, Writer out, String logTag, String instring)
+evaluate(Context ctx, Writer out, String logTag, InputStream instream)
+invokeVelocimacro(String vmName, String namespace, String params[], Context ctx, Writer writer)
+mergeTemplate(String templateName, Context ctx, Writer writer)
+boolean tempateExists(String name)
+````
+
+**`org.apache.velocity.app.VelocityEngine`详解**<br/>
+
 
 ## 渲染上下文对象`VelocityContext`
 特殊情况下可以自行继承`org.apache.velocity.context.AbstractContext`和`java.lang.Cloneable`来自定义上下文对象。<br/>
@@ -334,6 +360,68 @@ System.out.println(map.get("a")); // a1
 模板中`[1..2]`和`[0,1,2]`对应java的java.util.ArrayList<br/>
 模板中`{a:"a",b:"b"}`对应java的java.util.Map<br/>
 若java方法中的入参类型为int，则模板调用时会自动拆箱。<br/>
+
+**解构`VelocityContext`**<Br/>
+内置一个`HashMap context`对象，而其实现的方法（注意：VelocityContext实现的方法并不是我们经常用到的方法）主要就是操作该HashMap对象。我们常用的`put(String key, Object obj)`和`get(String key)`是由父类AbstractContext提供的。<br/>
+
+VelocityContext继承自AbstractContext，采用子类进行具体实现，而父类提供对外接口的设计模式。<br/>
+````
+// VelocityContext实现如下方法
+internalGet(String key);
+internalPut(String key, Object value);
+````
+AbstractContext内置一个`HashMap innerContext`对象，而其实现的`put`、`get`等方法就是维护该HashMap对象和调用子实现类VelocityContext的internal*方法维护子类的HashMap对象。<br/>
+AbstractContext源码：<br/>
+````
+public Object put(String key, Object value)
+{
+     /*
+      * don't even continue if key is null
+      */
+     if (key == null)
+     {
+         return null;
+     }
+        
+     return internalPut(key.intern(), value);
+}
+public Object get(String key)
+{
+/*
+ *  punt if key is null
+ */
+
+if (key == null)
+{
+    return null;
+}
+
+/*
+ *  get the object for this key.  If null, and we are chaining another Context
+ *  call the get() on it.
+ */
+
+Object o = internalGet( key );
+
+// 当在子类的HashMap对象中找不到值时，再去父类的HashMap对象中找。而不像jQuery.extend那样首先合并对象。
+if (o == null && innerContext != null)
+{
+    o = innerContext.get( key );
+}
+
+return o;
+}
+// 仅删除子类的HashMap对象的键值
+public Object remove(Object key)
+{
+    if (key == null)
+    {
+        return null;
+    }
+
+    return internalRemove(key);
+}
+````
 
 ## 设置模板文件路径的参考系
 配置`file.resource.loader.path`配置项

@@ -378,3 +378,13 @@ public class Test{
 子类的非静态代码块
 子类的构造函数
 ````
+
+## 访问权限控制符
+`private`，仅本类可见<Br/>
+`default`，包内的可见。<Br/>
+`protected`，派生类、包内的均可见。<Br/>
+`public`，均可见。<Br/>
+`com.test`和`com.test.sub`就是两个不同的包了。<Br/>
+
+`volatile`, 作用对象——字段
+`transient`,作用对象——字段，表示该字段非序列化的一部分，因此在对对象进行序列化时将忽略该字段。（对象继承了Serializable才可以被序列化）<br/>
