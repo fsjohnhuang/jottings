@@ -411,7 +411,7 @@ if (o == null && innerContext != null)
 
 return o;
 }
-// 仅删除子类的HashMap对象的值
+// 仅删除子类的HashMap对象的键值
 public Object remove(Object key)
 {
     if (key == null)

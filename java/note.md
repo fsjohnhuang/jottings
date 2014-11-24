@@ -388,3 +388,86 @@ public class Test{
 
 `volatile`, 作用对象——字段
 `transient`,作用对象——字段，表示该字段非序列化的一部分，因此在对对象进行序列化时将忽略该字段。（对象继承了Serializable才可以被序列化）<br/>
+
+##serialVersionUID作用
+用于标识可序列化的类的版本号，从而为升级类提供向后兼容。<br/>
+由于增加新功能相应会修改数据存储结构，和操作方式。因此需要通过标识来告知JVM，新的数据存储结构将向后兼容哪个旧数据存储结构。<br/>
+格式：<br/>
+````
+// xxxxL默认值为1L，或由类名、接口名、成员方法及属性等生成一个64位的哈希字段
+private static final long serialVersionUID = xxxxL;
+````
+示例——升级类字段：<Br/>
+````
+// 旧类结构
+public class Student implements Serializable{
+  public String name;
+}
+// 通过序列化类实例保存数据
+public static void main(String[] args) {
+String path = "d:\\fsjohnhuang";
+Student student;
+File file = new File(path);
+if (file.exists()){
+	try{
+		ObjectInputStream i = new ObjectInputStream(new FileInputStream(file));
+		try {
+			student = (Student)i.readObject();
+			i.close();
+			System.out.println(student.name);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	catch(IOException e){
+		e.printStackTrace();
+	}
+}
+else{
+	Student s = new Student();
+	s.name = "fsjohnhuang";
+	try{
+		FileOutputStream f = new FileOutputStream(path);
+		ObjectOutputStream oos = new ObjectOutputStream(f);
+		oos.writeObject(s);
+		oos.close();
+	}
+	catch(IOException e){
+		e.printStackTrace();
+	}
+}
+}
+````
+````
+// 升级类结构
+public class Student implements Serializable{
+  public String name;
+  public String job;
+}
+````
+````
+java.io.InvalidClassException: test.Student; local class incompatible: stream classdesc serialVersionUID = -5146966692207647240, local class serialVersionUID = 3342270250827728547
+	at java.io.ObjectStreamClass.initNonProxy(Unknown Source)
+	at java.io.ObjectInputStream.readNonProxyDesc(Unknown Source)
+	at java.io.ObjectInputStream.readClassDesc(Unknown Source)
+	at java.io.ObjectInputStream.readOrdinaryObject(Unknown Source)
+	at java.io.ObjectInputStream.readObject0(Unknown Source)
+	at java.io.ObjectInputStream.readObject(Unknown Source)
+	at test.Daemon.main(Daemon.java:42)
+````
+由于两个类的serialVersionUID不同，因此以旧类结构保存的数据将无法反序列化。通过定义固定的serialVersionUID，以旧类结构保存的数据将被成功反序列化。<br/>
+````
+// 旧结构
+public class Student implements Serializable{
+  private final static long serialVersionUID = 1L;
+  public String name;
+}
+// 新结构
+public class Student implements Serializable{
+  private final static long serialVersionUID = 1L;
+  public String name;
+  public String job;
+````
+
+
+

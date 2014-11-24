@@ -422,7 +422,6 @@ public Object remove(Object key)
     return internalRemove(key);
 }
 ````
-
 ## 设置模板文件路径的参考系
 配置`file.resource.loader.path`配置项
 
