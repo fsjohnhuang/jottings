@@ -1,0 +1,121 @@
+## 滤镜
+````
+<div class="filter" style="background:url(demo.jpg) no-repeat;width:300px;height:300px">
+hello there~
+</div>
+````
+1. **透明(opacity)**<br/>
+````
+// CSS3
+// FF下文字(Content)和背景(background）均会启效果
+.filter{
+  opacity: 0.5 //取值范围0~1
+}
+````
+2. **灰度(greyscale)**<br/>
+使图片变灰<Br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为1时灰度最大
+  filter: grayscale(1);
+  -webkit-filter: grayscale(1);
+  -o-filter: grayscale(1);
+  -ms-filter: grayscale(1);
+  -moz-filter: grayscale(1);
+}
+````
+3. **模糊(blur)**<br/>
+使图片变模糊<Br/>
+````
+// CSS3
+.filter{
+  // 属性值为pixel,表示模糊圆形的半径
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  -moz-filter: blur(2px);
+}
+````
+3. **棕褐色(sepia)**<br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为1和100%时效果最大
+  filter: sepia(1);
+  -webkit-filter: sepia(1);
+  -o-filter: sepia(1);
+  -ms-filter: sepia(1);
+  -moz-filter: sepia(1);
+}
+````
+4. **亮度(brightness)**<br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为1和100%时为原来的效果
+  filter: brightness(1);
+  -webkit-filter: brightness(1);
+  -o-filter: brightness(1);
+  -ms-filter: brightness(1);
+  -moz-filter: brightness(1);
+}
+````
+5. **对比度(contrast)**<br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为1和100%时为原来的效果
+  filter: contrast(1);
+  -webkit-filter: contrast(1);
+  -o-filter: contrast(1);
+  -ms-filter: contrast(1);
+  -moz-filter: contrast(1);
+}
+````
+6. **底片效果(invert)**<br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为0和0%时为原来的效果
+  filter: invert(1);
+  -webkit-filter: invert(1);
+  -o-filter: invert(1);
+  -ms-filter: invert(1);
+  -moz-filter: invert(1);
+}
+````
+7. **饱和度(saturate)**<br/>
+````
+// CSS3
+.filter{
+  // 属性值为分数或百分比,为1和100%时为原来的效果,0为删除所有颜色
+  filter: saturate(1);
+  -webkit-filter: saturate(1);
+  -o-filter: saturate(1);
+  -ms-filter: saturate(1);
+  -moz-filter: saturate(1);
+}
+````
+8. **色相旋转(hue rotate)**<br/>
+用于对图片的色彩进行重组<br/>
+````
+// CSS3
+.filter{
+  // 属性值为0到360deg，0为原值
+  filter: hue-rotate(180deg);
+  -webkit-filter: hue-rotate(180deg);
+  -o-filter: hue-rotate(180deg);
+  -ms-filter: hue-rotate(180deg);
+  -moz-filter: hue-rotate(180deg);
+}
+````
+9. **线性渐变(linear gradient)**<br/>
+
+
+
+
+## 参考
+http://www.zhanxin.info/development/2012-12-19-css-filter.html#tag1
+http://blog.csdn.net/hfahe/article/details/7104496
