@@ -12,7 +12,7 @@ hello there~
   opacity: 0.5 //取值范围0~1
 }
 ````
-2. **灰度(grayscale)**<br/>
+2. **灰度(greyscale)**<br/>
 使图片变灰<Br/>
 ````
 // CSS3

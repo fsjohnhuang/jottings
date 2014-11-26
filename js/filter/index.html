@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style type="text/css">
+      .clearfix{
+        clear: both;
+      }
+      pre,code{
+        border: solid 1px #888;
+        border-radius: 5px 5px;
+        background-color: #eee;
+        line-height: 30px;
+        color: #66f;
+        padding: 5px;
+      }
+      .ref{
+        display: block;
+      }
+      ul>li{
+        margin-bottom: 10px;
+      }
+      .title{
+        font-size: 20px;
+        font-weight: bolder;
+      }
+      .subtitle{
+        font-size: 18px;
+        font-weight: bolder;
+      }
+      .itemtitle{
+        font-size: 16px;
+        font-weight: bolder;
+      }
+      .fixture{
+        background: url(./mm.jpg); 
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .inline{
+        float:left;
+        margin-left: 10px;
+      }
+      .txt{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  	<style type="text/css">
+  		.opacity{
+        -webkit-opacity: 0.5;
+        -o-opacity: 0.5;
+        -moz-opacity: 0.5;
+        -ms-opacity: 0.5;
+        opacity: 0.5;
+
+        filter:alpha(opacity=50); /*IE5~9*/
+  		}
+      .rgba{
+        background-color: rgba(255,0,0,0.2);
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+      }
+  		.sepia{
+        color: #F00;
+
+  			-webkit-filter: sepia(100%);
+        -moz-filter:sepia(100%);
+        -o-filter: sepia(100%);
+        -ms-filter: sepia(100%);
+        filter: sepia(100%);  
+  		}
+  		.grayscale{
+        color: #F00;
+
+  			-webkit-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        filter: grayscale(100%);  
+  		}
+  		.blur{
+  			color: #F00;
+
+  			filter: url(blur.svg#blur); /*FF,Chrome,Opera*/
+
+  			-webkit-filter: blur(1px);
+  			-moz-filter: blur(1px);
+  			-o-filter: blur(1px);
+  			-ms-filter: blur(1px);
+        filter: blur(1px);  /*Chrome,Opera*/
+
+  			filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=1, MakeShadow=false);
+  		}
+      .invert{
+        color: #F00;
+
+        -webkit-filter: invert(1);
+        -moz-filter: invert(1);
+        -o-filter: invert(1);
+        -ms-filter: invert(1);
+        filter: invert(1);  /*Chrome,Opera*/
+      }
+      .saturate{
+        color: #F00;
+
+        -webkit-filter: saturate(200%);
+        -moz-filter: saturate(200%);
+        -o-filter: saturate(200%);
+        -ms-filter: saturate(200%);
+        filter: saturate(200%);  /*Chrome,Opera*/
+      }
+      .contrast{
+        color: #F00;
+
+        -webkit-filter: contrast(200%);
+        -moz-filter: contrast(200%);
+        -o-filter: contrast(200%);
+        -ms-filter: contrast(200%);
+        filter: contrast(200%);  /*Chrome,Opera*/
+      }
+      .brightness{
+        color: #F00;
+
+        -webkit-filter: brightness(200%);
+        -moz-filter: brightness(200%);
+        -o-filter: brightness(200%);
+        -ms-filter: brightness(200%);
+        filter: brightness(200%);  /*Chrome,Opera*/
+      }
+      .hue-rotate{
+        color: #F00;
+
+        -webkit-filter: hue-rotate(200deg);
+        -moz-filter: hue-rotate(200deg);
+        -o-filter: hue-rotate(200deg);
+        -ms-filter: hue-rotate(200deg);
+        filter: hue-rotate(200deg);  /*Chrome,Opera*/
+      }
+      .drop-shadow{
+        color: #F00;
+
+        -webkit-filter: drop-shadow(5px 5px 0px #333);
+        -moz-filter: drop-shadow(5px 5px 0px #333);
+        -o-filter: drop-shadow(5px 5px 0px #333);
+        -ms-filter: drop-shadow(5px 5px 0px #333);
+        filter: drop-shadow(5px 5px 0px #333);  /*Chrome,Opera*/
+      }
+      .box-shadow{
+        color: #F00;
+
+        -moz-box-shadow: 5px 5px 5px #333;
+        -webkit-box-shadow: 5px 5px 5px #333;
+        -o-box-shadow: 5px 5px 5px #333;
+        -ms-box-shadow: 5px 5px 5px #333;
+        box-shadow: 5px 5px 5px #333;
+      }
+      .IE-shadow{
+        color: #F00;
+
+        background: #ffffa2;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Color='#eeeeee',Direction=45,Strength=7);
+      }
+      .border-radius{
+        border: solid 10px #e00;
+
+        -webkit-border-radius: 10px;  
+        -o-border-radius: 10px;  
+        -ms-border-radius: 10px;  
+        -moz-border-radius: 10px;  
+        border-radius: 10px;  
+      }
+      .border-inner-radius{
+        border: solid 10px #e00;
+
+        -webkit-border-radius: 15px;  
+        -o-border-radius: 15px;  
+        -ms-border-radius: 15px;  
+        -moz-border-radius: 15px;  
+        border-radius: 15px;  
+      }
+      .text-shadow{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:50px;
+        font-weight: bold;
+        color: #eee;
+        background: #666;
+        letter-spacing: 5px;
+        text-shadow: 4px 4px 0 #666, 6px 6px 0 #ccc; 
+      }
+  	</style>
+  </head>
+  <body>
+  	<ul>
+  		<li>
+  			<span class="title">透明(Opacity)</span>
+  			<ol>
+  				<li><span class="subtitle">CSS3</span>
+            <ul>
+              <li> 
+                <span class="itemtitle">opacity:属性值</span>，属性值，属性值范围为0-1。1为无效果，0为透明。
+              </li>
+              <li> 
+                <span class="itemtitle">rgba(r,g,b,a)</span>，若是纯色的透明可使用<code>rgba(r,g,b,a)</code>设置透明状态。通过该方式设置的透明状态仅作用与指定的样式本身（如border,background-color,color等），而不会作用与元素整体及其子元素上。
+                <ul>
+                  <li>
+                    <code>r</code>，红色，取值范围0-255
+                  </li>
+                  <li>
+                    <code>g</code>，绿色，取值范围0-255
+                  </li>
+                  <li>
+                    <code>b</code>，蓝色，取值范围0-255
+                  </li>
+                  <li>
+                    <code>a</code>，透明度，取值范围0-1
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><span class="subtitle">IE5~8</span>
+            <ul>
+              <li> 
+                <span class="itemtitle">filter:alpha(opacity=属性值)</span>，属性值，属性值范围为0-100。100为无效果，0为透明。
+              </li>
+            </ul>
+          </li>
+  			</ol>
+		  	<div class="inline fixture opacity">
+		  		<div class="txt">
+		  			Opacity
+		  		</div>
+		  	</div>
+        <div class="inline rgba">
+          <div class="txt">
+            RGBA
+          </div>
+        </div>
+        <div class="clearfix"></div>
+	  	</li>
+  		<li>
+  			<span class="title">粽褐色(Sepia)</span>
+  			<ol>
+  				<li>CSS3中通过filter:sepia(属性值)，属性值范围为0-1或0-100%。0为无效果，1或100%为最大效果。</li>
+  			</ol>
+		  	<div class="fixture sepia">
+		  		<div class="txt">
+		  			Sepia
+		  		</div>
+		  	</div>
+	  	</li>
+	  	<li>
+  			<span class="title">灰度图(Grayscale)</span>
+  			<ol>
+  				<li>CSS3中通过filter:grayscale(属性值)，属性值范围为0-1或0-100%。0为无效果，1或100%为最大效果。</li>
+  			</ol>
+		  	<div class="fixture grayscale">
+		  		<div class="txt">
+		  			Grayscale
+		  		</div>
+		  	</div>
+	  	</li>
+	  	<li>
+  			<span class="title">模糊(Blur)</span>
+  			<ol>
+  				<li><span class="subtitle">CSS3</span>——通过filter:blur(属性值)，属性值为pixel值，表示以元素中心为圆心，模糊的半径范围。0为无效果。</li>
+  				<li><span class="subtitle">IE滤镜</span>——filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=不带单位的半径值, MakeShadow=false)</li>
+  				<li><span class="subtitle">SVG</span>——filter:url(blur.svg#blur)</li>
+  			</ol>
+		  	<div class="fixture blur">
+		  		<div class="txt">
+		  			Blur
+		  		</div>
+		  	</div>
+	  	</li>
+	  	<li>
+  			<span class="title">底片效果(Invert)</span>
+  			<ol>
+  				<li><span class="subtitle">CSS3</span>——通过filter:invert(属性值)，属性值范围为0-1或0-100%。0为无效果，1或100%为最大效果。</li>
+  			</ol>
+		  	<div class="fixture invert">
+		  		<div class="txt">
+		  		  Invert	
+		  		</div>
+		  	</div>
+	  	</li>
+      <li>
+        <span class="title">饱和度(Saturate)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>——通过filter:saturate(属性值)，属性值为百分比或数字,值大于等于0即可。1为无效果，0为灰度图。</li>
+        </ol>
+        <div class="fixture saturate">
+          <div class="txt">
+            Saturate  
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="title">对比度(Contrast)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>——通过filter:contrast(属性值)，属性值为百分比或数字,值大于等于0即可。1为无效果。</li>
+        </ol>
+        <div class="fixture contrast">
+          <div class="txt">
+            Contrast
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="title">亮度(Brightness)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>——通过filter:brightness(属性值)，属性值为百分比或数字,值大于等于0即可。1为无效果。</li>
+        </ol>
+        <div class="fixture brightness">
+          <div class="txt">
+            Brightness
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="title">色相旋转(Hue Rotate)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>——通过filter:hue-rotate(属性值)，属性值为0deg-360deg,默认值为0deg。</li>
+        </ol>
+        <div class="fixture hue-rotate">
+          <div class="txt">
+            Hue Rotate
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="title">阴影(Drop Shadow)</span>
+        <ol>
+          <li>
+            <span class="subtitle">CSS3</span>
+            <ul>
+              <li> 
+                <span class="itemtitle">drop-shadow滤镜(仅Chrome支持)</span>，通过<code>filter:drop-shadow(x-offset y-offset 阴影模糊半径 阴影颜色)</code>
+                 <ul>
+                  <li>
+                    <span class="itemtitle">注意点：</span>
+                    <ol>
+                      <li>
+                        投影的外观受到<code>border-radius样式</code>的影响。
+                      </li>
+                      <li>
+                        <code>:after</code>和<code>:before</code>等伪元素继承投影的效果
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <span class="itemtitle">REFERENCE</span>
+                  </li>
+                </ul>
+              </li>
+              <li> 
+                <span class="itemtitle">box-shadow样式</span>，通过<code>box-shadow: 投影方式(inset) X轴偏移量(x-offset) Y轴偏移量(y-offset) 阴影模糊半径(blur-radius) 阴影扩展半径(spread-radius) 阴影颜色(color)</code>，可同时使用各个投影，多个投影设置间使用逗号(,)分隔。
+                <ul>
+                  <li>
+                    <code>投影方式(inset)</code>，可选属性（默认为外阴影），设置为inset时表示内阴影。
+                  </li>
+                  <li>
+                    <code>X轴偏移量(x-offset)</code>，正值表示阴影位于对象的右边，负值表示阴影位于对象的左边。
+                  </li>
+                  <li>
+                    <code>Y轴偏移量(y-offset)</code>，正值表示阴影位于对象的底部，负值表示阴影位于对象的顶部。
+                  </li>
+                  <li>
+                    <code>阴影模糊半径(blur-radius)</code>，可选属性（默认为0，没有模糊效果），值范围>=0。
+                  </li>
+                  <li>
+                    <code>阴影扩展半径(spread-radius)</code>，可选属性，正值表示阴影扩展，负值表示阴影缩小。
+                  </li>
+                  <li>
+                    <code>颜色(color)</code>，可选属性(默认值又浏览器决定, Webkit内核的为透明)
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <span class="itemtitle">注意点：</span>
+                    <ol>
+                      <li>
+                        投影的外观受到<code>border-radius样式</code>的影响。
+                      </li>
+                      <li>
+                        <code>:after</code>和<code>:before</code>等伪元素不继承投影的效果
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <span class="itemtitle">REFERENCE</span>
+                    <a class="ref" target="_blank" href="http://www.w3cplus.com/content/css3-box-shadow">CSS3 box-shadow</a>
+                    <a class="ref" target="_blank" href="http://www.w3cplus.com/css3/css3-box-shadows-unnoticed-spread">Box-shadow常被遗忘的一个参数——“spread”</a>
+                    <a class="ref" target="_blank" href="http://www.w3cplus.com/css3/box-drop-down-shadow-with-css3">CSS3 制作Drop Shadow效果</a>
+                  </li>
+                </ul>
+              </li>
+          </li>
+          <li>
+            <span class="subtitle">IE6~8</span>
+            <ul>
+              <li> 
+                <span class="itemtitle">IE滤镜</span>，
+                <code>filter:progid:DXImageTransform.Microsoft.Shadow(color=颜色值,direction=阴影角度,strength=阴影半径)</code>
+                <ul>
+                  <li>
+                    <code>颜色值</code>必须使用#000000格式，而不能使用#000的格式
+                  </li>
+                  <li>
+                    <code>阴影角度</code>，取值范围[0,45,90,135,180,225,270,315,360]
+                  </li>
+                  <li>
+                    <code>阴影半径</code>，取值范围>=0
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <span class="itemtitle">注意点：</span>
+                    <ol>
+                      <li>
+                        必须配合<code>backgroud</code>才有效果
+                      </li>
+                    </ol>
+                  </li>
+                  <li>
+                    <span class="itemtitle">REFERENCE</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <div class="inline fixture border-radius drop-shadow">
+          <div class="txt">
+            Drop Shadow
+          </div>
+        </div>
+        <div class="inline fixture border-radius box-shadow">
+          <div class="txt">
+            box-shadow
+          </div>
+        </div>
+        <div class="inline IE-shadow">
+          <div class="txt">
+            IE-shadow
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </li>
+       <li>
+        <span class="title">圆角(border-radius)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>, 通过<code>border-radius: top-left-radius top-right-raduis bottom-right-radius bottom-left-radius [/ top-left-radius top-right-raduis bottom-right-radius bottom-left-radius]</code>
+            <ul>
+              <li>
+                <code>/前</code>设置各个角的水平外半径,<code>/后</code>设置各个角的垂直外半径。若仅有<code>/前</code>则一次性设置各个角的水平、垂直外半径。
+              </li>
+              <li>
+                当属性值小于4时，则才采用对角设置法。如设置为<code>border-radius:5px 10px</code>则表示top-left和bottom-right的外半径为5px，而top-right和bottom-left的外半径为10px
+              </li>
+              <li>
+                <span>逐个角设置</span><br/>
+                <code>border-top-left-radius: 水平半径 垂直半径;</code><br/>
+                <code>border-top-right-radius: 水平半径 垂直半径;</code><br/>
+                <code>border-bottom-left-radius: 水平半径 垂直半径;</code><br/>
+                <code>border-bottom-right-radius: 水平半径 垂直半径;</code><br/>
+              </li>
+              <li>
+                <span class="subtitle">内半径</span>，
+                <code>内半径=外半径-边宽 >= 0 ? 外半径-边宽 : 0</code>。因此当且仅当外半径大于边宽时，才能看到内半径。
+              </li>
+              <li>
+                <span class="subtitle">注意：</span>
+                <ol>
+                  <li>
+                    对img元素使用<code>border-radius</code>设置含内半径的圆角，Safari5.0、Google Chrome 10.0、Opera11.1和FF4.0以下会无法出现内半径，而FF4.0则会出现内半径
+                  </li>
+                  <li>
+                    对table元素使用<code>border-radius</code>设置圆角，当table的border-collapse为collapse时，无法效果。仅border-collapse为separate时才有效果
+                  </li>
+                </ol>
+              </li>
+              <li>
+                    <span class="itemtitle">REFERENCE</span>
+                    <a class="ref" target="_blank" href="http://www.w3cplus.com/node/48">CSS3的圆角Border-radius</a>
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <div title="外半径" class="inline fixture border-radius">
+          <div class="txt">
+            Border Radius 
+          </div>
+        </div>
+        <div title="内半径" class="inline fixture border-inner-radius">
+          <div class="txt">
+            Inner Radius 
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </li>
+      <li>
+        <span class="title">文字阴影(Text Shadow)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>，<code>text-shadow:x-offset y-offset blur-radius color</code>,多组阴影间使用逗号(,)间隔开来</li>
+        </ol>
+        <div class="text-shadow">
+            TEXT
+        </div>
+      </li>
+      <li>
+        <span class="title">线性渐变(Linear Gradient)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>，<code>text-shadow:x-offset y-offset blur-radius color</code>,多组阴影间使用逗号(,)间隔开来</li>
+        </ol>
+        <div class="linear-gradient">
+        </div>
+      </li>
+      <li>
+        <span class="title">径向渐变(Radial Gradient)</span>
+        <ol>
+          <li><span class="subtitle">CSS3</span>，<code>text-shadow:x-offset y-offset blur-radius color</code>,多组阴影间使用逗号(,)间隔开来</li>
+        </ol>
+        <div class="linear-gradient">
+        </div>
+      </li>
+	 </ul>
+  </body>
+</html>
