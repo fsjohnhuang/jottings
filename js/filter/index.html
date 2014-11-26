@@ -54,8 +54,8 @@
         font-weight: bold;
       }
     </style>
-  	<style type="text/css">
-  		.opacity{
+    <style type="text/css">
+      .opacity{
         -webkit-opacity: 0.5;
         -o-opacity: 0.5;
         -moz-opacity: 0.5;
@@ -63,7 +63,7 @@
         opacity: 0.5;
 
         filter:alpha(opacity=50); /*IE5~9*/
-  		}
+	}
       .rgba{
         background-color: rgba(255,0,0,0.2);
         width: 160px;
@@ -73,37 +73,37 @@
         font-size: 20px;
         font-weight: bold;
       }
-  		.sepia{
+  	.sepia{
         color: #F00;
 
-  			-webkit-filter: sepia(100%);
+  	-webkit-filter: sepia(100%);
         -moz-filter:sepia(100%);
         -o-filter: sepia(100%);
         -ms-filter: sepia(100%);
         filter: sepia(100%);  
-  		}
-  		.grayscale{
+  	}
+  	.grayscale{
         color: #F00;
 
-  			-webkit-filter: grayscale(100%);
+	-webkit-filter: grayscale(100%);
         -o-filter: grayscale(100%);
         -moz-filter: grayscale(100%);
         -ms-filter: grayscale(100%);
         filter: grayscale(100%);  
-  		}
-  		.blur{
-  			color: #F00;
+  	}
+  	.blur{
+  	color: #F00;
 
-  			filter: url(blur.svg#blur); /*FF,Chrome,Opera*/
+	filter: url(blur.svg#blur); /*FF,Chrome,Opera*/
 
-  			-webkit-filter: blur(1px);
-  			-moz-filter: blur(1px);
-  			-o-filter: blur(1px);
-  			-ms-filter: blur(1px);
+	-webkit-filter: blur(1px);
+  	-moz-filter: blur(1px);
+  	-o-filter: blur(1px);
+  	-ms-filter: blur(1px);
         filter: blur(1px);  /*Chrome,Opera*/
 
-  			filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=1, MakeShadow=false);
-  		}
+ 	filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=1, MakeShadow=false);
+	}
       .invert{
         color: #F00;
 
@@ -201,8 +201,57 @@
         color: #eee;
         background: #666;
         letter-spacing: 5px;
+
         text-shadow: 4px 4px 0 #666, 6px 6px 0 #ccc; 
       }
+	.linear-gradient{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:20px;
+        font-weight: bold;
+        color: #eee;
+
+		/* Safari4+和Chrome2+*/
+		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #333), color-stop(20%, #33f), color-stop(70%, 3ce));
+		/* Safari5.1+和Chrome10+*/
+		background: -webkit-linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
+		background: -moz-linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
+		background: -o-linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
+		background: -ms-linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
+		background: linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
+	}
+	.center-linear-gradient{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:20px;
+        font-weight: bold;
+        color: #eee;
+
+		background: -webkit-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
+		background: -moz-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
+		background: -o-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
+		background: -ms-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
+		background: linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
+	}
+	.radius-gradient{
+       	width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:20px;
+        font-weight: bold;
+        color: #eee;
+
+	background: -webkit-radius-gradient(circle, #333, #33f);
+	background: -moz-radius-gradient(circle, #333, #33f);
+	background: -o-radius-gradient(circle, #333, #33f);
+	background: -ms-radius-gradient(circle, #333, #33f);
+	background: radius-gradient(circle, #333, #33f);
+	}
   	</style>
   </head>
   <body>
@@ -277,7 +326,7 @@
 		  	</div>
 	  	</li>
 	  	<li>
-  			<span class="title">模糊(Blur)</span>
+  			<span class="title">高斯模糊(Blur)</span>
   			<ol>
   				<li><span class="subtitle">CSS3</span>——通过filter:blur(属性值)，属性值为pixel值，表示以元素中心为圆心，模糊的半径范围。0为无效果。</li>
   				<li><span class="subtitle">IE滤镜</span>——filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=不带单位的半径值, MakeShadow=false)</li>
@@ -527,17 +576,45 @@
       <li>
         <span class="title">线性渐变(Linear Gradient)</span>
         <ol>
-          <li><span class="subtitle">CSS3</span>，<code>text-shadow:x-offset y-offset blur-radius color</code>,多组阴影间使用逗号(,)间隔开来</li>
+          <li><span class="subtitle">CSS3</span>, 通过属性值<code>linear-gradient(angle, color stop, color stop[, color stop]*)</code>设置线性渐变
+		<ul>
+			<li>
+				<code>angle</code>,用于设置起始位置，可设置数字或预设值。数字取值范围：0-359deg，预设值取值范围：[left,right,top,bottom, center, top left, top right, bottom left, bottom right, left center, right center]。IE10下的取值范围为:[left, top]。默认值为top。 
+			</li>
+			<li>
+				<code>color</code>,渐变颜色
+			</li>
+			<li>
+				<code>stop</code>,渐变点，用于设置<code>color</code>的起始位置，值为百分数，小于0%或大于100%时表示颜色的起始位置在可视区域之外。
+			</li>
+		</ul>
+		<ul>
+			<li><span class="itemtitle">REFERENCE</span>
+				<a class="ref">《HTML.5与CSS.3权威指南》没有该内容</a>
+				<a class="ref">《HTML5秘籍》8.4.5.渐变盒子</a>
+				<a class="ref">《响应式Web设计：HTML5和CSS3实战》6.3.背景渐变，6.4.背景图渐变</a>
+				<a class="ref" href="http://www.webkit.org/blog/1424/css3-gradients/">介绍repeating-linear-gradient和repeating-radius-gradient
+				<a class="ref" href="http://www.zhanxin.info/development/2012-12-09-css3-linear.html" target="_blank">CSS3 的线性渐变</a>
+			</li>
+		</ul>
+	  </li>
+	  <li><span class="subtitle">IE5.5~9</span>，IE5.5~7通过滤镜<code>filter:progid:DXImageTransform.Microsoft.gradient(startcolorstr='起始颜色',endcolorstr='结束颜色',GradientType=1)</code>，IE8~9通过滤镜<code>-ms-fitler:"progid:DXImageTransform.Microsoft.gradient(startcolorstr='起始颜色',endcolorstr='结束颜色',GradientType=1)"</code>
+   	  </li>
         </ol>
-        <div class="linear-gradient">
+        <div class="inline linear-gradient">
+		Linear Gradient
         </div>
+        <div class="inline center-linear-gradient">
+		Center Gradient
+        </div>
+	<div class="clearfix"></div>
       </li>
       <li>
-        <span class="title">径向渐变(Radial Gradient)</span>
+        <span class="title">径向渐变/放射性渐变(Radial Gradient)</span>
         <ol>
-          <li><span class="subtitle">CSS3</span>，<code>text-shadow:x-offset y-offset blur-radius color</code>,多组阴影间使用逗号(,)间隔开来</li>
+          <li><span class="subtitle">CSS3</span>,通过属性值<code>radius-gradient(圆心位置, 渐变形状 渐变大小,color stop, color stop[, color stop]*)</code>来设置</li>
         </ol>
-        <div class="linear-gradient">
+        <div class="radius-gradient">
         </div>
       </li>
 	 </ul>
