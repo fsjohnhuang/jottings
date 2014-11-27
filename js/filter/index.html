@@ -63,7 +63,7 @@
         opacity: 0.5;
 
         filter:alpha(opacity=50); /*IE5~9*/
-	}
+	    }
       .rgba{
         background-color: rgba(255,0,0,0.2);
         width: 160px;
@@ -73,24 +73,24 @@
         font-size: 20px;
         font-weight: bold;
       }
-  	.sepia{
+  	  .sepia{
         color: #F00;
 
-  	-webkit-filter: sepia(100%);
+  	    -webkit-filter: sepia(100%);
         -moz-filter:sepia(100%);
         -o-filter: sepia(100%);
         -ms-filter: sepia(100%);
         filter: sepia(100%);  
-  	}
-  	.grayscale{
+    	}
+    	.grayscale{
         color: #F00;
 
-	-webkit-filter: grayscale(100%);
+	      -webkit-filter: grayscale(100%);
         -o-filter: grayscale(100%);
         -moz-filter: grayscale(100%);
         -ms-filter: grayscale(100%);
         filter: grayscale(100%);  
-  	}
+  	 }
   	.blur{
   	color: #F00;
 
@@ -204,7 +204,7 @@
 
         text-shadow: 4px 4px 0 #666, 6px 6px 0 #ccc; 
       }
-	.linear-gradient{
+	    .linear-gradient{
         width: 160px;
         height: 160px;
         line-height: 160px;
@@ -223,13 +223,13 @@
 		background: linear-gradient(left top,#333 0%, #33f 20%, #3ce 70%);	
 	}
 	.center-linear-gradient{
-        width: 160px;
-        height: 160px;
-        line-height: 160px;
-        text-align: center;
-        font-size:20px;
-        font-weight: bold;
-        color: #eee;
+    width: 160px;
+    height: 160px;
+    line-height: 160px;
+    text-align: center;
+    font-size:20px;
+    font-weight: bold;
+    color: #eee;
 
 		background: -webkit-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
 		background: -moz-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
@@ -237,7 +237,28 @@
 		background: -ms-linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
 		background: linear-gradient(center,#333 0%, #33f 20%, #3ce 70%);	
 	}
-	.radius-gradient{
+  .ie-linear-gradient{
+    width: 160px;
+    height: 160px;
+    line-height: 160px;
+    text-align: center;
+    font-size:20px;
+    font-weight: bold;
+    color: #eee;
+
+    filter:progid:DXImageTransform.Microsoft.gradient(startcolorstr='#0944412',endcolorstr='#09120312',GradientType=0);
+  }
+  .rainbow-linear-gradient{
+    width: 160px;
+    height: 160px;
+
+    background: -webkit-repeating-radial-gradient(center,#E50743 0%, #F9870F 5%, #E8ED30 10%, #3FA62E 15%,#3BB4D7 20%,#2F4D9E 25%,#71378A 30%);  
+    background: -moz-repeating-radial-gradient(center,#E50743 0%, #F9870F 5%, #E8ED30 10%, #3FA62E 15%,#3BB4D7 20%,#2F4D9E 25%,#71378A 30%); 
+    background: -o-repeating-radial-gradient(center,#E50743 0%, #F9870F 5%, #E8ED30 10%, #3FA62E 15%,#3BB4D7 20%,#2F4D9E 25%,#71378A 30%); 
+    background: -ms-repeating-radial-gradient(center,#E50743 0%, #F9870F 5%, #E8ED30 10%, #3FA62E 15%,#3BB4D7 20%,#2F4D9E 25%,#71378A 30%);  
+    background: repeating-radial-gradient(center,#E50743 0%, #F9870F 5%, #E8ED30 10%, #3FA62E 15%,#3BB4D7 20%,#2F4D9E 25%,#71378A 30%);  
+  }
+	.radial-gradient{
        	width: 160px;
         height: 160px;
         line-height: 160px;
@@ -246,12 +267,62 @@
         font-weight: bold;
         color: #eee;
 
-	background: -webkit-radius-gradient(circle, #333, #33f);
-	background: -moz-radius-gradient(circle, #333, #33f);
-	background: -o-radius-gradient(circle, #333, #33f);
-	background: -ms-radius-gradient(circle, #333, #33f);
-	background: radius-gradient(circle, #333, #33f);
+	background: -webkit-radial-gradient(center,circle cover, #333 0%, #33f 20%, #3ce 70%);
+	background: -moz-radial-gradient(center,circle cover, #333 0%, #33f 20%, #3ce 70%);
+	background: -o-radial-gradient(center,circle cover, #333 0%, #33f 20%, #3ce 70%);
+	background: -ms-radial-gradient(center,circle cover, #333 0%, #33f 20%, #3ce 70%);
+	background: radial-gradient(center,circle cover, #333 0%, #33f 20%, #3ce 70%);
 	}
+  .repeating-linear-gradient{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:18px;
+        font-weight: bold;
+        color: #eee;
+
+    background: -webkit-repeating-linear-gradient(left top,#333 0%, #33f 20%, #3ce 30%);  
+    background: -moz-repeating-linear-gradient(left top,#333 0%, #33f 20%, #3ce 30%); 
+    background: -o-repeating-linear-gradient(left top,#333 0%, #33f 20%, #3ce 30%); 
+    background: -ms-repeating-linear-gradient(left top,#333 0%, #33f 20%, #3ce 30%);  
+    background: repeating-linear-gradient(left top,#333 0%, #33f 20%, #3ce 30%);  
+  }
+  .repeating-radial-gradient{
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size:18px;
+        font-weight: bold;
+        color: #eee;
+
+    background: -webkit-repeating-radial-gradient(25px 70px, #333 0%, #33f 20%, #3ce 30%);  
+    background: -moz-repeating-radial-gradient(25px 70px,#333 0%, #33f 20%, #3ce 30%); 
+    background: -o-repeating-radial-gradient(25px 70px,#333 0%, #33f 20%, #3ce 30%); 
+    background: -ms-repeating-radial-gradient(25px 70px, #333 0%, #33f 20%, #3ce 30%);  
+    background: repeating-radial-gradient(25px 70px, #333 0%, #33f 20%, #3ce 30%);  
+  }
+  .background-gradient{
+        width: 460px;
+        height: 460px;
+        line-height: 460px;
+        text-align: center;
+        font-size:30px;
+        font-weight: bold;
+        color: #666;
+
+        background-color: white; 
+        background-image:
+          radial-gradient(hsla(0,0%,87%,0.31) 9px, transparent),
+          repeating-radial-gradient(hsla(0, 0%, 87%, 0.31) 0,  
+                hsla(0, 0%, 87%, 0.31) 4px, transparent 5px,  
+                transparent 20px, hsla(0, 0%, 87%, 0.31) 21px,  
+                hsla(0, 0%, 87%, 0.31) 25px, transparent 26px,  
+                transparent 50px);   
+        background-size: 30px 30px, 90px 90px;
+        background-position: 0 0;
+  }
   	</style>
   </head>
   <body>
@@ -579,7 +650,7 @@
           <li><span class="subtitle">CSS3</span>, 通过属性值<code>linear-gradient(angle, color stop, color stop[, color stop]*)</code>设置线性渐变
 		<ul>
 			<li>
-				<code>angle</code>,用于设置起始位置，可设置数字或预设值。数字取值范围：0-359deg，预设值取值范围：[left,right,top,bottom, center, top left, top right, bottom left, bottom right, left center, right center]。IE10下的取值范围为:[left, top]。默认值为top。 
+				<code>angle</code>,用于设置起始位置，可设置数字或预设值。数字取值范围：0-359deg，预设值取值范围：[left,right,top,bottom, center, top left, top right, bottom left, bottom right, left center, right center]。IE10下的取值范围为:[left, top]。Chrome下没有left center, right center和center。默认值为top。 
 			</li>
 			<li>
 				<code>color</code>,渐变颜色
@@ -597,8 +668,20 @@
 				<a class="ref" href="http://www.zhanxin.info/development/2012-12-09-css3-linear.html" target="_blank">CSS3 的线性渐变</a>
 			</li>
 		</ul>
+    <ul>
+      <li>
+        <span class="itemtitle">工具</span>
+        <a class="ref" href="http://www.colorzilla.com/gradient-editor/"></a>
+      </li>
+    </ul>
 	  </li>
 	  <li><span class="subtitle">IE5.5~9</span>，IE5.5~7通过滤镜<code>filter:progid:DXImageTransform.Microsoft.gradient(startcolorstr='起始颜色',endcolorstr='结束颜色',GradientType=1)</code>，IE8~9通过滤镜<code>-ms-fitler:"progid:DXImageTransform.Microsoft.gradient(startcolorstr='起始颜色',endcolorstr='结束颜色',GradientType=1)"</code>
+        <pre>
+          注意：元素必须hasLayout后滤镜才会生效.(启动hasLayout的方式：设置height、width属性，position为absolute，writingMode为tb-rl，或contentEditable为true).
+          GradientType,0(默认值，从top到bottom渐变),1(从left到right渐变)
+          endcolorstr和startcolorstr值格式为#AARRGGBB,其中AA为透明度的十六进制表示形式。endcolorstr默认值为#FF000000,startcolorstr默认值为#FF0000FF.
+          endcolor和startcolor为十进制的整数类型,取值范围0~4294967295
+        </pre>
    	  </li>
         </ol>
         <div class="inline linear-gradient">
@@ -607,14 +690,48 @@
         <div class="inline center-linear-gradient">
 		Center Gradient
         </div>
+        <div class="inline ie-linear-gradient">
+    IE Gradient
+        </div>
+        <div class="inline rainbow-linear-gradient">
+        </div>
 	<div class="clearfix"></div>
       </li>
       <li>
         <span class="title">径向渐变/放射性渐变(Radial Gradient)</span>
         <ol>
-          <li><span class="subtitle">CSS3</span>,通过属性值<code>radius-gradient(圆心位置, 渐变形状 渐变大小,color stop, color stop[, color stop]*)</code>来设置</li>
+          <li><span class="subtitle">CSS3</span>,通过属性值<code>radial-gradient(圆心位置, 渐变形状 渐变大小,color stop, color stop[, color stop]*)</code>来设置</li>
+          <ul>
+            <li>
+              <code>圆心位置</code>, 可设置为<code>x-offset y-offset</code>或使用预设值<code>center</code>(默认值)
+            </li>
+            <li>
+              <code>渐变形状</code>, 使用预设值<code>circle</code>(圆形)和<code>ellipse</code>(椭圆形,默认值)
+            </li>
+            <li>
+              <code>渐变大小</code>, 使用预设值<code>closest-side 或 contain</code>(以距离圆心最近的边的距离作为渐变半径);<code>closest-corner</code>(以距离圆心最近的角的距离作为渐变半径);<code>farthest-side</code>(以距离圆心最远的边的距离作为渐变半径);<code>farthest-corner 或 cover</code>(以距离圆心最远的角的距离作为渐变半径);
+            </li>
         </ol>
-        <div class="radius-gradient">
+        <div class="radial-gradient">
+          Radial Gradient
+        </div>
+      </li>
+      <li>
+        <span class="title">重复渐变(Repeating Linear Gradient 和 Repeating Radial Gradient)</span>
+        <div class="clearfix"></div>
+        <div class="inline repeating-linear-gradient">
+          Repeating Linear
+        </div>
+        <div class="inline repeating-radial-gradient">
+          Repeating Radial
+        </div>
+        <div class="clearfix"></div>
+      </li>
+      <li>
+        <span class="title">背景渐变模式(资源:http://lea.verou.me/ 
+css3patterns/)</span>
+        <div class="background-gradient">
+          Background Gradient
         </div>
       </li>
 	 </ul>
