@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg  width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<linearGradient id="linear-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+				<stop offset="0%" style="stop-color:#E50743;"/>
+				<stop offset="15%" style="stop-color:#F9870F;"/>
+				<stop offset="30%" style="stop-color:#E8ED30;"/>
+				<stop offset="45%" style="stop-color:#3FA62E;"/>
+				<stop offset="60%" style="stop-color:#3BB4D7;"/>
+				<stop offset="75%" style="stop-color:#2F4D9E;"/>
+				<stop offset="80%" style="stop-color:#71378A;"/>
+		</linearGradient>
+	</defs>
+	<defs>
+		<radialGradient id="radial-gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+				<stop offset="0%" style="stop-color:#E50743;"/>
+				<stop offset="15%" style="stop-color:#F9870F;"/>
+				<stop offset="30%" style="stop-color:#E8ED30;"/>
+				<stop offset="45%" style="stop-color:#3FA62E;"/>
+				<stop offset="60%" style="stop-color:#3BB4D7;"/>
+				<stop offset="75%" style="stop-color:#2F4D9E;"/>
+				<stop offset="80%" style="stop-color:#71378A;"/>
+		</radialGradient>
+	</defs>
+	<ellipse cx="90" cy="60" rx="85" ry="55" style="fill:url(#linear-gradient)"/>
+	<circle cx="360" cy="90" r="85" style="fill:url(#radial-gradient)"/>
+</svg>
