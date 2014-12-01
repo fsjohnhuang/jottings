@@ -9,18 +9,19 @@
 			height: 200px;
 			background: url(./mm.jpg);
 		}	
-		.sepia{
+		#sepia{
 			width: 100px;
 			height: 100px;
 			border: solid 1px red;
+			background: #700;
 
-			filter:gray;	
+			filter:DropShadow(Color="#000000",OffX="5",OffY="5",Positive="1");	
 		}
 	</style>
 </head>
 <body>
 
-	<div class="sepia">
+	<div style='filter:invert;width:100px;heihgt:100px;border:solid 1px red'>
 		TEST
 	</div>
 </body>
