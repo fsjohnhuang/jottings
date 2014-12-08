@@ -66,7 +66,7 @@ IE5~8:<Br/>
 首次加载会发起请求，会触发两次onreadystatechange事件，"uninitialized"->"loading"->"complete"。然后在触发onload事件<br/>
 后续加载会从缓存读取资源，触发一次onreadystatechange事件，"uninitialized"->"complete"。然后在触发onload事件<Br/>
 **FF**<br/>
-onload延时为3~7ms，不会对资源进行缓存。<br/>
+onerror延时为3~7ms，不会对资源进行缓存。<br/>
 ## javascript:void 0
 ````
 <link type="text/css" rel="stylesheet" href="javascript:void 0"/>
@@ -75,7 +75,7 @@ onload延时为3~7ms，不会对资源进行缓存。<br/>
 发起网络请求，但浏览器会取消该请求。触发onerror事件，延时为0~8ms<Br/>
 **IE**<br/>
 IE11:<br/>
-不会触发onreadystatechange事件和onload、onerror事件。<br/>
+不会触发onload、onerror事件。<br/>
 IE8~10:<br/>
 会触发一次onreadystatechage事件(2~4ms)，"uninitialized"->"loading"<br/>
 IE5~7:<Br/>
@@ -132,3 +132,4 @@ IE5~8:<br/>
 **FF**<br/>
 不会触发网络请求<br/>
 触发onerror事件，延时为0~2ms<br/>
+
