@@ -1,0 +1,172 @@
+doctype html
+html(lang="zh_CN")
+	head
+		title Less学习笔记
+		meta(http-equiv="content-type", content="text/html;charset=utf-8")
+		style(type='text/less').
+			.box(){
+				border: solid 1px lighten(blue, 30%);
+				background-color: lighten(blue, 45%);
+			}
+			.source{
+				.box;
+				padding: 10px;
+			}
+			code{
+				.box;
+			}
+		link(rel='shortcut icon', href='favicon.icon')
+	body
+		h1 Less学习笔记
+		h2 *注释
+		pre.source.
+			// 单行注释
+			/* 多行注释 */
+		h2 *变量
+		ol
+			each v,i in ['以@作为变量的起始标识，变量名由字母、数字、_和-组成','没有先定义后使用的规定；', '以最后定义的值为最终值；', '可用于rule值、rule属性、rule属性部件、选择器、选择器部件、字符串拼接；', '定义时 "@变量名: 变量值;" 的形式；引用时采用 "@变量名" 或 "@{变量名}" 的形式；', '存在作用域，局部作用域优先级高于全局作用域。']
+				li=v
+		style#var(type='text/less').
+			@color: color;
+			@dialog: .dialog;
+			@suffix: fix;
+			// 空格将被忽略，若要保留空格则需要使用单引号或双引号
+			@hi: 'hello ';
+			@dear: there  ;
+
+			.dialog{
+				// 用于 rule属性部件，必须使用"@{变量名}" 的形式
+				background-@{color}: #888;
+				// 用于 rule属性，必须使用"@{变量名}" 的形式
+				@{color}: blue;
+			}
+			// 用于 选择器，必须使用"@{变量名}" 的形式
+			@{dialog}{
+				width: 200px;
+			}
+			@{dialog}::after{
+				content: ': @{hi}@{dear}!';	// 用于 字符串拼接，必须使用"@{变量名}" 的形式
+			}
+			@h: 1000px;
+			// 用于 选择器部件，必须使用"@{变量名}" 的形式
+			.ie-@{suffix}{
+				@h: 30px; // 存在作用域，局部作用域优先级高于全局作用域。
+				height: @h; // 用于 属性值，两种形式均可使用
+				line-height: 30px;
+			}
+
+			// 1. 以@作为变量的起始标识，变量名由字母、数字、_和-组成
+			// 2. 没有先定义后使用的规定；
+			@dialog-border-color: #666;
+			@dialog-border-width: 10px;
+			@dialog-border-width: 1px; // 3. 以最后定义的值为最终值；
+
+		b 示例：
+		.ie-fix.dialog hello world
+		details
+			summary 源码
+			pre#var-src.source
+
+		h2 *嵌套(Nested)
+		style#nested(type='text/less').
+			/* test */
+			.main{
+				padding: 10px;
+				> div {
+					width: 100px;
+				}
+				.aside {
+					width: 200px;
+				}
+			}
+		b 示例：
+		details
+			summary 源码
+			pre#nested-src.source
+		details
+			summary 编译后 
+			pre#nested-dist.source
+
+		h2 *父选择器(ParentSelector)
+		ol
+			each v,i in ['采用&引用完整的父选择器', '可通过追加和预追加的方式加工&，从而生成新的选择器', '通过<code>&::after</code>等方式添加伪元素样式规则集合', '同一个选择器可使用多个&', '通过在选择器后添加 "空格&"的方式，可将当前选择器排列到最前面', '&指向组选择器时，会生成新的组选择器']
+				li!=v
+		b 示例：
+		style#parentSelector(type='text/less').
+			/* 
+			 * 采用&引用完整的父选择器
+			 * 可通过追加和预追加的方式加工&，从而生成新的选择器
+			 * 通过&::after等方式添加伪元素样式规则集合
+			 * 同一个选择器可使用多个&
+			 * 通过在选择器后添加 "空格&"的方式，可将当前选择器排列到最前面
+			 */
+			@bg: #aaa;
+			#ps1 .btn{
+				background-color: @bg;
+				border-radius: 5px;
+				&:hover{
+					background-color: lighten(@bg, 30%);
+					cursor: pointer;
+				}
+				&-msg, &-eof{
+					color: blue;
+				}
+				.no-borderradius &{
+					background-image: url('img/btn-bg.png');
+				}
+			}
+			/*
+			 * &指向组选择器时，会生成新的组选择器
+			 */
+			#dummy1, .dummy1{
+				&:hover{
+					color: red;
+				}
+				& + &{
+					font-size: 12px;
+				}
+			}
+		#ps1
+			button.btn ps1
+				span.btn-msg :hello world
+				span.btn-eof :eof
+		details
+			summary 源码
+			pre#parentSelector-src.source
+		details
+			summary 编译后 
+			pre#parentSelector-dist.source
+
+		h2 文件引入指令(Import)
+
+		h3 参考	
+		-var less = {href:'http://less.bootcss.com/features/#import-directives-feature', title: 'LESS中文官网'}
+		-var j = {href:'http://jade-lang.com/reference/code/', title: 'Jade官网'}
+		a(href='#{less.href}') #{less.title}
+		br/
+		a(href='#{j.href}') #{j.title}
+
+		br/
+		footer(style='text-align:center').
+			fsjohnhaung@github
+
+		script(type='text/javascript').
+			var styles = [].slice.call(document.querySelectorAll('style[id]'))
+				, dists = []
+			styles.forEach(function(item){
+				var src = document.getElementById(item.id + '-src')
+					, dist = document.getElementById(item.id + '-dist')
+				if (src)
+					src.innerText = item.innerText
+				dist && dists.push(function(){
+					dist.innerText = item.innerText	
+				})
+			})
+			if (dists.length)
+				setTimeout(function(){
+					dists.forEach(function(fn){
+						fn()
+					})	
+				}, 800)
+		script(type='text/javascript', src='./less.min.js')
+		script(type='text/javascript', src='//localhost:35729/livereload.js')
