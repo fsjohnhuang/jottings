@@ -15,8 +15,16 @@ html(lang="zh_CN")
 			code{
 				.box;
 			}
-		link(rel='shortcut icon', href='favicon.icon')
+		link(rel='shortcut icon', href='favicon.icon')/
 	body
+		mixin src-dist(prefix)
+			details
+				summary 源码	
+				pre.source(id='#{prefix}-src')
+			details
+				summary 编译后
+				pre.source(id='#{prefix}-dist')
+
 		h1 Less学习笔记
 		h2 *注释
 		pre.source.
@@ -63,13 +71,10 @@ html(lang="zh_CN")
 
 		b 示例：
 		.ie-fix.dialog hello world
-		details
-			summary 源码
-			pre#var-src.source
+		+src-dist('var')
 
 		h2 *嵌套(Nested)
 		style#nested(type='text/less').
-			/* test */
 			.main{
 				padding: 10px;
 				> div {
@@ -80,12 +85,7 @@ html(lang="zh_CN")
 				}
 			}
 		b 示例：
-		details
-			summary 源码
-			pre#nested-src.source
-		details
-			summary 编译后 
-			pre#nested-dist.source
+		+src-dist('nested')
 
 		h2 *父选择器(ParentSelector)
 		ol
@@ -130,14 +130,321 @@ html(lang="zh_CN")
 			button.btn ps1
 				span.btn-msg :hello world
 				span.btn-eof :eof
-		details
-			summary 源码
-			pre#parentSelector-src.source
-		details
-			summary 编译后 
-			pre#parentSelector-dist.source
+		+src-dist('parentSelector')
 
-		h2 文件引入指令(Import)
+		h2 *文件引入指令(Import)
+		p
+			|less样式文件可通过
+			code @import '文件路径';
+			|引入外部的less文件。
+		em 注意：
+		ol
+			li 
+				em 不带扩展名或带非.less的扩展名均被视为less文件;
+			li 
+				em <code>@import</code>可出现在任何位置，而不像css的<code>@import</code>那样只能放在文件第一行。
+		p
+			|另外
+			code @import
+			|还提供了6个可选配置项(分别为
+			each v,i in ['reference', 'inline', 'less', 'css', 'once', 'multiple']
+				code #{v}
+				if i < 5
+					|,
+			|)，用来改变引入文件的特性。语法为： 
+			code @import (reference) '文件路径';
+			|。下面为各配置项的具体说明：
+		-var importOptions = [{title:'@import (reference) "文件路径";', desc:'将引入的文件作为样式库使用，因此文件中样式不会被直接编译为css样式规则。当前样式文件通过<code>extend</code>和<code>mixins</code>的方式引用样式库的内容。'},{title:'@import (inline) "文件路径";', desc:'用于引入与less不兼容的css文件，通过inline配置告知编译器不对引入的文件进行编译处理，直接输出到最终输出。<em>注意：引入的文件和当前文件会被编译为一个样式样式</em>'},{title:'@import (less) "文件路径";', desc:'默认使用该配置项，表示引入的文件为less文件'},{title:'@import (css) "文件路径";', desc:'表示当前操作为CSS中的<code>@import</code>操作。<em>当前文件会输出一个样式文件，而被引入的文件自身为一个独立的样式文件</em>'},{title:'@import (once) "文件路径";', desc:'默认使用该配置项，表示对同一个资源仅引入一次'},{title:'@import (multiple) "文件路径";', desc:'表示对同一资源可引入多次'}]
+		dl
+			each v,i in importOptions
+				dt #{i+1}.
+					code #{v.title}
+				dd !{v.desc}
+
+		h2 *继承(Extend)
+		p 
+			|有两种语法形式，
+			code &lt;selector&gt;:extend(&lt;parentSelector&gt;){}
+			|和
+			code &lt;selector&gt;{ &:extend(&lt;parentSelector&gt;); }
+		b 示例：
+		style#extend1(type='text/less').
+			.animal{
+				color: #fff;
+			}
+			/* 语法1：<selector>:extend(<parentSelector>){} */
+			.bear:extend(.animal){
+				width: 100px;
+				height: 100px;
+			}
+			/* 语法2：<selector>{ &:extend(<parentSelector>); } */
+			.deer{
+				&:extend(.animal);
+				width: 50px;
+				height: 50px;
+			}
+		+src-dist('extend1')
+		em 注意事项：
+		dl
+			dt 1.父选择器必须严格匹配，除了属性选择器中属性值引号不必匹配外，或添加all关键字外。
+			dd
+				style#extend2(type='text/less').
+					*.parent{
+						height: 100px;
+						.hair{
+							color: #f27;
+						}
+						[name=eyes]{
+							color: #768;
+						}
+					}
+					// 匹配失败
+					.son:extend(.parent){}
+					.son:extend(.hair){}
+
+					// 匹配成功
+					.son:extend(*.parent [name='eyes']){}
+					.son:extend(*.parent [name="eyes"]){}
+					// all关键字会匹配所有包含parentSelector内容的选择器，并以selector替换parentSelector来生成新的选择器
+					// 下面的内容会生成 *.son，*.son .hair，*.son [name=eyes]三个新的选择器
+					.son:extend(.parent all){}
+				+src-dist('extend2')
+			dt 2.父选择器不支持变量形式
+			dd
+				style#extend3(type='text/less').
+					@p1: .parent1;
+					@p2: .parent2;
+					.parent1{
+						height: 100px;
+					}
+					@{p2}{
+						height: 200px;
+					}
+					// 匹配失败
+					// 形式1，不支持以变量作入参
+					.son1:extend(@{p1}){}
+					// 形式2，不支持以变量作为选择器的规则集合
+					.son1:extend(.parent2){}
+
+					// 匹配成功
+					.son2:extend(.parent1){}
+					@s3: son3;
+					.@{s3}:extend(.parent1){}
+
+				+src-dist('extend3')
+			dt 3.media query影响继承的作用域
+			dd 
+				|3.1.media query内的extend操作，仅能继承当前块的其他选择器样式。
+				em 注意：不能extend当前media query块内部的子media query块中的选择器样式；但可以extend父media query块的选择器样式。
+				style#extend4(type='text/less').
+					.parent1{
+						height: 200px;
+					}
+					@media screen{
+						.parent1{
+							height: 100px;
+						}	
+						// 无法继承子media query块的选择器样式
+						.son1:extend(.parent2){}
+						@media (min-width: 1023px){
+							// 继承父media query块的选择器样式
+							.son2:extend(.parent1){}
+							.parent2{
+								width: 200px;
+							}
+						}
+					}
+				+src-dist('extend4')
+				|3.2.非media query内的extend操作，将会继承所有media query中匹配的选择器样式。
+				style#extend5(type='text/less').
+					@media screen{
+						.parent{
+							height: 100px;
+						}
+						@media (min-width: 1023px){
+							.parent{
+								width: 200px;
+							}
+						}
+					}
+					.son:extend(.parent){}
+				+src-dist('extend5')
+			dt 4.增强的mixin
+			dd 
+				|定义mixin时仅能使用类选择器和ID选择器，而extend操作可对应所有的选择器，因此当没有动态入参而又需要类选择器和ID选择器以外的选择器时，可使用extend来实现mixin的功能。
+
+		h2 *组合(Mixin)
+		p Mixin相当于macro，会将样式规则内联到调用的位置中。而Less中的mixin有以下的注意点：
+		dl
+			dt 1. 类选择器、ID选择器自动被定义为mixin，而且具有命名空间；
+			dd
+				style#mixin1(type='text/less').
+					.animal{
+						.human{
+							#fsjohnhuang{
+								.hair{
+									color: #000;
+								}
+							}	
+						}	
+					}	
+					.front-end-monkey{
+						// 或者.animal.human#fsjohnhuang.hair();
+						// 或者.animal>.human>#fsjohnhuang>.hair;
+						// 或者.animal>.human>#fsjohnhuang>.hair();
+						// 即可调用mixin
+						.animal.human#fsjohnhuang.hair;
+					}
+				+src-dist('mixin1')
+			dt 2. 显示定义不带参数和带参数的样式库(mixin库)，不会输出到最终输出中，仅供调用；
+			dd
+				style#mixin2(type='text/less').
+					// 定义不带参数的mixin
+					.animal(){
+						color: #000;
+					}
+					// 定义带参数的mixin
+					// 注意：由于,和;均可用于作为参数分隔符，但由于如background、border等样式属性支持属性值组，而,则作为属性值组元素分隔符，因此推荐使用;作为参数分隔符
+					.dog(@type; @age){
+						height: @type * @age * 12px;
+					}
+					// 定义带参数默认值的mixin
+					.cat(@type; @age:1){
+						height: @type * @age * 5px;
+					}
+
+					// 调用才会出现在最终输出
+					.chihuahua{
+						.dog(1;2);
+					}
+				+src-dist('mixin2')
+			dt 3. mixin的内置对象@arguments和@rest
+			dd
+				|mixin中内置两个特殊的对象@arguments和@reset。@argumentsk代表mixin的所有入参,而@reset代表mixin的...入参数组。
+				style#mixin3(type='text/less').
+					.dog(@type;@age;@rest...){
+						height: @type * @age * 12px;
+						border: @rest;
+					}
+					.cat(@solid;@w;@color){
+						border: @arguments;
+					}
+
+					.chihuahua{
+						.dog(1;2;solid;1px;red);	
+					}
+					.mimi{
+						.cat(solid;2px;blue);	
+					}
+				+src-dist('mixin3')
+			dt 4. mixin的重载
+			dd
+				|可定义多个同名mixin，调用时只要参数数量匹配则会执行相应的mixin。
+				style#mixin4(type='text/less').
+					.dog(@name){
+						&::after{
+							content: @name;
+						}
+					}
+					.dog(@name;@age){
+						height: @age * 4px;
+					}
+					.dog(@name;@age;@width:20px){
+						height: @age * 12px;
+						width: @width;
+					}
+					// 仅匹配到 .dog(@name){
+					.one-dog{
+						.dog('chihuahua');
+					}	
+					// 匹配到.dog(@name;@age) 和 .dog(@name;@age;@width:20px)
+					.two-three-dog{
+						.dog('two-three-dog', 2);
+					}
+
+					// 参数的模式匹配
+					// 当第一参数值为mimi时调用该mixin
+					.cat(mimi, @age){
+						height: @age * 22px;	
+					}
+					// 当第一参数值为mini时调用该mixin
+					.cat(mini, @age){
+						height: @age * 12px;	
+					}
+					// 不管第一参数值为啥均调用该mixin
+					.cat(@any, @age){
+						color: #f3c;
+					}
+					.mycat{
+						.cat(mini, 1);
+					}
+				+src-dist('mixin4')
+			dt 5. 选择、循环作业控制
+			dd
+				style#mixin5(type='text/less').
+					// 条件匹配
+					// true值匹配，仅实参为true时才匹配成功
+					.truth(@a) when (@a){
+						&::after{
+							content: @a;
+						}
+					}
+					// 匹配成功
+					.truth1{
+						.truth(true);
+					}
+					// 匹配失败
+					.truth2{
+						.truth(#fff);
+					}
+
+					/* 类型判断函数
+					 * iscolor
+					 * isnumber
+					 * isstring
+					 * iskeyword
+					 * isurl
+					 */
+					.bear(@color) when (iscolor(@color)){
+						color: @color;
+					}
+					/* 单位判断函数
+					 * ispixel
+					 * ispercentage
+					 * isem
+					 * isunit
+					 */
+					.bear(@height) when (ispixel(@height)){
+						height: @height;
+					}
+					// =,>,>=,<=,< 关系运算符
+					.rich(@h) when (@h > 1000){
+						height: @h;	
+					}
+					// and、not、or(使用,号表示) 逻辑运算符
+					.huge(@h, @w) when (@h > 180) and (@w > 180){
+						height: @h;
+						width: @w;
+					}
+					// 使用& when()实现if语句
+					@debug: true;
+					& when (@debug){
+						div{
+							border: solid 1px red;
+						}
+					}
+
+					// 通过递归实现循环
+					.generate-columns(4);
+					.generate-columns(@n, @i: 1) when (@i =< @n) {
+					  .column-@{i} {
+					    width: (@i * 100% / @n);
+					  }
+					  .generate-columns(@n, (@i + 1));
+					}
+
+
+				+src-dist('mixin5')
 
 		h3 参考	
 		-var less = {href:'http://less.bootcss.com/features/#import-directives-feature', title: 'LESS中文官网'}

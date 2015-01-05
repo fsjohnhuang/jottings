@@ -1,0 +1,10 @@
+@import (reference) "base.less";
+@env:release; //编译模式：release或debug
+
+/* 导航栏 */
+.nav:extend(.base-nav){
+	// 编译模式为debug时采用该样式
+	& when (@env=debug){
+		.base-debug();
+	}
+}
