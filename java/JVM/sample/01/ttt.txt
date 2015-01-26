@@ -1,0 +1,155 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/JVM/sample/01/Main.class
+  Last modified 2015-1-26; size 799 bytes
+  MD5 checksum 633d0ca8fe537cbf2f56bc6825ddf007
+  Compiled from "Main.java"
+public class Main
+  SourceFile: "Main.java"
+  minor version: 0
+  major version: 51
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #17.#35        //  java/lang/Object."<init>":()V
+   #2 = String             #18            //  msg1
+   #3 = Fieldref           #6.#36         //  Main.msg1:Ljava/lang/String;
+   #4 = String             #20            //  msg2
+   #5 = Fieldref           #6.#37         //  Main.msg2:Ljava/lang/String;
+   #6 = Class              #38            //  Main
+   #7 = Methodref          #6.#35         //  Main."<init>":()V
+   #8 = Methodref          #6.#39         //  Main.getMsg3:(Z)Ljava/lang/String;
+   #9 = Fieldref           #6.#40         //  Main.msg3:Ljava/lang/String;
+  #10 = String             #22            //  msg4
+  #11 = Fieldref           #6.#41         //  Main.msg4:Ljava/lang/String;
+  #12 = Fieldref           #42.#43        //  java/lang/System.out:Ljava/io/PrintStream;
+  #13 = Fieldref           #6.#44         //  Main.msg:Ljava/lang/String;
+  #14 = Methodref          #45.#46        //  java/io/PrintStream.println:(Ljava/lang/String;)V
+  #15 = String             #21            //  msg3
+  #16 = String             #23            //  msg
+  #17 = Class              #47            //  java/lang/Object
+  #18 = Utf8               msg1
+  #19 = Utf8               Ljava/lang/String;
+  #20 = Utf8               msg2
+  #21 = Utf8               msg3
+  #22 = Utf8               msg4
+  #23 = Utf8               msg
+  #24 = Utf8               <init>
+  #25 = Utf8               ()V
+  #26 = Utf8               Code
+  #27 = Utf8               LineNumberTable
+  #28 = Utf8               main
+  #29 = Utf8               ([Ljava/lang/String;)V
+  #30 = Utf8               getMsg3
+  #31 = Utf8               (Z)Ljava/lang/String;
+  #32 = Utf8               <clinit>
+  #33 = Utf8               SourceFile
+  #34 = Utf8               Main.java
+  #35 = NameAndType        #24:#25        //  "<init>":()V
+  #36 = NameAndType        #18:#19        //  msg1:Ljava/lang/String;
+  #37 = NameAndType        #20:#19        //  msg2:Ljava/lang/String;
+  #38 = Utf8               Main
+  #39 = NameAndType        #30:#31        //  getMsg3:(Z)Ljava/lang/String;
+  #40 = NameAndType        #21:#19        //  msg3:Ljava/lang/String;
+  #41 = NameAndType        #22:#19        //  msg4:Ljava/lang/String;
+  #42 = Class              #48            //  java/lang/System
+  #43 = NameAndType        #49:#50        //  out:Ljava/io/PrintStream;
+  #44 = NameAndType        #23:#19        //  msg:Ljava/lang/String;
+  #45 = Class              #51            //  java/io/PrintStream
+  #46 = NameAndType        #52:#53        //  println:(Ljava/lang/String;)V
+  #47 = Utf8               java/lang/Object
+  #48 = Utf8               java/lang/System
+  #49 = Utf8               out
+  #50 = Utf8               Ljava/io/PrintStream;
+  #51 = Utf8               java/io/PrintStream
+  #52 = Utf8               println
+  #53 = Utf8               (Ljava/lang/String;)V
+{
+  java.lang.String msg1;
+    flags: 
+
+  protected java.lang.String msg3;
+    flags: ACC_PROTECTED
+
+  public java.lang.String msg4;
+    flags: ACC_PUBLIC
+
+  static java.lang.String msg;
+    flags: ACC_STATIC
+
+  public Main();
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0       
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0       
+         5: ldc           #2                  // String msg1
+         7: putfield      #3                  // Field msg1:Ljava/lang/String;
+        10: aload_0       
+        11: ldc           #4                  // String msg2
+        13: putfield      #5                  // Field msg2:Ljava/lang/String;
+        16: return        
+      LineNumberTable:
+        line 1: 0
+        line 2: 4
+        line 3: 10
+
+  public static void main(java.lang.String[]);
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=3, locals=2, args_size=1
+         0: new           #6                  // class Main
+         3: dup           
+         4: invokespecial #7                  // Method "<init>":()V
+         7: astore_1      
+         8: aload_1       
+         9: aload_1       
+        10: iconst_1      
+        11: invokevirtual #8                  // Method getMsg3:(Z)Ljava/lang/String;
+        14: putfield      #9                  // Field msg3:Ljava/lang/String;
+        17: aload_1       
+        18: ldc           #10                 // String msg4
+        20: putfield      #11                 // Field msg4:Ljava/lang/String;
+        23: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        26: getstatic     #13                 // Field msg:Ljava/lang/String;
+        29: invokevirtual #14                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        32: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        35: aload_1       
+        36: getfield      #3                  // Field msg1:Ljava/lang/String;
+        39: invokevirtual #14                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        42: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        45: aload_1       
+        46: getfield      #9                  // Field msg3:Ljava/lang/String;
+        49: invokevirtual #14                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        52: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        55: aload_1       
+        56: getfield      #11                 // Field msg4:Ljava/lang/String;
+        59: invokevirtual #14                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        62: return        
+      LineNumberTable:
+        line 9: 0
+        line 10: 8
+        line 11: 17
+        line 13: 23
+        line 14: 32
+        line 15: 42
+        line 16: 52
+        line 17: 62
+
+  java.lang.String getMsg3(boolean);
+    flags: 
+    Code:
+      stack=1, locals=2, args_size=2
+         0: ldc           #15                 // String msg3
+         2: areturn       
+      LineNumberTable:
+        line 20: 0
+
+  static {};
+    flags: ACC_STATIC
+    Code:
+      stack=1, locals=0, args_size=0
+         0: ldc           #16                 // String msg
+         2: putstatic     #13                 // Field msg:Ljava/lang/String;
+         5: return        
+      LineNumberTable:
+        line 6: 0
+}

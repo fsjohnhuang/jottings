@@ -1,2 +1,234 @@
-#Class 文件结构
+# 语言无关性
+Java的规范被拆分为Java语言规范（The Java Language Specification）和Java虚拟机规范（The Java Virtual Machine Specification）<br/>
+语言A+语言A的编译器->class文件（字节码），class+jvm->可执行程序。Java中变量、关键字和运算符号等最终会编译成1~N条字节码命令，因此Java不支持的语法不代表字节码无法支持。<br/>
+# Class文件
+Class文件均对应唯一一个类或接口。但类和接口不一定存在于文件中（可通过类加载器直接生成）。<br/>
+
+## 文件结构
+Class文件是一组以字节为基础单位的二进制流，各数据项间没有分隔符，因此整个文件几乎都是程序运行的必要数据。<br/>
+数据项占用1个字节以上的空间时，则按照Big-Endian顺序进行存储。<br/>
+Class文件格式采用类似于C语言结构体的伪结构体来存储数据，内部仅有两种数据类型：无符号数和表。<br/>
+无符号数：用于描述数字、索引引用、数量值或UTF-8编码的字符串<br/>
+表：复合数据类型，由N个无符号数和N个表组成，所有表的类型习惯以"_info"结尾<br/>
 ![](class.png)
+Class文件整体格式，注意：每项内容间没有分隔符<br/>
+````
+类型 		       名称      	    数量
+ u4  		       magic      	     1
+ u2  		   minor_version             1
+ u2  		   major_version             1
+ u2  		constant_pool_count          1
+ cp_info	   constant_pool	 constant_pool_count - 1
+ u2		   access_flags		     1
+ u2		   this_class		     1
+ u2		   super_class		     1
+ u2	         interfaces_count	     1
+interface_info     interfaces		 interfaces_count
+ u2		  fields_count               1
+field_info	     fields		 fields_count
+ u2               method_count               1
+method_info	     methods		 method_count
+ u2		 attributes_count            1
+attribute_info       attributes	         attributes_count
+````
+**魔数（Magic Number）**：用于确定该文件是否为一个可被JVM接受的Class文件。gif、jpeg等文件中均存在魔术，用于标识文件类型。而只要魔数值还没被广泛使用，则开发者可自定义该值，而Class文件的魔数值为0xCAFEBABE，并命名为Oak。<br/>
+**次版本号（Minor Version）和主版本号（Major Version）**：用于标识Class文件是通过JDK哪个版本编译出来的。JDK1.0为45, 后续版本则+1。JDK1.7可以支持版本号为51.0及以下的。<br/>
+**常量池**：<br/>
+由常量池计数器（constant_pool_count）和常量池表（constant_pool）构成。常量池的第0项常量空出来表示“不引用任何一个常量池项目”，因此常量池的索引从1开始。<br/>
+常量池存放两种类型的常量，两者的数据类型均为表：字面量（Literal）和符号引用（Symbolic References）<br/>
+字面量：文本字符串、声明为final的常量值等<br/>
+符号引用：类和接口的全限定名（Fully Qualified Name）、字段的名称和描述符（Descriptor）、方法的名称和描述符。JVM通过符号引用来为对象分配内存空间。<br/>
+JDK7以前有11种常量结构类型，而JDK7更好地支持动态语言因此追加3种。14种常量结构类型的结构均不同，但第一个字节都是作为标志符。<br/>
+````
+常量结构类型                  	标志               描述
+CONSTANT_Utf8_info		  1             UTF-8缩略编码的字符串
+CONSTANT_Integer_info		  3		整型字面量
+CONSTANT_Float_info		  4		浮点数字面量
+CONSTANT_Long_info		  5		长整型字面量
+CONSTANT_Double_info		  6		双精度浮点型字面量
+CONSTANT_Class_info		  7		类或接口的符号引用
+CONSTANT_String_info		  8		字符串类型字面量
+CONSTANT_Fieldref_info		  9		字段的符号引用
+CONSTANT_Methodref_info		 10		方法的符号引用
+CONSTANT_InterfaceMethodref_info 11		接口方法的符号引用
+CONSTANT_NameAndType_info	 12		字段或方法的部分符号引用
+CONSTANT_MethodHandle_info	 15		方法句柄
+CONSTANT_MethodType_info	 16		标识方法类型
+CONSTANT_InvokeDynamic_info	 18		表示一个动态方法调用点
+````
+CONSTANT_Utf8_info的结构<br/>
+````
+tag：u1，标志符
+length：u2，字符串长度为多少个字节
+bytes：字符串的UTF8缩略编码后的字节数组
+````
+类、接口、方法、字段名均以CONSTANT_Utf8_info的结构存储，而length的长度为2个字节（65535），因此若类、接口、方法、字段名长度超过65535则编译器会报错。<br/>
+而UTF-8缩略编码的编码方式是，`\u0001`到`\u007f`以1byte存储（即1~127的ASCII码存储方式），`\u0080`到`\u07ff`以2bytes存储，而`\u0800`到`\uffff`则以UTF-8方式存储。<br/>
+CONSTANT_Class_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表类或接口的全限定名称。
+````
+通过`javap -verbose <类、接口全限定名>`，获取计算后的字节码内容。<br/>
+CONSTANT_Integer_info的结构<br/>
+````
+tag：u1，标志符
+bytes：u4，Big-endian存储的int值
+````
+CONSTANT_Float_info的结构<br/>
+````
+tag：u1，标志符
+bytes：u4，Big-endian存储的float值
+````
+CONSTANT_Long_info的结构<br/>
+````
+tag：u1，标志符
+bytes：u8，Big-endian存储的long值
+````
+CONSTANT_Double_info的结构<br/>
+````
+tag：u1，标志符
+bytes：u8，Big-endian存储的double值
+````
+CONSTANT_String_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表字符串字面量。
+````
+CONSTANT_Fieldref_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表字段所属类或接口的符号引用。
+name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表字段描述符。
+````
+CONSTANT_Methodref_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属类或接口的符号引用。
+name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表方法描述符。
+````
+CONSTANT_InterfaceMethodref_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属接口的符号引用。
+name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表方法描述符。
+````
+CONSTANT_NameAndType_info的结构<br/>
+````
+tag：u1，标志符
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表方法、字段名称的字符串字面量。
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表方法和字段描述符的字符串字面量。方法的描述符为入参+返回值（如(Z)Ljava/lang/String;）；字段的描述符为字段的数类型。
+````
+CONSTANT_MethodHandle_info的结构<br/>
+````
+tag：u1，标志符
+reference_kind：u1，值1~9，代表句柄的类型，不同类型具有不同的字节码行为。
+reference_index：u2，
+````
+CONSTANT_MethodType_info的结构<br/>
+````
+tag：u1，标志符
+descriptor_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，表示方法的描述符。
+````
+CONSTANT_InvokeDynamic_info的结构<br/>
+````
+tag：u1，标志符
+bootstrap_method_attr_index：u2，值为指向引导方法表bootstrap_methods[]数组的有效索引。
+name_and_type_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，表示方法名和描述符。
+````
+**访问标志（access_flags）**<br/>
+用于标识类或接口的访问信息（不单单是访问修饰符）。<br/>
+````
+标志名称          标志值            含义
+ACC_PUBLIC        0x0001         public类型
+ACC_FINAL	  0x0010         类使用了final修饰符
+ACC_SUPER	  0x0020         允许使用invokespecial字节码指令。JDK1.0.2后编译出来的类该标志必须为true
+ACC_INTERFACE     0x0200	 接口
+ACC_ABSTRACT	  0x0400	 抽象类或接口
+ACC_SYNTHETIC	  0x1000	 该类非用户代码生成的
+ACC_ANNOTATION    0x2000    	 该类为注解
+ACC_ENUM	  0x4000	 该类为枚举
+````
+上述标志通过与运算获取最终值。<br/>
+**类索引（this_class）、父类索引（super_class）和接口索引集合（interfaces）**<br/>
+类索引（this_class）：指向常量池中一个CONSTANT_Class_info结构类型的常量<br/>
+父类索引（super_class）：指向常量池中一个CONSTANT_Class_info结构类型的常量。Java中所有类均有父类，除了`java.lang.Object`外。<br/>
+接口索引集合（interfaces）：interface_count为接口计数器，若计数器为0则表示没有继承接口，因此interfaces将不占空间。<br/>
+**字段表（field_info）**：<br/>
+用于存放类或接口的字段。注意：<br/>
+1. 超类和接口中继承而来的字段均不会包含在这里；<br/>
+2. Java代码中没有出现的字段可能会出现在这里，例如内部类的字节码会包含外部类的字段。<br/>
+3. Java中类的字段名必须不同，而字节码中只要字段的描述符不一样，则字段名可以相同。<br/>
+表数据项结构如下：<br/>
+````
+access_flag：u2，访问信息，访问标志通过与运算后的结果。
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表字段的简单名称。
+descriptor_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表字段的数据类型。
+attribute_acount：u2，字段的属性表长度，为0时attributes将不占空间。属性表用于存储字段的额外信息。
+attributes：acctirbute_info，属性表数据项。若java代码中声明为final static int m=123;，则会有ConstantValue属性，并指向常量123。
+````
+access_flag的值<br/>
+````
+标志名称          标志值            含义
+ACC_PUBLIC        0x0001         public类型
+ACC_PRIVATE       0x0002         private类型
+ACC_PROTECTED     0x0004         protected类型
+ACC_STATIC        0x0008         static类型
+ACC_FINAL         0x0010         final类型
+ACC_VOLATILE      0x0040         volatile
+ACC_TRANSIENT     0x0080         transient 
+ACC_SYNTHETIC     0x1000         字段有编译器自动产生的 
+ACC_ENUM      	  0x4000         enum
+````
+
+**方法表（method_info）**：<br/>
+**属性表（attribute_info）**：<br/>
+
+全限定名：将全限定类名的,换成/并在末尾添加;作为分隔符，例如`java.lang.String`的且全限定名为`java/lang/String;`<br/>
+简单名称：除去类型和参数修饰的字段名和方法名，例如`public static void main(String[] args)`的简单名称是`main`<br/>
+描述符：描述字段的数据类型，方法的参数列表（包含数量、类型和顺序）和返回值。<br/>
+描述符中数据类型的标识字符：<br/>
+````
+标识字符         数据类型
+B                  byte
+C		   char
+D		   double
+F                  float
+I		   int
+J                  long
+S                  short
+Z	 	   boolean
+V		   void
+L		   对象类型（L+对象的全限定名），如java.lang.Object则为Ljava/lang/Object;
+````
+数组类型的表示方式：每一维度使用一个前置的`[`，例如`java.lang.String[][]`则表示为`[[Ljava/lang/String;`。<br/>
+方法的表示方式：`(参数类型)返回值类型`，例如`int makeArray(java.lang.String source, char[] dest, int destOffset)`则表示为`(Ljava/lang/String;[CI)I`<br/>
+
+### Byte Endian
+多字节数据项中的字节在内存的存储顺序，也称作Byte Ordering或Byte Order。<br/>
+Big-Endian（大端存储）:指低地址存放最高有效字节（MSB）。高位字节写入低位地址，低位字节写入高位地址（高低、低高），符合人类思维。<br/>
+Little-Endian（小端存储）:指低位地址存放最低有效字节（LSB）。高位字节写入高位地址，低位字节写入低位地址（高高、低低），符合计算机处理。<br/>
+示例——0x123456<br/>
+````
+内存结构          Big-Endian    Little-Endian 
+----------	   --------       --------
+| ...... | 高位    | .... |       | .... |
+| 0x1002 | 	   | 0x56 |       | 0x12 |
+| 0x1001 |	   | 0x34 |       | 0x34 |
+| 0x1000 | 低位    | 0x12 |       | 0x56 |
+----------	   --------       --------
+````
+MSB(Most Significant Byte)，最高有效字节<br/>
+LSB(Least Significant Byte)，最低有效字节<br/>
+示例——0x123456
+````
+MSB就是0x12
+LSB就是0x56
+````
+而地址最低位指向MSB还是LSB则决定是Big-Endian还是Little-Endian了。<br/>
+**注意：**<br/>
+1. 所有网络协议均采用Big-endian方式传输数据，因此Big-endian也称为网络字节序。当从Big-endian传输0x123456到Little-endian时会得到0x563412<br/>
+2. x86CPU采用Little-endian，而PowerPC采用Big-endian。<br/>
+3. 在linux下的/usr/include的endian.h或machine/endian.h或feature.h下确定Byte Endian，瑞BYTE_ORDER(或_BTYE_ORDER或__BYTE_ORDER)为1234就是LE，若为4321则为BE<br/>
+
+
