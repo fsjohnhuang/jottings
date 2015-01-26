@@ -1,0 +1,20 @@
+class Main{
+	String msg1 = "msg1";
+	private String msg2;
+	protected String msg3;
+	public String msg4;
+	static String msg = "msg";
+
+	public static void main(String[] args){
+		Main main = new Main();
+		msg2 = "msg2";
+		msg3 = "msg3";
+		msg4 = "msg4";
+
+		System.out.println(msg);
+		System.out.println(msg1);
+		System.out.println(msg2);
+		System.out.println(msg3);
+		System.out.println(msg4);
+	}
+}

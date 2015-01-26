@@ -9,7 +9,7 @@ rd /S /Q bin
 ::copy html files
 xcopy /y src\*.html bin\
 ::compile less to css
-cmd /C lessc --include-path=lib/less --relative-urls --source-map --source-map-rootpath=../../src/less/main.less src/less/main.less bin/style/main.css
+cmd /C lessc --include-path=lib/less --relative-urls --source-map --source-map-map-inline --source-map-rootpath=../../src/less/main.less src/less/main.less bin/style/main.css
 echo Building is over!
 goto :over
 
