@@ -319,6 +319,8 @@ Synthetic属性用于表示类、方法或字段为编译器自动生成，除�
 attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
 attribute_length：u4，属性项整体的字节数。
 ````
+Signature属性<br/>
+用于字段表和方法表项下，标识字段或方法的描述符<br/>
 
 全限定名：将全限定类名的,换成/并在末尾添加;作为分隔符，例如`java.lang.String`的且全限定名为`java/lang/String;`<br/>
 简单名称：除去类型和参数修饰的字段名和方法名，例如`public static void main(String[] args)`的简单名称是`main`<br/>
@@ -443,6 +445,9 @@ double->float的规则：
 创建对象：new
 创建数组：newarray、anewarray、mulianewarray。
 访问类字段和实例字段：getstatic、putstatic、getfield、putfield
+````
+putfield <oprands>：首先会弹出操作数栈顶的头两个元素。操作数栈的栈顶元素为将要赋予的值，而栈顶第二个元素为操作的对象或类，<oprands>为指向CONSTANT_Fieldref_info常量的地址。
+````
 数组元素->操作数栈：Taload
 操作数栈->数组：Tastore
 获取数组长度：arraylength
@@ -463,6 +468,7 @@ double->float的规则：
 ### 6.控制转移指令
 ````
 条件分支：ifeq,iflt,ifle,ifne,ifgt,ifge,ifnull,ifnonnull,if_icmpeq,ificmpne,if_icmplt,if_icmpgt,if_icmple,if_icmpge,if_acmpeg和if_acmpne
+if_icmple <operands>：首先弹出操作数栈的头两个元素，当第二元素小于等于栈顶元素时跳转到<operands>所指的字节码命令行继续执行。
 复合条件分支：tableswitch,lookupswitch
 无条件分支：goto,goto_w,jsr,jsr_w,ret
 ````
@@ -471,12 +477,13 @@ double->float的规则：
 ### 7.方法调用和返回指令
 方法调用指令与数据类型无关<br/>
 ````
+invokespecial：用于调用构造函数、私有方法和父类方法。
 invokevirtual：根据对象的实际类型进行分派。Java中常见的分派方式
 invokeinterface：在运行时搜索一个实现该接口的对象的方法
 invokestatic：调用类方法
 invokedynamic：在运行时动态解析出调用点限定符所引用的方法。
 ````
-上述方法均以栈顶元素作为操作的对象和类<br/>
+上述方法均以栈顶元素出栈并作为操作的对象和类<br/>
 ````
 aload_0 // 将this压栈
 invokevirtual 5# // 调用this.doSomething()
