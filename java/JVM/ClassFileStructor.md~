@@ -180,9 +180,145 @@ ACC_TRANSIENT     0x0080         transient
 ACC_SYNTHETIC     0x1000         字段有编译器自动产生的 
 ACC_ENUM      	  0x4000         enum
 ````
-
 **方法表（method_info）**：<br/>
+用于存放类或接口的方法。注意：<br/>
+1. 超类中继承而来的方法均不会包含在这里，除非重写了超类的方法；<br/>
+2. Java代码中没有出现的方法可能会出现在这里，例如默认的构造函数。<br/>
+2. Java中的重载必须要参数签名不同才可以，而字节码中只需描述符不同就可以了（也就是说只需返回值不同就可以了）。<br/>
+表数据项结构如下：<br/>
+````
+access_flag：u2，访问信息，访问标志通过与运算后的结果。
+name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表方法的简单名称。
+descriptor_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常量，代表方法的刹那参数列表和返回值类型。
+attribute_acount：u2，字段的属性表长度，为0时attributes将不占空间。属性表用于存储方法的额外信息。
+attributes：acctirbute_info，属性表数据项。
+````
+access_flag的值<br/>
+````
+标志名称          标志值            含义
+ACC_PUBLIC        0x0001         public类型
+ACC_PRIVATE       0x0002         private类型
+ACC_PROTECTED     0x0004         protected类型
+ACC_STATIC        0x0008         static类型
+ACC_FINAL         0x0010         final类型
+ACC_SYNCHRONIZED  0x0020	 同步方法
+ACC_BRIDGE	  0x0040	 方法由编译器产生的桥接方法
+ACC_VARARGS	  0X0080 	 方法接受不定参数
+ACC_NATIVE	  0x0100	 本地方法
+ACC_ABSTRACT	  0x0400	 抽象方法
+ACC_STRICTFP	  0x0800	 方法为scriptfp
+ACC_SYNTHETIC	  0x1000	 方法由编译器自动产生
+````
 **属性表（attribute_info）**：<br/>
+位于文件、类、字段表、方法表的每个表项后，用于提供字段、方法的额外信息。<br/>
+属性表的表项长度不一，只要表项名称唯一即可。<br/>
+表项整体结构：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型的常量。
+attribute_length：u4，属性项整体的字节数。
+info：不同类型的属性项具有不同的结构。
+````
+Code属性<br/>
+位于方法表项的属性表中，用于存放方法体信息。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+max_stack：u2，操作数栈（Operand Stacks）容量。JVM会根据这个值来分配栈帧（Stack Frame）中操作数栈的容量。
+max_locals：u2，代表局部变量表容量。JVM为局部变量分配内容的最小单位是Slot，32bytes及以下的变量占1个Slot，64bytes则占2个Slot。局部变量包含——方法参数（隐含this入参）、Exception Hanlder Parameter（catch中的异常变量）、方法体中定义的局部变量。当离开某局部变量的作用域，那么就会释放该变量所占的Slot并给其他局部变量使用。
+code_length：u4，表示code的字节数
+code：字节指令和指令入参的混合数组，每个指令和入参各占1个字节。若在定义中某指令需要入参，那么该指令后的字节为入参字节，否则为指令字节。
+exception_table_length：u2，try...catch中捕获的异常对象数目
+exception_table：exception_info，try...catch中捕获的异常对象信息。
+结构为：
+  start_pc：u2，监测异常发生的起始字节命令偏离量
+  end_pc：u2，监测异常发生的结束字节命令偏离量
+  handler_pc：u2，当发生catch_type指定的异常类型或其子类时，则执行该无符号数指向的CONSTANT_Method_info符号引用。
+  catch_type：u2，监测的异常类型，指向常量池的CONSTANT_Class_info常量。为0时表示无论是否发生异常均会执行。
+attributes_count：u2，Code属性的子属性数量
+attributes：Code属性的子属性数组
+````
+Exceptions属性<br/>
+位于方法表项的属性表中，用于存放方法描述符后throws关键字后面罗列的异常信息。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+number_of_exceptions：u2，异常类型地址数组长度。
+exception_index_table：异常类地址数组，指向常量池CONSTANT_Class_info常量。
+````
+LineNumberTable属性<br/>
+位于方法表项的属性表中，用于存放Java源码与字节码行号的对应关系。<br/>
+通过`javac -g:lines <java文件>`即可在编译时生成。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+line_number_table_length：u2, 对应关系表长度。
+line_number_table：对应关系项表。
+ 结构如下：
+   start_pc：u2，字节码的行号
+   line_number：u2，Java的行号
+````
+LocalVariableTable属性<br/>
+位于方法表项的属性表中，用于存放Slot槽的变量与Java代码中变量之间的映射关系。通过`javac -g:vars <java文件>`可在编译时生成（默认是没有的）。若没有生成该属性时，则其他项目引用该方法时入参会以`arg0 arg1`等代替。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+local_variable_table_length：u2，对应关系表长度。
+local_variable_table：对应关系项表。
+  结构如下： 
+    start_pc：u2，代表局部变量作用域的起始偏移量。
+    length：u2，代表局部变量作用域的有效范围长度。
+    name_index：u2，指向CONSTANT_Utf8_info常量，表示局部变量名
+    descriptor_index：u2，执行CONSTANT_Utf8_info常量，表示局部变量的数据类型
+    index：u2，表示局部变量位于Slot槽的位置索引，对于long、dobule等>32bit的变量，它们占用了index和index+1的Slot槽位置。
+````
+SourceFile属性<br/>
+位于文件中，用于存放Class文件的源码文件名称。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+sourcefile_index：u2，指向CONSTANT_Utf8_info常量，代表源码文件名称。
+````
+ConstantValue属性<br/>
+位于字段表项中，用于告诉JVM自动为静态变量赋值。<br/>
+字段赋值的三种方式：<br/>
+1. 实例字段均在构造函数`<init>`中赋值；
+2. 静态字段，在静态构造函数`<clinit>`中赋值；
+3. 静态字段，通过ConstantValue属性自定值，有JVM自定赋值。
+Oracle的javac会对`static final`且数据类型为基础类型或String的变量采用3的赋值方式，而对于`static`或数据类型不是基础类型或String的则通过<clinit>初始化。<br/>
+`final`的字段在定义时马上赋值则也含ConstantValue属性，但没有赋值时是不含ConstantValue属性的<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+constantvalue_index：u2，指向CONSTANT_Long_info、CONSTANT_Float_info、CONSTANT_Double_info、CONSTANT_Integer_info或CONSTANT_String_info常量。
+````
+InnerClasses属性<br/>
+位于类中，用于记录内部类宿主类的关联关系。<br/>
+结构如下：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+number_of_classes：u2，内部类数量
+inner_classes：内部类信息表
+  结构如下：
+    inner_class_info_index：u2，指向CONSTANT_Class_info常量，表示内部类的符号引用
+    outer_class_info_index：u2，指向CONSTANT_Class_info常量，表示宿主类的符号引用
+    inner_name_index：u2，指向CONSTANT_Utf8_info，内部类的名称，匿名内部类则为0
+    inner_class_access_flags：u2，访问信息标志。
+````
+Deprecated和Synthentic属性<br/>
+Deprecated属性用于标识类、方法或字段已过期，Java代码中通过@Deprecated标识。<Br/>
+Synthetic属性用于表示类、方法或字段为编译器自动生成，除了<init>和<clinit>外其他由编译器自动生成的类、方法或字段要么含有Synthetic属性，要么access_flag含ACC_SYNTHETIC<br/>
+两个的结构一样：<br/>
+````
+attribute_name_index：u2，属性项名称，指向常量池的CONSTANT_Utf8_info结构类型值为Code的常量。
+attribute_length：u4，属性项整体的字节数。
+````
 
 全限定名：将全限定类名的,换成/并在末尾添加;作为分隔符，例如`java.lang.String`的且全限定名为`java/lang/String;`<br/>
 简单名称：除去类型和参数修饰的字段名和方法名，例如`public static void main(String[] args)`的简单名称是`main`<br/>
@@ -231,4 +367,145 @@ LSB就是0x56
 2. x86CPU采用Little-endian，而PowerPC采用Big-endian。<br/>
 3. 在linux下的/usr/include的endian.h或machine/endian.h或feature.h下确定Byte Endian，瑞BYTE_ORDER(或_BTYE_ORDER或__BYTE_ORDER)为1234就是LE，若为4321则为BE<br/>
 
+## 字节码指令
+JVM指令由*操作码（Opcode）*和*操作数（Operands）*组成。<br/>
+JVM采用面向操作数栈的架构，因此大多数指令都只含操作码而已。<br/>
+**操作码**<br/>
+即字节码指令，Java采用定长的操作码（1byte），因此指令集的操作码总数不能超过256条。<br/>
+每个操作码对应一个命令名称，命令名称由[操作码助记符+]操作符组成。操作码助记符用于标记所操作的数据类型（i-int,l-long,s-short,b-byte,c-char,f-float,d-double,a-reference），也就是说这些操作码是与特定的数据类型绑定的。有些操作码不区分数据类型（如arraylength），有些不涉及数据类型（如go）。<br/>
+注意：对于大多byte、short、boolean、char数据类型，是没有独立的操作码与之绑定的，实际操作上是通过将它们转换为int类型后通过与int数据类型绑定的操作码来执行<br/>
+带符号扩展（Sign-Extend）
+ 场景：byte、short->int
+带零扩展（Zero-Extend）
+ 场景：boolean、char->int
+**操作数**<br/>
+采用操作长度不对齐的存储格式，就是存储无符号数0x1234时采用0x12 0x34的方式存储，当获取时则通过JVM在运行时重建出具体数据结构。
+````
+(0x12 << 8) | 0x34
+````
+若采用长度对齐的存储方式，则直接取出即可。<br/>
+好处：节省填充位和间隔符号;<br/>
+缺点：降低一些性能<br/>
 
+`<n>`表示`0,1,2,3`，如`iload_<n>`表示指令`iload_0`、`iload_1`、`iload_2`、`iload_3`<br/>
+### 1.加载和存储指令
+  用于在栈帧的Slot槽（局部变量表）与操作数栈之间来回传输数据。<br/>
+````
+  操作数栈->局部变量表：Tload、Tload_<n>
+  局部变量表->操作数栈：Tstore、Tstore_<n>
+  常量->操作数栈：bipush、sipush、ldc、ldc_w、ldc2_w、aconst_null、iconst_m1、iconst_<i>、iconst_<l>、iconst_<f>、iconst_<d>
+  扩充局部变量表的访问索引：wide
+````
+
+### 2.运算指令
+用于对操作数栈顶的两个数据进行运算就，并将结果重新压栈。运算分为整型和浮点型数据运算两种<br/>
+````
+加法：Tadd
+减法：Tsub
+乘法：Tmul
+除法：Tdiv
+求余：Trem
+取反：Tneg
+位移：Tshl、Tshr、Tushr
+位或：Tor
+位于：Tand
+位异或：Txor
+局部变量自增：iinc
+比较：Tcmpg、Tcmpl
+````
+
+### 3.类型转换指令
+JVM直接支持数值类型的宽化类型转换。因此无需显式的转换指令<br/>
+````
+int -> long、float或double
+long -> float、double
+float -> double
+````
+对于窄化而理性转换，则需要显式的转换指令：i2b、i2c、i2s、l2i、f2i、d2i、d2l和d2f。<br/>
+double或float->int或long的规则：
+````
+1. NaN -> 0
+2. 采用向零舍入模式取整的方式获取整型v，若v在int或long的表示范围，则采用v
+3. 若v超出int或long的表示范围，则采用int或long的最大或最小正数
+````
+向零舍入模式取整：12.99->12<br/>
+double->float的规则：
+````
+1. NaN -> NaN
+2. 采用近似数舍入模式获取一个float表示范围内的数v
+3. 若v的绝对值太小，则返回正负零
+4. 若v的绝对值太大，则返回正负无穷大
+````
+近似数舍入模式取整(四舍五入)：12.1222224d -> 12.122222<br/>
+
+### 4.对象创建与访问指令
+````
+创建对象：new
+创建数组：newarray、anewarray、mulianewarray。
+访问类字段和实例字段：getstatic、putstatic、getfield、putfield
+数组元素->操作数栈：Taload
+操作数栈->数组：Tastore
+获取数组长度：arraylength
+检查类实例类型：instanceof、checkcast
+````
+
+### 5.操作数栈管理指令
+````
+弹出1、2个栈帧：pop、pop2
+复制栈顶1、2个栈帧：dup、dup2
+复制栈顶1个栈帧并将新的栈帧压栈：dup_x1
+复制两次栈顶1个栈帧并将新的栈帧压栈：dup_x2
+复制栈顶2个栈帧并将新的栈帧压栈：dup2_x1
+复制两次栈顶2个栈帧并将新的栈帧压栈：dup2_x2
+将栈顶两个栈帧互换：swap
+````
+
+### 6.控制转移指令
+````
+条件分支：ifeq,iflt,ifle,ifne,ifgt,ifge,ifnull,ifnonnull,if_icmpeq,ificmpne,if_icmplt,if_icmpgt,if_icmple,if_icmpge,if_acmpeg和if_acmpne
+复合条件分支：tableswitch,lookupswitch
+无条件分支：goto,goto_w,jsr,jsr_w,ret
+````
+对于char,boolean,byte,short的条件分支比较操作，均采用int类型的指令处理。对于long,float和double类型的则通过比较运算指令（Tcmpg,Tcmpl等）得到int数值后在采用int类型的执行处理。<br/>
+
+### 7.方法调用和返回指令
+方法调用指令与数据类型无关<br/>
+````
+invokevirtual：根据对象的实际类型进行分派。Java中常见的分派方式
+invokeinterface：在运行时搜索一个实现该接口的对象的方法
+invokestatic：调用类方法
+invokedynamic：在运行时动态解析出调用点限定符所引用的方法。
+````
+上述方法均以栈顶元素作为操作的对象和类<br/>
+````
+aload_0 // 将this压栈
+invokevirtual 5# // 调用this.doSomething()
+````
+
+返回执行跟数据类型有关<br/>
+ireturn、lreturn、freturn、dreturn、areturn和return。
+
+### 8.异常处理指令
+````
+显示抛出异常：athrow
+````
+
+### 9.同步指令
+JVM支持方法级别和方法内部的同步，两者均使用管程（Monitor）来支持。<br/>
+  方法级别的同步是隐式的，无需字节码指令支持，而是通过方发表项的access_flag是否含ACC_SYNCHRONIZED访问标志来判断在执行该方法前是否需要获取管程。<br/>
+  方法内部的同步语句块则通过monitorenter和monitorexit指令来独占和释放管程。由于字节码中会自动在异常处理中加入monitorexit指令，因此即使同步语句块非正常退出依然会释放管程。<br/>
+
+
+JVM实现的方式有两种：<br/>
+1. 将byte code在加载和执行时，翻译成另一种虚拟机的指令集；
+2. 将byte code在加载和执行时，翻译成宿主机CPU的本地指令集（JIT代码生成技术）。
+
+
+面向操作数栈架构
+寄存器架构
+
+方法调用（分派、执行过程）
+
+## 参考
+http://blog.jamesdbloom.com/JavaCodeToByteCode_PartOne.html<br/>
+《深入理解Java虚拟机——JVM高级特性与最佳实践》<br/>
