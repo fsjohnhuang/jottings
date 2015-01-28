@@ -322,6 +322,7 @@ attribute_length：u4，属性项整体的字节数。
 Signature属性<br/>
 用于字段表和方法表项下，标识字段或方法的描述符<br/>
 
+
 全限定名：将全限定类名的,换成/并在末尾添加;作为分隔符，例如`java.lang.String`的且全限定名为`java/lang/String;`<br/>
 简单名称：除去类型和参数修饰的字段名和方法名，例如`public static void main(String[] args)`的简单名称是`main`<br/>
 描述符：描述字段的数据类型，方法的参数列表（包含数量、类型和顺序）和返回值。<br/>
@@ -393,16 +394,21 @@ JVM采用面向操作数栈的架构，因此大多数指令都只含操作码�
 ### 1.加载和存储指令
   用于在栈帧的Slot槽（局部变量表）与操作数栈之间来回传输数据。<br/>
 ````
-  操作数栈->局部变量表：Tload、Tload_<n>
-  局部变量表->操作数栈：Tstore、Tstore_<n>
+  操作数栈->局部变量表：Tstore、Tstore_<n>
+  局部变量表->操作数栈：Tload、Tload_<n>
   常量->操作数栈：bipush、sipush、ldc、ldc_w、ldc2_w、aconst_null、iconst_m1、iconst_<i>、iconst_<l>、iconst_<f>、iconst_<d>
+    bipush <operands>：将<operands>压栈，如 int num = 1; -> 
+         0:bipush 1 // 压栈  
+         2:istore_1 // 弹出栈顶栈帧并存放到局部变量表的第二个Slot中
+    iconst_m1：将-1压栈
+    ldc <operands>：将CONSTANT_String_info常量压栈
   扩充局部变量表的访问索引：wide
 ````
 
 ### 2.运算指令
 用于对操作数栈顶的两个数据进行运算就，并将结果重新压栈。运算分为整型和浮点型数据运算两种<br/>
 ````
-加法：Tadd
+加法：Tadd <aperands>，弹出操作数栈顶元素，然后栈顶元素+<aperands>后，将结果压栈
 减法：Tsub
 乘法：Tmul
 除法：Tdiv
@@ -412,8 +418,22 @@ JVM采用面向操作数栈的架构，因此大多数指令都只含操作码�
 位或：Tor
 位于：Tand
 位异或：Txor
-局部变量自增：iinc
+局部变量自增：iinc <Slot> <int>，直接操作Slot槽的变量，将<Slot>中的变量+<int>并保存在<Slot>中。注意：全程均没有操作数栈参数。
+  int a = 1;
+  a++; // -> iinc 1, 1
+  a += 3; // -> iinc 1, 3
 比较：Tcmpg、Tcmpl
+  Tcmpl：弹出操作数栈顶的两个(float或dobule类型)栈帧并对两者进行比较后将结果压栈。比较规则如下（栈顶元素为A，第二个元素为B）：
+	B > A -> 1
+	B = A -> 0
+	B < A -> -1
+	B or A is NaN -> -1
+  Tcmpg：弹出操作数栈顶的两个(float或dobule类型)栈帧并对两者进行比较后将结果压栈。比较规则如下（栈顶元素为A，第二个元素为B）：
+	B > A -> 1
+	B > A -> 1
+	B = A -> 0
+	B < A -> -1
+	B or A is NaN -> 1
 ````
 
 ### 3.类型转换指令
@@ -442,7 +462,7 @@ double->float的规则：
 
 ### 4.对象创建与访问指令
 ````
-创建对象：new
+创建对象：new <operands>，新建对象并将其压栈，<operands>指向CONSTANT_Class_info常量
 创建数组：newarray、anewarray、mulianewarray。
 访问类字段和实例字段：getstatic、putstatic、getfield、putfield
 ````
@@ -452,6 +472,7 @@ putfield <oprands>：首先会弹出操作数栈顶的头两个元素。操作�
 操作数栈->数组：Tastore
 获取数组长度：arraylength
 检查类实例类型：instanceof、checkcast
+  instanceof <operands>：弹出操作数栈顶的reference元素，若栈顶元素是<operands>所指向的CONSTANT_Class_info的实例或子类实例，则将1压栈，否则将0压栈。
 ````
 
 ### 5.操作数栈管理指令
@@ -467,9 +488,19 @@ putfield <oprands>：首先会弹出操作数栈顶的头两个元素。操作�
 
 ### 6.控制转移指令
 ````
-条件分支：ifeq,iflt,ifle,ifne,ifgt,ifge,ifnull,ifnonnull,if_icmpeq,ificmpne,if_icmplt,if_icmpgt,if_icmple,if_icmpge,if_acmpeg和if_acmpne
-if_icmple <operands>：首先弹出操作数栈的头两个元素，当第二元素小于等于栈顶元素时跳转到<operands>所指的字节码命令行继续执行。
+条件分支：ifeq,iflt,ifle,ifne,ifgt,ifge,ifnull,ifnonnull,if_icmpeq,if_icmpne,if_icmplt,if_icmpgt,if_icmple,if_icmpge,if_acmpeg和if_acmpne
+  if_icmp<cond> <operands>：<cond>的取值范围为[eq,ne,lt,le,gt,ge]，操作均为先弹出操作数栈的头两个元素，当第二元素<cond>栈顶元素成功时则跳转到<operands>所指的字节码命令行继续执行。
+  	if_icmple <operands>：首先弹出操作数栈顶两个int元素，当第二元素小于等于栈顶元素时跳转到<operands>所指的字节码命令行继续执行。
+  if_acmp<cond> <operands>：<cond>的取值范围为[eq,ne]，操作均为先弹出操作数栈顶两个reference元素，当第二元素<cond>栈顶元素成功时则跳转到<operands>所指的字节码命令行继续执行。
+  ifnonnull <operands> / ifnull <operands>：首先弹出操作数栈顶的reference并判断是否为null。
+  if<cond> <operands>：<cond>的取值范围为[eq,ne,le,lt,gt,ge]，操作均先弹出操作数栈顶int元素，并与0进行<cond>比较，成功时则跳转到<operands>所指的字节码命令行继续执行。
+        ifle <operands>：首先弹出操作数栈顶元素，若该元素小于等于0则跳转到<operands>所指的字节码命令行继续执行。
 复合条件分支：tableswitch,lookupswitch
+  tableswitch用于case值密集时，lookupswitch用于case值稀疏时，这个由编译器决定。
+  tableswitch <default> <min> <max> <min-case> ... <max-case>：先弹出操作数栈顶int元素，然后检查元素值是否在<min>和<max>的范围内（包含两头），若是则跳转到<min-case> ... <max-case>中对应的case地址继续执行。否则就跳转到<default>指定的地址继续执行。
+  lookupswitch <default> <count> <case-0> ... <case-n>：先弹出操作数栈顶int元素，然后按一定的算法在<case-0> ... <case-n>中匹配出有效项并跳转到相应地址继续执行。否则就跳转到<default>指定的地址继续执行。
+  
+  Java7支持String switch语法，首先是通过tableswitch/lookupswitch对String的hashcode进行匹配，然后在对String字面量进行匹配，然后才执行case的内容。因此性能降低不少。
 无条件分支：goto,goto_w,jsr,jsr_w,ret
 ````
 对于char,boolean,byte,short的条件分支比较操作，均采用int类型的指令处理。对于long,float和double类型的则通过比较运算指令（Tcmpg,Tcmpl等）得到int数值后在采用int类型的执行处理。<br/>
@@ -483,14 +514,17 @@ invokeinterface：在运行时搜索一个实现该接口的对象的方法
 invokestatic：调用类方法
 invokedynamic：在运行时动态解析出调用点限定符所引用的方法。
 ````
-上述方法均以栈顶元素出栈并作为操作的对象和类<br/>
+上述指令均以栈顶元素出栈并作为操作的对象和类<br/>
 ````
 aload_0 // 将this压栈
 invokevirtual 5# // 调用this.doSomething()
 ````
 
 返回执行跟数据类型有关<br/>
+````
 ireturn、lreturn、freturn、dreturn、areturn和return。
+````
+上述指令会弹出操作数栈顶栈帧，并返回。<br/>
 
 ### 8.异常处理指令
 ````
@@ -504,14 +538,18 @@ JVM支持方法级别和方法内部的同步，两者均使用管程（Monitor�
 
 
 JVM实现的方式有两种：<br/>
-1. 将byte code在加载和执行时，翻译成另一种虚拟机的指令集；
-2. 将byte code在加载和执行时，翻译成宿主机CPU的本地指令集（JIT代码生成技术）。
+1. 将byte code在加载和执行时，翻译成另一种虚拟机的指令集；<br/>
+2. 将byte code在加载和执行时，翻译成宿主机CPU的本地指令集（JIT代码生成技术）。<br/>
 
 
-面向操作数栈架构
-寄存器架构
+面向操作数栈架构<br/>
+寄存器架构<br/>
 
-方法调用（分派、执行过程）
+方法调用（分派、执行过程）<br/>
+
+Hibernate、Spring会通过动态字节码修改来改变类的行为。<br/>
+ASM可动态修改字节码，然后再载入JVM，从而实现stub或proxy classes。开发者需要支持操作bytecode<br/>
+cglib依赖ASM，将Java代码注入已有的类、方法中。开发者只需操作java<br/>
 
 ## 参考
 http://blog.jamesdbloom.com/JavaCodeToByteCode_PartOne.html(译文：http://www.importnew.com/13107.html)<br/>

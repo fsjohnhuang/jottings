@@ -16,10 +16,16 @@ public class Main{
 	}
 
 	public static void main(String[] args){
+		int a = 1;
+		a += 2;
+		a = a + 4;
+		int c = a++;
+		c = ++a;
+
 		Main main = new Main();
 		main.msg3 = main.getMsg3(true);
 		main.msg4 = "msg4";
-
+			
 		System.out.println(msg);
 		System.out.println(main.msg1);
 		System.out.println(main.msg3);
