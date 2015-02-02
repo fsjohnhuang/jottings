@@ -54,13 +54,32 @@ PhantomReference pr = new PhantomReference(obj, queue); // Phantom Reference
 obj = null; // Clear Strong Reference
 ````
 
-`java.lang.ref.ReferenceQueue`
-
 `java.util.WeakHashMap`，键对象为弱引用。当键对象被垃圾回收时，对应的值对象的引用会从Map中删除。<br/>
 ````
 WeakHashMap map = new WeakHashMap();
 map.put(new Object, new Object);
 ````
+WeakHashMap内部的所有操作均会经过expungeStaleEntries函数，该函数会移除键为null的Entry。因此若不调用WeakHashMap的方法即使GC发生后依然不会自动移除WeakHashMap的无效项<br/>
+````
+WeakHashMap<String, String> maps = new WeakHashMap<String, String>();
+maps.put("Hi", "There");
+// GC后，maps的仍然含一个键值对，但键对象已经被回收，因此可看成是null: "There"
+// 调用size方法会调用expungeStaleEntries函数，移除无效Entry，然后返回0
+System.out.println(maps.size()); // 显示0
+````
+WeakHashMap的put、size和clear都间接或直接调用到expungeStaleEntries函数。<br/>
+(《WeakHashMap的神话》)[http://www.iteye.com/topic/587995]<br/>
+
+`java.lang.ref.ReferenceQueue`<br/>
+`Reference<? extends T> ReferenceQueue#poll()`，从队列中出队一个元素，若队列为空则返回null。<br/>
+`Reference<? extends T> ReferenceQueue#remove()`，从队列中出队一个元素，若没有则阻塞直到有元素可出队。<br/>
+`Reference<? extends T> ReferenceQueue#remove(long timeout)`，从队列中出队一个元素，若没有则阻塞直到有元素可出队或超过timeout指定的毫秒数（由于采用wait(long timeout)方式实现等待，因此时间不能保证）。<br/>
+()[http://hongjiang.info/java-referencequeue/]
+
+抽象类Reference内部通过`{Reference} next`字段维护着一个单向链表，用于表示GC回收的Reference对象链表。<br/>
+内部含一个`ReferenceQueue<? super T> queue;`字段，若子类构造函数中没有传入引用队列则使用ReferenceQueue.NULL。Reference通过静态代码块启动一个优先级最高的守护线程，用于检查Reference的私有静态字段`{Reference} pending`，pending指向GC回收的Reference对象链表头，而线程检查到pending不为null时则表示GC已回收掉监视的对象，并将对象入队（若为ReferenceQueue.NULL则不入队）。然后沿着单向链表将被回收的对象对应的Reference对象添加到它们对应的队列中。<br/>
+**注意：Reference的所有子类均使用同一个线程来实现被回收则进入ReferenceQueue的操作**<br/>
+
 
 ## 回收算法
 ## 垃圾收集器
@@ -148,6 +167,8 @@ jvm.cfg文件原内容：<br/>
 
 System.gc();
 System.runFinalization();
+
+## 父类静态代码块
 
 ## finalize函数
 
