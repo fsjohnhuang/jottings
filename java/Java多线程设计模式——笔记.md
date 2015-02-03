@@ -1,4 +1,4 @@
-Pattern是不依存于特定语言，依存特定语言的称作idiom（惯用语）。<br/>
+﻿Pattern是不依存于特定语言，依存特定语言的称作idiom（惯用语）。<br/>
 
 并发（concurrent）<br/>
 并行（parallel）<br/>

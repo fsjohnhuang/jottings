@@ -1,0 +1,105 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/sample/02/LocalCls$1Inner.class
+  Last modified 2015-2-3; size 651 bytes
+  MD5 checksum a4bf7c12f15f22b2ebb3f79438a555ab
+  Compiled from "LocalCls.java"
+class LocalCls$1Inner
+  SourceFile: "LocalCls.java"
+  EnclosingMethod: #23.#24                // LocalCls.print
+  InnerClasses:
+       #31= #6; //Inner=class LocalCls$1Inner
+  minor version: 0
+  major version: 51
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Fieldref           #6.#25         //  LocalCls$1Inner.this$0:LLocalCls;
+   #2 = Methodref          #7.#26         //  java/lang/Object."<init>":()V
+   #3 = Methodref          #23.#27        //  LocalCls.access$000:(LLocalCls;)I
+   #4 = Methodref          #23.#28        //  LocalCls.access$002:(LLocalCls;I)I
+   #5 = String             #29            //  fsjohnhuang
+   #6 = Class              #30            //  LocalCls$1Inner
+   #7 = Class              #33            //  java/lang/Object
+   #8 = Utf8               this$0
+   #9 = Utf8               LLocalCls;
+  #10 = Utf8               <init>
+  #11 = Utf8               (LLocalCls;)V
+  #12 = Utf8               Code
+  #13 = Utf8               LineNumberTable
+  #14 = Utf8               getVal
+  #15 = Utf8               ()I
+  #16 = Utf8               setVal
+  #17 = Utf8               (I)V
+  #18 = Utf8               getName
+  #19 = Utf8               ()Ljava/lang/String;
+  #20 = Utf8               SourceFile
+  #21 = Utf8               LocalCls.java
+  #22 = Utf8               EnclosingMethod
+  #23 = Class              #34            //  LocalCls
+  #24 = NameAndType        #35:#36        //  print:()V
+  #25 = NameAndType        #8:#9          //  this$0:LLocalCls;
+  #26 = NameAndType        #10:#36        //  "<init>":()V
+  #27 = NameAndType        #37:#38        //  access$000:(LLocalCls;)I
+  #28 = NameAndType        #39:#40        //  access$002:(LLocalCls;I)I
+  #29 = Utf8               fsjohnhuang
+  #30 = Utf8               LocalCls$1Inner
+  #31 = Utf8               Inner
+  #32 = Utf8               InnerClasses
+  #33 = Utf8               java/lang/Object
+  #34 = Utf8               LocalCls
+  #35 = Utf8               print
+  #36 = Utf8               ()V
+  #37 = Utf8               access$000
+  #38 = Utf8               (LLocalCls;)I
+  #39 = Utf8               access$002
+  #40 = Utf8               (LLocalCls;I)I
+{
+  final LocalCls this$0;
+    flags: ACC_FINAL, ACC_SYNTHETIC
+
+
+  LocalCls$1Inner(LocalCls);
+    flags: 
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0       
+         1: aload_1       
+         2: putfield      #1                  // Field this$0:LLocalCls;
+         5: aload_0       
+         6: invokespecial #2                  // Method java/lang/Object."<init>":()V
+         9: return        
+      LineNumberTable:
+        line 15: 0
+
+  int getVal();
+    flags: 
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LLocalCls;
+         4: invokestatic  #3                  // Method LocalCls.access$000:(LLocalCls;)I
+         7: ireturn       
+      LineNumberTable:
+        line 17: 0
+
+  void setVal(int);
+    flags: 
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LLocalCls;
+         4: iload_1       
+         5: invokestatic  #4                  // Method LocalCls.access$002:(LLocalCls;I)I
+         8: pop           
+         9: return        
+      LineNumberTable:
+        line 20: 0
+        line 21: 9
+
+  java.lang.String getName();
+    flags: 
+    Code:
+      stack=1, locals=1, args_size=1
+         0: ldc           #5                  // String fsjohnhuang
+         2: areturn       
+      LineNumberTable:
+        line 23: 0
+}

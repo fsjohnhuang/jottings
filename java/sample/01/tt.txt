@@ -1,0 +1,201 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/sample/01/MemberCls.class
+  Last modified 2015-2-3; size 1117 bytes
+  MD5 checksum aea71084f78ab319a339717e4d0e1e79
+  Compiled from "MemberCls.java"
+class MemberCls
+  SourceFile: "MemberCls.java"
+  InnerClasses:
+       #16= #3 of #5; //Inner=class MemberCls$Inner of class MemberCls
+  minor version: 0
+  major version: 51
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Fieldref           #5.#36         //  MemberCls.val:I
+   #2 = Methodref          #15.#37        //  java/lang/Object."<init>":()V
+   #3 = Class              #38            //  MemberCls$Inner
+   #4 = Methodref          #3.#39         //  MemberCls$Inner."<init>":(LMemberCls;)V
+   #5 = Class              #40            //  MemberCls
+   #6 = Methodref          #5.#37         //  MemberCls."<init>":()V
+   #7 = Methodref          #15.#41        //  java/lang/Object.getClass:()Ljava/lang/Class;
+   #8 = Methodref          #5.#42         //  MemberCls.getInner:()LMemberCls$Inner;
+   #9 = Fieldref           #43.#44        //  java/lang/System.out:Ljava/io/PrintStream;
+  #10 = Methodref          #3.#45         //  MemberCls$Inner.getVal:()I
+  #11 = Methodref          #46.#47        //  java/io/PrintStream.println:(I)V
+  #12 = Methodref          #3.#48         //  MemberCls$Inner.setVal:(I)V
+  #13 = Fieldref           #43.#49        //  java/lang/System.in:Ljava/io/InputStream;
+  #14 = Methodref          #50.#51        //  java/io/InputStream.read:()I
+  #15 = Class              #52            //  java/lang/Object
+  #16 = Utf8               Inner
+  #17 = Utf8               InnerClasses
+  #18 = Utf8               val
+  #19 = Utf8               I
+  #20 = Utf8               <init>
+  #21 = Utf8               ()V
+  #22 = Utf8               Code
+  #23 = Utf8               LineNumberTable
+  #24 = Utf8               getInner
+  #25 = Utf8               ()LMemberCls$Inner;
+  #26 = Utf8               main
+  #27 = Utf8               ([Ljava/lang/String;)V
+  #28 = Utf8               Exceptions
+  #29 = Class              #53            //  java/io/IOException
+  #30 = Utf8               access$002
+  #31 = Utf8               (LMemberCls;I)I
+  #32 = Utf8               access$000
+  #33 = Utf8               (LMemberCls;)I
+  #34 = Utf8               SourceFile
+  #35 = Utf8               MemberCls.java
+  #36 = NameAndType        #18:#19        //  val:I
+  #37 = NameAndType        #20:#21        //  "<init>":()V
+  #38 = Utf8               MemberCls$Inner
+  #39 = NameAndType        #20:#54        //  "<init>":(LMemberCls;)V
+  #40 = Utf8               MemberCls
+  #41 = NameAndType        #55:#56        //  getClass:()Ljava/lang/Class;
+  #42 = NameAndType        #24:#25        //  getInner:()LMemberCls$Inner;
+  #43 = Class              #57            //  java/lang/System
+  #44 = NameAndType        #58:#59        //  out:Ljava/io/PrintStream;
+  #45 = NameAndType        #60:#61        //  getVal:()I
+  #46 = Class              #62            //  java/io/PrintStream
+  #47 = NameAndType        #63:#64        //  println:(I)V
+  #48 = NameAndType        #65:#64        //  setVal:(I)V
+  #49 = NameAndType        #66:#67        //  in:Ljava/io/InputStream;
+  #50 = Class              #68            //  java/io/InputStream
+  #51 = NameAndType        #69:#61        //  read:()I
+  #52 = Utf8               java/lang/Object
+  #53 = Utf8               java/io/IOException
+  #54 = Utf8               (LMemberCls;)V
+  #55 = Utf8               getClass
+  #56 = Utf8               ()Ljava/lang/Class;
+  #57 = Utf8               java/lang/System
+  #58 = Utf8               out
+  #59 = Utf8               Ljava/io/PrintStream;
+  #60 = Utf8               getVal
+  #61 = Utf8               ()I
+  #62 = Utf8               java/io/PrintStream
+  #63 = Utf8               println
+  #64 = Utf8               (I)V
+  #65 = Utf8               setVal
+  #66 = Utf8               in
+  #67 = Utf8               Ljava/io/InputStream;
+  #68 = Utf8               java/io/InputStream
+  #69 = Utf8               read
+{
+  MemberCls();
+    flags: 
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0       
+         1: invokespecial #2                  // Method java/lang/Object."<init>":()V
+         4: aload_0       
+         5: iconst_1      
+         6: putfield      #1                  // Field val:I
+         9: return        
+      LineNumberTable:
+        line 2: 0
+        line 3: 4
+        line 5: 9
+
+  MemberCls$Inner getInner();
+    flags: 
+    Code:
+      stack=3, locals=1, args_size=1
+         0: new           #3                  // class MemberCls$Inner
+         3: dup           
+         4: aload_0       
+         5: invokespecial #4                  // Method MemberCls$Inner."<init>":(LMemberCls;)V
+         8: areturn       
+      LineNumberTable:
+        line 15: 0
+
+  public static void main(java.lang.String[]) throws java.io.IOException;
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=4, locals=4, args_size=1
+         0: new           #5                  // class MemberCls
+         3: dup           
+         4: invokespecial #6                  // Method "<init>":()V
+         7: astore_1      
+         8: new           #3                  // class MemberCls$Inner
+        11: dup           
+        12: aload_1       
+        13: dup           
+        14: invokevirtual #7                  // Method java/lang/Object.getClass:()Ljava/lang/Class;
+        17: pop           
+        18: invokespecial #4                  // Method MemberCls$Inner."<init>":(LMemberCls;)V
+        21: astore_2      
+        22: aload_1       
+        23: invokevirtual #8                  // Method getInner:()LMemberCls$Inner;
+        26: astore_3      
+        27: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        30: aload_2       
+        31: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        34: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        37: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        40: aload_3       
+        41: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        44: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        47: aload_2       
+        48: iconst_2      
+        49: invokevirtual #12                 // Method MemberCls$Inner.setVal:(I)V
+        52: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        55: aload_2       
+        56: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        59: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        62: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        65: aload_3       
+        66: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        69: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        72: aload_3       
+        73: iconst_3      
+        74: invokevirtual #12                 // Method MemberCls$Inner.setVal:(I)V
+        77: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        80: aload_2       
+        81: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        84: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        87: getstatic     #9                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        90: aload_3       
+        91: invokevirtual #10                 // Method MemberCls$Inner.getVal:()I
+        94: invokevirtual #11                 // Method java/io/PrintStream.println:(I)V
+        97: getstatic     #13                 // Field java/lang/System.in:Ljava/io/InputStream;
+       100: invokevirtual #14                 // Method java/io/InputStream.read:()I
+       103: pop           
+       104: return        
+      LineNumberTable:
+        line 19: 0
+        line 20: 8
+        line 21: 22
+        line 23: 27
+        line 24: 37
+        line 25: 47
+        line 26: 52
+        line 27: 62
+        line 28: 72
+        line 29: 77
+        line 30: 87
+        line 32: 97
+        line 33: 104
+    Exceptions:
+      throws java.io.IOException
+
+  static int access$002(MemberCls, int);
+    flags: ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=3, locals=2, args_size=2
+         0: aload_0       
+         1: iload_1       
+         2: dup_x1        
+         3: putfield      #1                  // Field val:I
+         6: ireturn       
+      LineNumberTable:
+        line 2: 0
+
+  static int access$000(MemberCls);
+    flags: ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: getfield      #1                  // Field val:I
+         4: ireturn       
+      LineNumberTable:
+        line 2: 0
+}

@@ -1,0 +1,88 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/sample/01/MemberCls$Inner.class
+  Last modified 2015-2-3; size 525 bytes
+  MD5 checksum b092ffe3c5b358c786d99d98c104dc40
+  Compiled from "MemberCls.java"
+class MemberCls$Inner
+  SourceFile: "MemberCls.java"
+  InnerClasses:
+       #25= #5 of #21; //Inner=class MemberCls$Inner of class MemberCls
+  minor version: 0
+  major version: 51
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Fieldref           #5.#19         //  MemberCls$Inner.this$0:LMemberCls;
+   #2 = Methodref          #6.#20         //  java/lang/Object."<init>":()V
+   #3 = Methodref          #21.#22        //  MemberCls.access$002:(LMemberCls;I)I
+   #4 = Methodref          #21.#23        //  MemberCls.access$000:(LMemberCls;)I
+   #5 = Class              #24            //  MemberCls$Inner
+   #6 = Class              #27            //  java/lang/Object
+   #7 = Utf8               this$0
+   #8 = Utf8               LMemberCls;
+   #9 = Utf8               <init>
+  #10 = Utf8               (LMemberCls;)V
+  #11 = Utf8               Code
+  #12 = Utf8               LineNumberTable
+  #13 = Utf8               setVal
+  #14 = Utf8               (I)V
+  #15 = Utf8               getVal
+  #16 = Utf8               ()I
+  #17 = Utf8               SourceFile
+  #18 = Utf8               MemberCls.java
+  #19 = NameAndType        #7:#8          //  this$0:LMemberCls;
+  #20 = NameAndType        #9:#28         //  "<init>":()V
+  #21 = Class              #29            //  MemberCls
+  #22 = NameAndType        #30:#31        //  access$002:(LMemberCls;I)I
+  #23 = NameAndType        #32:#33        //  access$000:(LMemberCls;)I
+  #24 = Utf8               MemberCls$Inner
+  #25 = Utf8               Inner
+  #26 = Utf8               InnerClasses
+  #27 = Utf8               java/lang/Object
+  #28 = Utf8               ()V
+  #29 = Utf8               MemberCls
+  #30 = Utf8               access$002
+  #31 = Utf8               (LMemberCls;I)I
+  #32 = Utf8               access$000
+  #33 = Utf8               (LMemberCls;)I
+{
+  final MemberCls this$0;
+    flags: ACC_FINAL, ACC_SYNTHETIC
+
+
+  MemberCls$Inner(MemberCls);
+    flags: 
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0       
+         1: aload_1       
+         2: putfield      #1                  // Field this$0:LMemberCls;
+         5: aload_0       
+         6: invokespecial #2                  // Method java/lang/Object."<init>":()V
+         9: return        
+      LineNumberTable:
+        line 5: 0
+
+  void setVal(int);
+    flags: 
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LMemberCls;
+         4: iload_1       
+         5: invokestatic  #3                  // Method MemberCls.access$002:(LMemberCls;I)I
+         8: pop           
+         9: return        
+      LineNumberTable:
+        line 7: 0
+        line 8: 9
+
+  int getVal();
+    flags: 
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LMemberCls;
+         4: invokestatic  #4                  // Method MemberCls.access$000:(LMemberCls;)I
+         7: ireturn       
+      LineNumberTable:
+        line 10: 0
+}

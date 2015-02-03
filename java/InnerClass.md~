@@ -1,0 +1,235 @@
+内部类是编译器提供的特性，编译器会将内部类编译成为独立的类，然后JVM会将内部类当作普通类来处理。<br/>
+
+**1. 成员内部类**<br/>
+  定义在一个类的内部。<br/>
+````
+import java.io.*;
+class Main{
+	public static void main(String[] args) throws IOException{
+		MemberCls outer = new MemberCls();
+		Inner inner1 = outer.new Inner();
+		Inner inner2 = outer.getInner();
+
+		System.out.println(inner1.getVal());
+		System.out.println(inner2.getVal());
+		inner1.setVal(2);
+		System.out.println(inner1.getVal());
+		System.out.println(inner2.getVal());
+		inner2.setVal(3);
+		System.out.println(inner1.getVal());
+		System.out.println(inner2.getVal());
+
+		System.in.read();
+	}
+}
+class MemberCls{
+	private int val = 1;
+
+	class Inner{
+		void setVal(int val){
+			MemberCls.this.val = val;
+		}	
+		int getVal(){
+			return val;
+		}
+	}
+
+	Inner getInner(){
+		return new Inner();
+	}
+}
+````
+结果为:
+````
+1
+1
+2
+2
+3
+3
+````
+并生成MemberCls.class和MemberCls$Inner.class两个类文件。<br/>
+由于成员内部类依赖于外部类实例，因此创建内部类实例时要先创建外部类实例，然后通过下列两种形式来创建内部类实例：<br/>
+````
+// 方式一
+内部类 内部类实例 = 外部类实例.new 内部类();
+
+// 方式二
+外部类{
+  内部类{}
+  内部类 get内部类(){
+    return new 内部类();
+  }
+}
+````
+内部类可以访问外部类的所有类型的字段和方法（包括private）。<br/>
+注意：<br/>
+1. 当成员内部类拥有与外部类同名的成员变量或方法时，默认是使用成员内部类的成员。若要访问外部类的同名成员，则需要进行如下操作：<Br/>
+````
+外部类.this.成员变量;
+外部类.this.成员方法;
+````
+2. 对于同一个外部类实例创建的内部类实例，这些内部类实例均操作同一个外部实例。像上述例子那样，均操作同一个val字段。<br/>
+看源码可知，MemberCls内部JVM自动创建两个静态方法
+````
+/** 等价于
+ * static int setVal(MemberCls outer, int val){
+ * 	outer.val = val;
+ *      return val;
+ * }
+ */
+static int access$002(MemberCls, int);
+    flags: ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=3, locals=2, args_size=2
+         0: aload_0       
+         1: iload_1       
+         2: dup_x1        
+         3: putfield      #1                  // Field val:I
+         6: ireturn       
+      LineNumberTable:
+        line 2: 0
+
+/** 等价于
+ * static int getVal(MemberCls outer){
+ *      return outer.val;
+ * }
+ */
+  static int access$000(MemberCls);
+    flags: ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: getfield      #1                  // Field val:I
+         4: ireturn       
+      LineNumberTable:
+        line 2: 0
+````
+而内部类在调用外部类实例的私有成员变量是
+````
+/** 等价于
+ * void setVal(int val){
+ * 	MemberCls实例.setVal(val);
+ * }
+ */
+void setVal(int);
+    flags:
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LMemberCls;
+         4: iload_1       
+         5: invokestatic  #3                  // Method MemberCls.access$002:(LMemberCls;I)I
+         8: pop           
+         9: return        
+      LineNumberTable:
+        line 7: 0
+        line 8: 9
+
+/** 等价于
+ * int getVal(int val){
+ * 	MemberCls实例.getVal();
+ * }
+ */
+  int getVal();
+    flags:
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: getfield      #1                  // Field this$0:LMemberCls;
+         4: invokestatic  #4                  // Method MemberCls.access$000:(LMemberCls;)I
+         7: ireturn       
+      LineNumberTable:
+        line 10: 0
+````
+另外相对外部类仅有默认和public两种访问修饰符而言，成员内部类可有默认、private、proteced和public四种访问修饰符，效果与成员字段和方法的一样。<br/>
+**2. 局部内部类；**
+ 局部内部类定义在方法或某个作用域里面，并且仅限于方法和该作用域内访问。<br/>
+ 注意：<br/>
+   1. 局部内部类中仅能访问方法或作用域内的常量，访问变量则编译时会出错。<br/>
+   2. 不能有public、protected、private和static作修饰<br/>
+````
+import java.io.*;
+
+class Main{
+	public static void main(String[] args) throws IOException{
+		LocalCls outer = new LocalCls();
+		outer.print();
+
+		System.in.read();
+	}
+}
+
+class LocalCls{
+	private int val = 1;
+
+	void print(){
+		final String name = "fsjohnhuang";
+		class Inner{
+			int getVal(){
+				return val;
+			}	
+			void setVal(int val){
+				LocalCls.this.val = val;
+			}
+			String getName(){
+				return name;
+			}
+		}
+
+		Inner inner = new Inner();
+		System.out.println(inner.getVal());
+		inner.setVal(2);
+		System.out.println(inner.getVal());
+		System.out.println(inner.getName());
+	}
+}
+````
+结果为：<br/>
+````
+1
+2
+fsjohnhuang
+````
+并生成LocalCls.class和LocalCls$1Inner.class两个类文件。<br/>
+其实生成的class文件与成员内部类的几乎一样。那么就是说内部类作用范围的限制其实是编译器的限制，而不是JVM的限制了。<br/>
+至于为什么局部内部类中仅能访问方法或作用域内的常量？<br/>
+假设可以访问局部变量，那么要考虑的是如何引用到局部变量？<br/>
+首先局部变量是存放在JVM栈帧中的局部变量表中，并且当方法执行完栈帧也随之弹出，也就是说局部变量所占的内存空间是短暂的（不稳定）。<br/>
+假如局部变量A是基本类型的话，那么数据直接就存放在局部变量表中相应的Slots中，方法执行完就没了。那局部内部类中所访问的局部变量A到底是什么就无从得知了！<br/>
+假如局部变量A是String类型或其他类类型，那么局部内部类中访问的局部变量A时就有两种方式了，第一种是访问String常量池中该字符串的地址，第二种是指向局部变量A的地址，然后通过变量A去访问String常量池中该字符串。<br/>
+但上述这些均是在运行时才能决定的。编译时无法正确地被描述出来。<br/>
+而常量则存放在方法区（HotSpot JVM中可称为永久代）中，编译时已经可以准确的描述，并且JVM在处理时也十分简单高效。<br/>
+````
+java.lang.String getName();
+    flags:
+    Code:
+      stack=1, locals=1, args_size=1
+         0: ldc           #5                  // String fsjohnhuang
+         2: areturn       
+      LineNumberTable:
+        line 23: 0
+````
+
+
+
+**3. 匿名内部类；**<br/>
+匿名内部类其实是局部内部类的特殊形式。一般用来绑定事件监听处理程序上。Android示例：
+````
+class Outer{
+  public void subs(){ 
+	  scan_bt.setOnClickListener(new OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			// TODO Auto-generated method stub
+			 
+		    }
+		});
+  }
+}
+````
+上述代码生成了一个继承OnClickListener类的匿名内部类，然后实例化匿名类的一个实例，然后以该实例作为参数调用setOnClickListener方法。<br/>
+会生成一个Outer.class和Outer$1.class类文件。<br/>
+
+**4. 静态内部类**<br/>
+静态内部类定义在类下，只不过多了个关键字static。静态内部类只能访问外部类的静态字段和静态方法。<br/>

@@ -1,52 +1,53 @@
-## ��Ҫ�����ռ����ڴ����� ���� �ѣ���������������ͷ�������
-## ȷ��������
-1. ���ü����㷨��Reference Counting��<br/>
-  �����ں�һ�����ü�������ÿ��һ���ط�������ʱ+1��������ʧЧʱ-1��Ϊ0ʱ��ʾ�����ٱ�ʹ���ˡ�ʵ�ּ򵥡�Ч�ʸߣ����޷�����ѭ�����õ����⡣COM��FlashPlayer��Python��Squirrel��ʹ�����ü����㷨�������ڴ档<br/>
-2. �ɴ��Է����㷨��Reachability Analysis��<br/>
-  ͨ��һϵ�г�ΪGC Roots�Ķ�����Ϊ��ʼ�㣬��ʼ��������������������·����Ϊ��������Reference Chain������������GC Roots֮��û�����������������ʾ�ö��󲻿��á�����JDK1.2�ṩ4���������ͣ�ǿ�����������飩������ж϶����Ƿ�ɴ�����������������<br/>
-  1. �����������Ŀɴ�����������һ������������������<br/>
-  2. �����������Ŀɴ�������ǿ��һ������������������<br/>
-  ���磺<br/>
+﻿## 需要垃圾收集的内存区域 —— 堆（新生代、老年代和方法区）
+## 确定对象存活
+1. 引用计数算法（Reference Counting）<br/>
+  对象内含一个引用计数器，每当一个地方引用它时+1，当引用失效时-1。为0时表示对象不再被使用了。实现简单、效率高，但无法处理循环引用的问题。COM、FlashPlayer、Python和Squirrel均使用引用计数算法来管理内存。<br/>
+2. 可达性分析算法（Reachability Analysis）<br/>
+  通过一系列成为GC Roots的对象作为起始点，开始向下搜索，搜索经过的路径称为引用链（Reference Chain），当对象与GC Roots之间没有引用链相连，则表示该对象不可用。由于JDK1.2提供4种引用类型（强、软、弱、虚），因此判断对象是否可达性有以下两个规则：<br/>
+  1. 单条引用链的可达性以最弱的一个引用类型来决定；<br/>
+  2. 多条引用链的可达性以最强的一个引用类型来决定；<br/>
+  例如：<br/>
   ![](reftype.jpg)<br/>
-  ���Ǽ���ͼ2�����âٺ͢�Ϊǿ���ã���Ϊ�����ã���Ϊ�����ã����ڶ���5�����������ж�ԭ��·����-��ȡ���������âݣ���˸�·���Զ���5������Ϊ�����á�ͬ������-��Ϊ�����á���������·��֮��ȡ��ǿ�����ã����Ƕ���5��һ�����ɼ�����
+  我们假设图2中引用①和③为强引用，⑤为软引用，⑦为弱引用，对于对象5按照这两个判断原则，路径①-⑤取最弱的引用⑤，因此该路径对对象5的引用为软引用。同样，③-⑦为弱引用。在这两条路径之间取最强的引用，于是对象5是一个软可及对象。
 
-  GC Roots������<br/>
-  �����ջ֡�оֲ��������е�reference���Ͷ���<br/>
-  ��������reference���͵�������<br/>
-  ��������reference���͵ĳ���<br/>
-  ���ط���ջ��JNI���õĶ���<br/>
+  GC Roots包括：<br/>
+  虚拟机栈帧中局部变量表中的reference类型对象<br/>
+  方法区中reference类型的类属性<br/>
+  方法区中reference类型的常量<br/>
+  本地方法栈中JNI引用的对象<br/>
 
-## JDK1.2��������������
-1. ǿ���ã�Strong Reference������`Object obj = new Object()`�������ã�ֻҪǿ���û�����GC��Զ�����ջر����õĶ���<br/>
+注意：可达性标记会发生两次后并且第二次依然为不可达才会被回收。在第一次标记后若可执行finalize方法，则有机会令对象恢复可达，从而逃脱被回收。<br/>
 
-  ������������ã����ǽ�ԭ����ŶѶ����ַ�ı���ֵ��Ϊ����ض��������͵Ķ���Ȼ������ض��������͵Ķ������ŶѶ����ַ����ôջ֡�оֲ�������������Ȼ��ǿ���ã������õ����ض��������͵Ķ��󣬶��ض��������Ͷ����ŶѶ��������������ص㡣<br/>
-  ������������λ��`java.lang.ref`�����Ҿ��̳�`java.lang.ref.Reference`��ͨ��get()������ȡʵ�ʵĶ�������ʵ�ʶ����Ѿ������գ��򷵻�null��<br/>
-2. �����ã�Soft Reference, java.lang.ref.SoftReference�����������������õ��Ǳ���Ķ���ϵͳ�ڷ���OOM֮ǰ����������õĶ��󣬼�����պ��ǿռ䲻����׳�OOM��<br/>
-  ��������ʵ���ڴ����еĸ��ٻ��档���������ö��У�ReferenceQueue������ʹ�ã������󱻻��գ���JVM�Ὣ�������ӵ����ö���<br/>
+## JDK1.2的四种引用类型
+1. 强引用（Strong Reference），如`Object obj = new Object()`这类引用，只要强引用还存在GC永远不会收回被引用的对象。<br/>
+
+  下面的三种引用，均是将原来存放堆对象地址的变量值改为存放特定引用类型的对象，然后这个特定引用类型的对象则存放堆对象地址。那么栈帧中局部变量表变量依然是强引用，而引用的是特定引用类型的对象，而特定引用类型对象存放堆对象的引用则各具特点。<br/>
+  下面三种引用位于`java.lang.ref`包，且均继承`java.lang.ref.Reference`。通过get()方法获取实际的对象，若该实际对象已经被回收，则返回null。<br/>
+2. 软引用（Soft Reference, java.lang.ref.SoftReference），用于描述还有用但非必须的对象。系统在发生OOM之前会回收软引用的对象，假如回收后还是空间不足才抛出OOM。<br/>
+  可以用于实现内存敏感的高速缓存。可以与引用队列（ReferenceQueue）联合使用，若对象被回收，则JVM会将引用添加到引用队列<br/>
 ````
 ReferenceQueue q = new ReferenceQueue();
 
-// ��ȡ���ݲ�����
+// 获取数据并缓存
 Object obj = new Object();
 SoftReference sr = new SoftReference(obj, q);
 
-// �´�ʹ��ʱ
+// 下次使用时
 Object obj = (Object)sr.get();
 if (obj == null){
-  // �������ñ����պ�����»�ȡ
+  // 当软引用被回收后才重新获取
   obj = new Object();
 }
 
-// �������ջغ�ʣ�����������ö���
+// 清理被收回后剩下来的软引用对象
 SoftReference ref = null;
 while((ref = q.poll()) != null){
-  // ��������
+  // 清理工作
 }
-
 ````
   
-3. �����ã�Weak Reference��������GCʱ�ض������յĶ��󡣿��������ö��У�ReferenceQueue������ʹ�ã������󱻻��գ���JVM�Ὣ�������ӵ����ö���<br/>
-4. �����ã�Phantom Reference�����ֳ�Ϊ�������û��Ӱ���ã������üȲ���Ӱ�������������ڣ�Ҳ�޷�ͨ������������ȡ����ʵ�����������ڷ���GCʱ����һ��ϵͳ֪ͨ�����������ö��У�ReferenceQueue������ʹ�ã�ͨ��������ö������Ƿ��и����������������Ƿ��Ѿ������ա�<br/>
+3. 弱引用（Weak Reference），发生GC时必定被回收的对象。可以与引用队列（ReferenceQueue）联合使用，若对象被回收，则JVM会将引用添加到引用队列<br/>
+4. 虚引用（Phantom Reference），又称为幽灵引用或幻影引用，虚引用既不会影响对象的生命周期，也无法通过虚引用来获取对象实例，仅用于在发生GC时接收一个系统通知。必须与引用队列（ReferenceQueue）联合使用，通过检查引用队列中是否有该虚引用来监测对象是否已经被回收。<br/>
 ````
 ReferenceQueue queue = new ReferenceQueue();
 Object obj = new Object(); // Strong Reference
@@ -54,96 +55,155 @@ PhantomReference pr = new PhantomReference(obj, queue); // Phantom Reference
 obj = null; // Clear Strong Reference
 ````
 
-`java.util.WeakHashMap`��������Ϊ�����á�����������������ʱ����Ӧ��ֵ��������û��Map��ɾ����<br/>
+`java.util.WeakHashMap`，键对象为弱引用。当键对象被垃圾回收时，对应的值对象的引用会从Map中删除。<br/>
 ````
 WeakHashMap map = new WeakHashMap();
 map.put(new Object, new Object);
 ````
-WeakHashMap�ڲ������в������ᾭ��expungeStaleEntries�������ú������Ƴ���Ϊnull��Entry�������������WeakHashMap�ķ�����ʹGC��������Ȼ�����Զ��Ƴ�WeakHashMap����Ч��<br/>
+WeakHashMap内部的所有操作均会经过expungeStaleEntries函数，该函数会移除键为null的Entry。因此若不调用WeakHashMap的方法即使GC发生后依然不会自动移除WeakHashMap的无效项<br/>
 ````
 WeakHashMap<String, String> maps = new WeakHashMap<String, String>();
 maps.put("Hi", "There");
-// GC��maps����Ȼ��һ����ֵ�ԣ����������Ѿ������գ���˿ɿ�����null: "There"
-// ����size���������expungeStaleEntries�������Ƴ���ЧEntry��Ȼ�󷵻�0
-System.out.println(maps.size()); // ��ʾ0
+// GC后，maps的仍然含一个键值对，但键对象已经被回收，因此可看成是null: "There"
+// 调用size方法会调用expungeStaleEntries函数，移除无效Entry，然后返回0
+System.out.println(maps.size()); // 显示0
 ````
-WeakHashMap��put��size��clear����ӻ�ֱ�ӵ��õ�expungeStaleEntries������<br/>
-(��WeakHashMap���񻰡�)[http://www.iteye.com/topic/587995]<br/>
+WeakHashMap的put、size和clear都间接或直接调用到expungeStaleEntries函数。<br/>
+(《WeakHashMap的神话》)[http://www.iteye.com/topic/587995]<br/>
 
 `java.lang.ref.ReferenceQueue`<br/>
-`Reference<? extends T> ReferenceQueue#poll()`���Ӷ����г���һ��Ԫ�أ�������Ϊ���򷵻�null��<br/>
-`Reference<? extends T> ReferenceQueue#remove()`���Ӷ����г���һ��Ԫ�أ���û��������ֱ����Ԫ�ؿɳ��ӡ�<br/>
-`Reference<? extends T> ReferenceQueue#remove(long timeout)`���Ӷ����г���һ��Ԫ�أ���û��������ֱ����Ԫ�ؿɳ��ӻ򳬹�timeoutָ���ĺ����������ڲ���wait(long timeout)��ʽʵ�ֵȴ������ʱ�䲻�ܱ�֤����<br/>
+`Reference<? extends T> ReferenceQueue#poll()`，从队列中出队一个元素，若队列为空则返回null。<br/>
+`Reference<? extends T> ReferenceQueue#remove()`，从队列中出队一个元素，若没有则阻塞直到有元素可出队。<br/>
+`Reference<? extends T> ReferenceQueue#remove(long timeout)`，从队列中出队一个元素，若没有则阻塞直到有元素可出队或超过timeout指定的毫秒数（由于采用wait(long timeout)方式实现等待，因此时间不能保证）。<br/>
 ()[http://hongjiang.info/java-referencequeue/]
 
-������Reference�ڲ�ͨ��`{Reference} next`�ֶ�ά����һ���������������ڱ�ʾGC���յ�Reference����������<br/>
-�ڲ���һ��`ReferenceQueue<? super T> queue;`�ֶΣ������๹�캯����û�д������ö�����ʹ��ReferenceQueue.NULL��Referenceͨ����̬���������һ�����ȼ���ߵ��ػ��̣߳����ڼ��Reference��˽�о�̬�ֶ�`{Reference} pending`��pendingָ��GC���յ�Reference��������ͷ�����̼߳�鵽pending��Ϊnullʱ���ʾGC�ѻ��յ����ӵĶ��󣬲���������ӣ���ΪReferenceQueue.NULL����ӣ���Ȼ�����ŵ��������������յĶ����Ӧ��Reference�������ӵ����Ƕ�Ӧ�Ķ����С�<br/>
-**ע�⣺Reference�����������ʹ��ͬһ���߳���ʵ�ֱ����������ReferenceQueue�Ĳ���**<br/>
+抽象类Reference内部通过`{Reference} next`字段维护着一个单向链表，用于表示GC回收的Reference对象链表。<br/>
+内部含一个`ReferenceQueue<? super T> queue;`字段，若子类构造函数中没有传入引用队列则使用ReferenceQueue.NULL。Reference通过静态代码块启动一个优先级最高的守护线程，用于检查Reference的私有静态字段`{Reference} pending`，pending指向GC回收的Reference对象链表头，而线程检查到pending不为null时则表示GC已回收掉监视的对象，并将对象入队（若为ReferenceQueue.NULL则不入队）。然后沿着单向链表将被回收的对象对应的Reference对象添加到它们对应的队列中。<br/>
+**注意：Reference的所有子类均使用同一个线程来实现被回收则进入ReferenceQueue的操作**<br/>
+
+## 回收方法区
+回收内容：废弃的基本类型和String类型的常量和无用的类<br/>
+判断类是否可以回收的准则：<br/>
+1. 类的实例均已经被回收;<br/>
+2. 加载该类的ClassLoader已经被回收;<br/>
+3. 类的Class对象没有被任何地方引用，无法在任何地方通过反射访问该类。<br/>
+HotSpot提供了`-Xnoclassgc`进行控制，通过Pucdut版本JVM的`-verbose:class`、`-XX:+TraceClassLoading`和FastDebug版本的`-XX:+TraceClassUnLoading`查看类加载和卸载信息。<br/>
+大量使用反射、动态代理、CGLib等ByteCode框架、动态生成JSP和OSGi等都需要JVM具备类卸载的功能。<br/>
+
+## 回收算法
+**1. 标记-清除算法（Mark-Sweep）**<br/>
+  最基础的收集算法，分为两个步骤：<br/>
+  1. 遍历堆内存空间，并标记出需要回收的对象；<br/>
+  2. 对被标记为回收的对象执行清除操作。<br/>
+  问题：<br/>
+  1. 标记和清除操作的过程效率均不高。<br/>
+  2. 清除后会产生大量不连续的内存碎片。（没有足够连续的内存来分配大对象，因此需要尽早触发下一次GC来回收更多的内存空间）<br/>
+**2. 复制算法（Copying）**<br/>
+  用于解决内存清除后出现大量内存碎片的问题。<br/>
+  1. 将内存分为A和B两部分；<br/>
+  2. 为新对象分配内存时，仅在A中划出空间，直到A空间没有足够的空间分配；<br/>
+  3. 遍历A并标记不需要回收的对象；<br/>
+  4. 将A中不需要回收的对象复制到B中；<br/>
+  5. 清除A中所有对象。<br/>
+  由于新生代中一般情况下仅有2%的对象会幸存下来，因此HotSpot将新生代划分为1个Eden区和2个Survivor区。当发生Minor GC时则将Eden和一个Survivor的幸存对象复制到另一个Survivor区中，然后清除Eden和Survivor区的对象。若另一个Survivor区空间不足以存放这些幸存对象，并JVM启动了HandlePromotionFailure设置后，则会通过老年代进行分配担保（Handle Promotion，将多出的对象分配到老年代中，若老年代也没有足够的空间则会触发Full GC对老年代进行GC，以腾出空间）<br/>
+  HotSpot JVM 默认时Eden区80%空间、两个Survivor区分别占用10%的新生代空间。<br/>
+  问题：<br/>
+  1. 内存空间的利用率减半。<br/>
+  2. 需要有后备内存空间来提供内存分配担保。<br/>
+**3. 标记-整理算法（Mark-Compact）**<br/>
+  步骤：<br/>
+  1. 遍历堆内存空间，并标记出需要回收的对象；<br/>
+  2. 将幸存的对象往一边移动；<br/>
+  3. 清除边界外的内存，从而防止产生内存碎片。<br/>
+
+新生代使用Copying算法，而老年代则使用Mark-Sweep或Mark-Compact算法。<br/>
+
+在进行可达性分析时，所有线程将被挂起以保证分析结果的准确性。（即使号称不会发生停顿的CMS收集器也需要停顿）<br/>
+HotSpot中通过一组称为OopMap的数据结构来存放执行上下文和全局中的reference类型对象存放起来，那么在进行可达性分析时则不用一个不漏地检查。<br/>
+而每个OopMap则对应执行某个指令时，那一刻的执行上下文和全局中的reference类型对象。<br/>
+## 安全点（Safepoint）
+  当不是每条指令都会有对应的OopMap，而是在特定位置才生成OopMap，这些位置称为安全点（Safepoint），即只要线程到达安全点时才会挂起，当所有线程都挂起时才执行可达性分析。<br/>
+  安全点设定标准是，在指令序复用的地方（如方法调用、循环跳转、异常跳转等）生成。<br/>
+  让线程挂起有两种方式：<br/>
+    1. 抢断式中断（Preemptive Suspension）<br/>
+      首先将所有线程中断，若发现线程还没到达安全点，则恢复线程，直到它跑到安全点挂起。<br/>
+    2. 主动式中断（Voluntary Suspension）<br/>
+      设置中断标志（与安全点同一位置），线程执行到安全点则检查中断标志并自行中断挂起。（HotSpot采用这种机制）<br/>
+## 安全区（Safe Region）
+  可达性分析需要等待所有线程均到达安全点后中断挂起才能执行，那么有些线程执行了wait、sleep等操作处于挂起状态导致无法到达安全点，此时则引入安全区（Safe Region）来解决。当线程进入安全区时则会标识自身已进入安全区，而执行可达性分析时则不用理会进入安全区的线程。而当线程离开安全区时，则先检查是否正在执行GC，若正在执行则挂起直到收到安全离开安全区的信号。<br/>
+
+## 垃圾收集器（JDK1.7 Update14）
+新生代：Serial、ParNew、Parallel Seavenge和G1<br/>
+老年代：CMS、Serial Old(MSC)、Parallel Old和G1<br/>
 
 
-## �����㷨
-## �����ռ���
-## �ڴ����
+## 内存分配
+### 对象优先在Eden分配
+  若Eden没有足够空间时则进行Minor GC，由于HotSpot的Eden区采用Copying算法回收空间，因此当Survivor不足以存放幸存的对象时，则将幸存对象移至老年代。<br/>
+### 大对象直接进入老年代
+  大对象（超长字符串和数组）由于需要大量连续的内存空间，因此为腾出空间就增大触发GC的几率。通过`-XX:PretenureSizeThreshold`来配置大于多少Byte的对象就直接分配到老年代。<br/>
+### 长期存活的对象将进入老年代
+### 动态对象年龄判定
+### 空间分配担保
 
 
-
-## GC��־
-  ÿ���ռ�������־��ʽ������ͬ����JVM����ά��Ϊ����һ�����Ե���־��ʽ��<br/>
+## GC日志
+  每个收集器的日志格式均不相同，但JVM将其维持为具有一定共性的日志格式。<br/>
 ````
 33.124: [GC [DefNew: 3324K->152K(3712K), 0.0025925 secs] 3324K->152K(11904K), 0.0031680 secs
 ````
-33.124ΪGC����ʱ��JVM����������������<br/>
-GC/Full GCΪGC�����͡�<br/>
-[DefNew ��ʾ��������Ϊ��������������ǰ�ͺ���ڴ�ռ�ʹ����������ŵ���ֵ��(3712K)Ϊ��������������������ݲ�ͬ�������ռ������ƽ�������ͬ��Serial�ռ�������DefNew��Default New Generation����Serial Old�ռ�������DefOld��ParNew�ռ�������ParNew��Parallel New Generation����Parallel Scavenge�ռ�������PSYoungGen��<br/>
-0.0025925 secs��ʾGCִ�к�ʱ<br/>
-3324K->152K(11904K) ��ʾGCǰ��ѿռ�ʹ��������ѵ�����������<br/>
+33.124为GC发生时离JVM启动经过的秒数。<br/>
+GC/Full GC为GC的类型。<br/>
+[DefNew 表示后续数据为新生代垃圾回收前和后的内存空间使用情况，括号的数值如(3712K)为该区域的内容容量。根据不同的垃圾收集器名称将有所不同。Serial收集器的是DefNew（Default New Generation）；Serial Old收集器则是DefOld；ParNew收集器的是ParNew（Parallel New Generation）；Parallel Scavenge收集器的是PSYoungGen。<br/>
+0.0025925 secs表示GC执行耗时<br/>
+3324K->152K(11904K) 表示GC前后堆空间使用情况（堆的总容量）。<br/>
 ````
 100.667: [Full GC [Tenured: 0K->210K(10240K), 0.0149142 secs] 4603K->210K(19456K), [Perm: 2999K->2999K(21248K), 0.0 150007 secs] [Times: user=0.01, sys=0.00, real=0.02 secs]
 ````
-[Times: user=0.01, sys=0.00, real=0.02 secs]����Linux��time�������һ�£�user��ʾ�û�̬���ĵ�CPUʱ�䡢sys��ʾ�ں�̬���ĵ�CPUʱ���real��ʾ�����ӿ�ʼ������������ǽ��ʱ�䣨Wall Clock Time = CPUʱ�� + IO�������������ķѵ�ʱ�䣩���ڶ�˻����У�user+sys>=real��<br/>
+[Times: user=0.01, sys=0.00, real=0.02 secs]，与Linux的time命令输出一致，user表示用户态消耗的CPU时间、sys表示内核态消耗的CPU时间和real表示操作从开始到结束经过的墙钟时间（Wall Clock Time = CPU时间 + IO等阻塞操作所耗费的时间），在多核环境中，user+sys>=real。<br/>
 
 
-GC���ͣ�
-������GC��Minor GC����ִ��Ƶ���������ٶȱȽϿ졣�ڽ�Eden������Ҵ��������Survivor���򣬻����������䵣��ʧ��ʱ������������������������<br/>
-�����GC��Major GC / Full GC���������STW��Stop-The-World����һ����������һ�ε�Minor GC����Parallel Scavenge�ռ������ֱ�ӽ���Full GC���������ٶȱ�Minor GC��10�����ϡ������������Ҵ档����`System.gc()`�ᴥ��Full GC��<br/>
+GC类型：
+新生代GC（Minor GC）：执行频繁，回收速度比较快。在将Eden区域的幸存对象移至Survivor区域，或在允许分配担保失败时，将对象从新生代移至老年代<br/>
+老年代GC（Major GC / Full GC）：会出现STW（Stop-The-World），一般会伴随至少一次的Minor GC（但Parallel Scavenge收集器则会直接进行Full GC）。回收速度比Minor GC慢10倍以上。将新生代的幸存。调用`System.gc()`会触发Full GC。<br/>
 
 
-`-XX:+PrintGCDetails`��JVM���������ռ���Ϊʱ���ӡ�ڴ������־�����ڳ����˳�ʱ�����ǰ���ڴ����������������ν���־���浽�ļ��У�<br/>
+`-XX:+PrintGCDetails`，JVM发生垃圾收集行为时会打印内存回收日志，并在程序退出时输出当前的内存各区域分配情况。如何将日志保存到文件中？<br/>
 
-`-Xmn10M`��������10M�ռ�������������<br/>
-`-XX:SurvivorRatio=8`����ʾEden����Survivor���ռ������8:1<br/>
-
-
-��������Throughput��= �����û�����ʱ��/(�����û�����ʱ�� + �����ռ�ʱ��)<br/>
-
-## ����
-ͨ��final�ؼ������ε��ֶΡ��ֲ�������<br/>
-�����ֶΣ���ʼ����ʱ�������֣�һ���Ƕ���ʱ��ʼ������һ�����ڹ��캯���г�ʼ����<br/>
-�ֲ���������ʼ����ʱ���������룬һ���Ƕ���ʱ��ʼ������һ�����ڶ�����ʼ����<br/>
+`-Xmn10M`，将堆中10M空间分配给新生代。<br/>
+`-XX:SurvivorRatio=8`，表示Eden区与Survivor区空间比例是8:1<br/>
 
 
+吞吐量（Throughput）= 运行用户代码时间/(运行用户代码时间 + 垃圾收集时间)<br/>
 
-## JVM��Clientģʽ��Serverģʽ��������ģʽ��
-### ����
-��`jre/bin`��client��server����Ŀ¼���ֱ����JVM����������ģʽ��<br/>
-client����ģʽ���������Ӧ�ã������ٶȱ�serverģʽ��10%���������ٶ�Ϊserverģʽ��10��֮һ��client��Ĭ�ϵĶ�����`-Xms1M -Xmx64M`<br/>
-server����ģʽ����Է�����Ӧ�á�server��Ĭ�ϵĶ�����`-Xms128M -Xmx1024M`<br/>
-ͨ��`java -version`�鿴JVM��Ĭ������ģʽ��<br/>
+## 常量
+通过final关键字修饰的字段、局部变量。<br/>
+常量字段，初始化的时机有两种，一种是定义时初始化，另一种是在构造函数中初始化。<br/>
+局部变量，初始化的时机有两种须，一种是定义时初始化，另一种是在定义后初始化。<br/>
+
+
+
+## JVM有Client模式、Server模式两种运行模式。
+### 介绍
+在`jre/bin`有client和server两个目录，分别代表JVM的两种运行模式。<br/>
+client运行模式，针对桌面应用，加载速度比server模式快10%，而运行速度为server模式的10分之一。client下默认的堆容量`-Xms1M -Xmx64M`<br/>
+server运行模式，针对服务器应用。server下默认的堆容量`-Xms128M -Xmx1024M`<br/>
+通过`java -version`查看JVM的默认运行模式。<br/>
 ![](runmode.png)<br/>
-ͨ��`java -client -version`�鿴JVM��client����ģʽ������<br/>
+通过`java -client -version`查看JVM的client运行模式环境。<br/>
 ![](runmodeclient.png)<br/>
-ͨ��`java -server -version`�鿴JVM��server����ģʽ������<br/>
+通过`java -server -version`查看JVM的server运行模式环境。<br/>
 ![](runmodeserver.png)<br/>
 
-### ����ģʽ�л�
-#### 1. ��ʱ�л�
-������JVMʱ��ʽָ������ģʽ���磺��serverģʽ����com.cnblogs.fsjohnhuang.master.Daemon<br/>
+### 运行模式切换
+#### 1. 临时切换
+在启动JVM时显式指定运行模式，如：以server模式运行com.cnblogs.fsjohnhuang.master.Daemon<br/>
 ````
 $ java -server com.cnblogs.fsjohnhuang.master.Daemon
 ````
-#### 2. �����л�
-�޸�JAVA_HOME/jre/lib/i386/jvm.cfg�ļ���<br/>
-jvm.cfg�ļ�ԭ���ݣ�<br/>
+#### 2. 永久切换
+修改JAVA_HOME/jre/lib/i386/jvm.cfg文件。<br/>
+jvm.cfg文件原内容：<br/>
 ````
 -client KNOWN
 -server KNOWN
@@ -152,7 +212,7 @@ jvm.cfg�ļ�ԭ���ݣ�<br/>
 -native ERROR
 -green ERROR
 ````
-�޸�Ϊ������serverģʽ��ΪĬ�ϵ�JVM����ģʽ<br/>
+修改为即可以server模式作为默认的JVM运行模式<br/>
 ````
 -server KNOWN
 -client KNOWN
@@ -162,15 +222,23 @@ jvm.cfg�ļ�ԭ���ݣ�<br/>
 -green ERROR
 ````
 
-����ʽ�жϣ�Preemptive Suspension��
-����ʽ�жϣ�Voluntary Suspension��
+抢先式中断（Preemptive Suspension）
+主动式中断（Voluntary Suspension）
+
+动态代理
 
 System.gc();
 System.runFinalization();
 
-## ���ྲ̬�����
+## 父类静态代码块
 
-## finalize����
+## finalize函数
+在进行第一次可达性标记时，若对象重写了finalize方法且该finalize方法从未被执行过，那么该对象就会被放进F-Queue队列，并由JVM建立一个低优先级的Finalizer线程来执行队列中元素的finalize方法。此时若在finalize方法中重新与引用链上的任何一个对象建立关联，那么在第二次可达性标记时则不会被列如垃圾回收的名单了。<br/>
+注意：<br/>
+1. finalizer线程执行每个对象的finalize方法时是非阻塞的。<br/>
+2. finalize方法是C++析构函数的妥协，是Java中多余的部分，不应该将资源释放等操作放在finalize中，并且最好忘记这个方法。<br/>
+3. finalize方法抛出异常不会影响GC的执行。<br/>
 
-## JVM��product build��debug build��fastdebug build�������͵İ汾
-fastdebug build�ı���̳̣�http://agapple.iteye.com/blog/1056599<br/>
+
+## JVM有product build、debug build和fastdebug build三种类型的版本
+fastdebug build的编译教程：http://agapple.iteye.com/blog/1056599<br/>
