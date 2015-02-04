@@ -98,19 +98,19 @@ name_index：u2，指向常量池中一个CONSTANT_Utf8_info结构类型的常�
 CONSTANT_Fieldref_info的结构<br/>
 ````
 tag：u1，标志符
-name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表字段所属类或接口的符号引用。
-name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表字段描述符。
+class_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表字段所属类或接口的符号引用。
+name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表字段描述符。 
 ````
 CONSTANT_Methodref_info的结构<br/>
 ````
 tag：u1，标志符
-name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属类或接口的符号引用。
+class_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属类或接口的符号引用。
 name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表方法描述符。
 ````
 CONSTANT_InterfaceMethodref_info的结构<br/>
 ````
 tag：u1，标志符
-name_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属接口的符号引用。
+class_index：u2，指向常量池中一个CONSTANT_Class_info结构类型的常量，代表方法所属接口的符号引用。
 name_index：u2，指向常量池中一个CONSTANT_NameAndType_info结构类型的常量，代表方法描述符。
 ````
 CONSTANT_NameAndType_info的结构<br/>
@@ -470,7 +470,7 @@ double->float的规则：
 ````
 putfield <oprands>：首先会弹出操作数栈顶的头两个元素。操作数栈的栈顶元素为将要赋予的值，而栈顶第二个元素为操作的对象或类，<oprands>为指向CONSTANT_Fieldref_info常量的地址。
 ````
-数组元素->操作数栈：Taload
+数组元素->操作数栈：Taload（其中xaload和xastore中封装了操作数组时的越界检查操作）
 操作数栈->数组：Tastore
 获取数组长度：arraylength
 检查类实例类型：instanceof、checkcast
