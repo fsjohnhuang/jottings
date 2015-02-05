@@ -101,7 +101,9 @@ public static final int value = 123;
   以一组符号来描述所引用的目标（类、接口、方法、字段等）。只要能无歧义地定位到目标即可，并且与JVM的实际内部布局无关，而引用的目标也不一定已经加载到内存中。符号引用的形式已经由JVM规范规定了<br/>  
 **直接引用（Direct References）**<br/>
   直接引用可以是直接指向目标的指针、相对偏移量或一个能间接定位到目标的句柄。如果有了直接引用则目标必定已经在内存中存在了。<br/>
+
   在执行newarray,checkcast,getfield,getstatic,instanceof,invokedynamic,invokeinterface,invokespecial,invokestatic,invokevirtual,ldc,ldc_w,multianewarray,new,putfiled和putstatic这16个字节码指令执行前先对它们使用的符号引用进行解析。<br/>
+  对于  
 
 ## 初始化（Initialization）
   类和接口均有初始化过程，实质上就是执行字节码中的`<clinit>`构造函数。<br/>
