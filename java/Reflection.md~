@@ -16,4 +16,4 @@
 	testCls.getMethod("echo", String.class).invoke(testCls.newInstance(), "HelloWorld");
 
 
-`Reflection.getCallerClass()`，获取调用当前方法的类实例。<br/>
+`Reflection.getCallerClass()`
