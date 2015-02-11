@@ -208,6 +208,49 @@ public class MyCL extends URLClassLoader{
   }
 }
 ````
+````
+public class FileSystemClassLoader extends ClassLoader { 
+
+    private String rootDir; 
+
+    public FileSystemClassLoader(String rootDir) { 
+        this.rootDir = rootDir; 
+    } 
+
+    protected Class<?> findClass(String name) throws ClassNotFoundException { 
+        byte[] classData = getClassData(name); 
+        if (classData == null) { 
+            throw new ClassNotFoundException(); 
+        } 
+        else { 
+            return defineClass(name, classData, 0, classData.length); 
+        } 
+    } 
+
+    private byte[] getClassData(String className) { 
+        String path = classNameToPath(className); 
+        try { 
+            InputStream ins = new FileInputStream(path); 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+            int bufferSize = 4096; 
+            byte[] buffer = new byte[bufferSize]; 
+            int bytesNumRead = 0; 
+            while ((bytesNumRead = ins.read(buffer)) != -1) { 
+                baos.write(buffer, 0, bytesNumRead); 
+            } 
+            return baos.toByteArray(); 
+        } catch (IOException e) { 
+            e.printStackTrace(); 
+        } 
+        return null; 
+    } 
+
+    private String classNameToPath(String className) { 
+        return rootDir + File.separatorChar 
+                + className.replace('.', File.separatorChar) + ".class"; 
+    } 
+ }
+````
 同一个类加载器实不能重复加载同一个类型否则会抛出`java.lang.LinkageError: duplicate class definition`。由于`java.lang.ClassLoader#loadClass`会对加载的类进行缓存，并在执行重复加载操作时，直接返回缓存中的类，因此默认在不重写loadClass方法时不会抛出该异常。但下列代码将发生问题<br/>
 ````
 public Class<?> loadClass(String name) throws ClassNotFoundException{
@@ -395,3 +438,7 @@ $ java -Dlog4j.configuration=file:/lib/log4j.xml com.test.Test
 过时的API，建议使用java.util.regex下的类来替代。<br/>
 
 ## java.io.StreamTokenizer
+
+
+NoClassDefFoundError
+ClassNotFoundError

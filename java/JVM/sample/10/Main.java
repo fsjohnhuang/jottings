@@ -1,0 +1,43 @@
+/*
+ * Main.java文件
+ */
+import java.net.*;
+import java.lang.reflect.*;
+
+class Main{
+  public static void main(String[] args) 
+	  throws ClassNotFoundException, MalformedURLException, IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException{
+    ClassLoader pClassLoader = ClassLoader.getSystemClassLoader(); // 以System ClassLoader作为父类加载器
+    URL[] baseUrls = {new URL("file:/d:/testLib/")}; // 搜索类库的目录
+    final String binaryName = "com.fsjohnhuang.HelloWorld"; // 需要加载的类的二进制名称
+
+    int[] i = new int[3];
+    System.out.println(i.length);
+    ClassLoader userClassLoader1 = new URLClassLoader(baseUrls, pClassLoader);
+    ClassLoader userClassLoader2 = new URLClassLoader(baseUrls, pClassLoader);
+    Class clazz1 = userClassLoader1.loadClass(binaryName);
+    Class clazz2 = userClassLoader2.loadClass(binaryName);
+    Object instance1 = clazz1.newInstance();
+    Object instance2 = clazz2.newInstance();
+    // 调用say方法
+    clazz1.getMethod("say").invoke(instance1);
+    clazz2.getMethod("say").invoke(instance2);
+    // 输出类的二进制名称
+    System.out.println(clazz1.toString());
+    System.out.println(clazz2.toString());
+
+    // 比较两个类的地址是否相同
+    System.out.println(clazz1 == clazz2);
+    // 比较两个类是否相同或是否为继承关系
+    System.out.println(clazz1.isAssignableFrom(clazz2));
+    // 查看类型转换是否成功
+    boolean ret = true;
+    try{
+	    clazz2.cast(instance1);
+    }
+    catch(ClassCastException e){
+	    ret = false;
+    }
+    System.out.println(ret);
+  } 
+}
