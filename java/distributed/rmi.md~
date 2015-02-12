@@ -1,0 +1,30 @@
+RMI(Remote Method Invocation，远程方法调用)
+ JDK1.1引入，作为RPC的Java版。<br/> 
+**组成元素**<br/> 
+ 通信协议：JRMP（Java Remote Messaging Protocol，Java远程消息交换协议）<br/> 
+ 远程服务/远程对象/分布式对象：服务的接口定义 和 具体实现<br/> 
+ 桩（Stub）和框架（Skeleton）文件：客户端调用远程服务的代理<br/> 
+ 远程服务的托管服务器<br/> 
+ RMI命名服务器：可选项，远程服务注册到这里，而客户端则在这里发现服务<br/> 
+!()[rmi.jpg]<br/> 
+
+优点：支持不同地址空间的程序级对象间进行通信
+缺点：仅能Java语言的程序间通信
+
+相关API位于java.rmi.*下。<br/>
+
+Java领域的远程通讯技术有RMI、MINA、ESB、Burlap、Hessian、SOAP、EJB和JMS等。<br/>
+底层都是 通信协议 + 网络IO<br/>
+通信协议分为应用层协议和传输层协议，传输层协议有TCP、UDP等。<br/>
+网络IO有bio、nio和aio。<br/>
+
+
+终端A将请求转换为字节流->终端B将字节流解析为请求。
+应用级别的远程通信协议（RMI等）会根据语言本身的特点来定义标准的传输格式，而请求转流，流解析为请求等操作则由框架处理。
+
+XML-RPC是使用XML格式来定义通信协议，并使用HTTP作为应用层协议，使用与跨语言通信。
+Binary-RPC是使用二进制定义通信协议，不适用与跨语言但传输的数据量比XML-RPC要少很多，因此速度更快。
+
+SOAP(Simple Object Access Protocol)，XML-RPC的高级版本，只是所使用的XML规范不同。
+
+JMS是基于消息机制的远程通信。消息队列<br/>

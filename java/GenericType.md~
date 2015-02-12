@@ -228,5 +228,3 @@ public class ArrayList<E> implements List<E> {
 ````
 
 类型参数主要用于帮助编译器进行类型推理。
-
-### 泛型自绑定

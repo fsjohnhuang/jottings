@@ -1,0 +1,42 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/sample/04/S$Inner.class
+  Last modified 2015-2-12; size 291 bytes
+  MD5 checksum 98ee220dbb7a491d5300d2d8214f1996
+  Compiled from "S.java"
+class S$Inner<T extends java.lang.String> extends java.lang.Object
+  Signature: #9                           // <T:Ljava/lang/String;>Ljava/lang/Object;
+  SourceFile: "S.java"
+  InnerClasses:
+       static #15= #2 of #13; //Inner=class S$Inner of class S
+  minor version: 0
+  major version: 51
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Methodref          #3.#12         //  java/lang/Object."<init>":()V
+   #2 = Class              #14            //  S$Inner
+   #3 = Class              #17            //  java/lang/Object
+   #4 = Utf8               <init>
+   #5 = Utf8               ()V
+   #6 = Utf8               Code
+   #7 = Utf8               LineNumberTable
+   #8 = Utf8               Signature
+   #9 = Utf8               <T:Ljava/lang/String;>Ljava/lang/Object;
+  #10 = Utf8               SourceFile
+  #11 = Utf8               S.java
+  #12 = NameAndType        #4:#5          //  "<init>":()V
+  #13 = Class              #18            //  S
+  #14 = Utf8               S$Inner
+  #15 = Utf8               Inner
+  #16 = Utf8               InnerClasses
+  #17 = Utf8               java/lang/Object
+  #18 = Utf8               S
+{
+  S$Inner();
+    flags: 
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return        
+      LineNumberTable:
+        line 7: 0
+}
