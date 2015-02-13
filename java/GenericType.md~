@@ -228,3 +228,64 @@ public class ArrayList<E> implements List<E> {
 ````
 
 类型参数主要用于帮助编译器进行类型推理。
+
+### 泛型自绑定
+
+
+
+协变、桥接模式和类型擦除。
+
+### 泛型实现的两种思想
+1. Code specialization：在实例化一个泛型类或泛型方法时将产生一份新的目标代码（字节码或二进制码）。如针对一个泛型List，当程序中出现List<String>和List<Integer>时，则会生成List<String>,List<Integer>等的Class实例。
+2. Code shareing：对每个泛型只生成唯一一份目标代码，该泛型类的所有实例的数据类型均映射到这份目标代码中，在需要的时候执行类型检查和类型转换。如针对List<String>和List<Integer>只生成一个List<Object>的Class实例。
+
+C++的模板（template）是典型的Code specialization。由于程序中出现多少种List，就会生成多少个Class实例，因此会造成代码膨胀（Code Bloat）。
+而Code specialization的问题是浪费空间，例如在集合中本质上存放的是一系列的指针，没必要因元素类型的不同来创建不同类型的集合。
+而Java则采用Code sharing的思想，而Code sharing则通过类型擦除来实现。
+
+类型擦除的过程：
+1. 将所有泛型参数用其最左边界的类型来替换。
+2. 移除所有类型参数
+````
+interface Comparable<T>{
+  int compareTo(T that);
+}
+final class NumericVal implements Comparable<NumericVal>{
+  public int compareTo(NumericVal that){ return 1;}
+}
+````
+擦除后：
+````
+interface Comparable{
+  int compareTo(Object that);
+}
+final class NumericVal implements Comparable{
+  public int compareTo(NumericVal that){ return 1;}
+  // 编译器自动生成桥接方法
+  public int compareTo(Object that){
+    return this.compareTo((NumbericVal)that);
+  }
+}
+````
+
+泛型类型占位符最终的类型是如何决定的
+1. 首先会根据extends后的条件进行限制，默认为Object。
+2. 然后根据实际调用时的实参类型。
+````
+<T> T say(T arg1, T arg2){ return arg1;}
+1. arg1和arg2的实参数据类型相同，则T为实参的数据类型
+2. 若两者不相同（也称为交叉类型），则T为Object类型
+````
+
+#### 擦写带来的问题
+1. 无法通过同一个泛型类来区分方法签名
+2. 泛型类的类字段是共享的。
+
+#### 准则
+1. JVM中没有泛型，只有普通类和普通方法
+2. 所有泛型类的类型参数在编译时都会被擦除
+3. 创建泛型类对象时请指明类型，以便让编译器尽早地做类型检查
+4. 不要忽视编译器的警告信息，那意味着有潜在的ClassCastException等着你
+
+参考
+http://justjavac.iteye.com/blog/1741638

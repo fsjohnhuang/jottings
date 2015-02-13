@@ -475,6 +475,7 @@ putfield <oprands>：首先会弹出操作数栈顶的头两个元素。操作�
 获取数组长度：arraylength
 检查类实例类型：instanceof、checkcast
   instanceof <operands>：弹出操作数栈顶的reference元素，若栈顶元素是<operands>所指向的CONSTANT_Class_info的实例或子类实例，则将1压栈，否则将0压栈。
+  checkcast <operands>：弹出操作数栈顶的reference元素，并将其转换为<operands>所指向的CONSTANT_Class_info的类型，然后压栈。若转换失败则抛出ClassCastException。
 ````
 
 ### 5.操作数栈管理指令

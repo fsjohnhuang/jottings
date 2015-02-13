@@ -1,0 +1,29 @@
+Compiled from "Main.java"
+class Main {
+  Main();
+    Code:
+       0: aload_0       
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return        
+
+  public static void main(java.lang.String[]) throws java.lang.InstantiationException, java.lang.IllegalAccessException;
+    Code:
+       0: ldc_w         #2                  // class Main$S
+       3: invokestatic  #3                  // Method create:(Ljava/lang/Class;)LMain$P;
+       6: checkcast     #2                  // class Main$S
+       9: astore_1      
+      10: aload_1       
+      11: iconst_1      
+      12: invokestatic  #4                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      15: iconst_1      
+      16: invokestatic  #4                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+      19: invokevirtual #5                  // Method Main$S.handle:(Ljava/lang/Number;Ljava/lang/Number;)V
+      22: return        
+
+  static <T extends Main$P> T create(java.lang.Class<T>) throws java.lang.InstantiationException, java.lang.IllegalAccessException;
+    Code:
+       0: aload_0       
+       1: invokevirtual #6                  // Method java/lang/Class.newInstance:()Ljava/lang/Object;
+       4: checkcast     #7                  // class Main$P
+       7: areturn       
+}

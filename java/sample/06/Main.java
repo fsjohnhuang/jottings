@@ -1,0 +1,38 @@
+import java.util.*;
+class Main{
+  public static void main(String[] args){
+
+  }
+  static class t<T extends Object & Collection>{
+  }
+
+  static class Fruit<T>{
+	  // 类型参数占位符作为实例字段的类型
+	  private T fruit;
+
+	  // 类型参数占位符作为实例方法的返回值类型
+	  T getFruit(){
+	    return fruit;
+	  }
+	  // 类型参数占位符作为实例方法的入参类型
+	  void setFruit(T fruit){
+	    this.fruit = fruit;
+	  }
+	  private List<T> fruits;
+	  // 类型参数占位符作为边界通配符的限制条件
+	  void setFruits(List<? extends T> lst){
+	    fruits = (List<T>)lst;
+	  }
+	  // 类型参数占位符作为实例方法的入参类型的类型参数
+	  void setFruits2(List<T> lst){
+	    fruits = lst;
+	  }
+
+	  // 构造函数不用带泛型
+	  Fruit(){
+	    // 类型参数占位符作为局部变量的类型
+	    fruits = new ArrayList<T>();
+	    T fruit = null;
+	  }
+  }
+}

@@ -1,0 +1,92 @@
+Classfile /F:/skyDrive/repos/self/jottings/java/sample/08/Main.class
+  Last modified 2015-2-13; size 680 bytes
+  MD5 checksum 1317ccbb71ec709ff84466b1c1a96a7c
+  Compiled from "Main.java"
+class Main
+  SourceFile: "Main.java"
+  InnerClasses:
+       static #8= #2 of #6; //S=class Main$S of class Main
+       static #10= #5 of #6; //P=class Main$P of class Main
+  minor version: 0
+  major version: 51
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Methodref          #7.#26         //  java/lang/Object."<init>":()V
+   #2 = Class              #27            //  Main$S
+   #3 = Methodref          #6.#28         //  Main.create:(Ljava/lang/Class;)LMain$P;
+   #4 = Methodref          #29.#30        //  java/lang/Class.newInstance:()Ljava/lang/Object;
+   #5 = Class              #31            //  Main$P
+   #6 = Class              #32            //  Main
+   #7 = Class              #33            //  java/lang/Object
+   #8 = Utf8               S
+   #9 = Utf8               InnerClasses
+  #10 = Utf8               P
+  #11 = Utf8               <init>
+  #12 = Utf8               ()V
+  #13 = Utf8               Code
+  #14 = Utf8               LineNumberTable
+  #15 = Utf8               main
+  #16 = Utf8               ([Ljava/lang/String;)V
+  #17 = Utf8               Exceptions
+  #18 = Class              #34            //  java/lang/InstantiationException
+  #19 = Class              #35            //  java/lang/IllegalAccessException
+  #20 = Utf8               create
+  #21 = Utf8               (Ljava/lang/Class;)LMain$P;
+  #22 = Utf8               Signature
+  #23 = Utf8               <T:LMain$P;>(Ljava/lang/Class<TT;>;)TT;
+  #24 = Utf8               SourceFile
+  #25 = Utf8               Main.java
+  #26 = NameAndType        #11:#12        //  "<init>":()V
+  #27 = Utf8               Main$S
+  #28 = NameAndType        #20:#21        //  create:(Ljava/lang/Class;)LMain$P;
+  #29 = Class              #36            //  java/lang/Class
+  #30 = NameAndType        #37:#38        //  newInstance:()Ljava/lang/Object;
+  #31 = Utf8               Main$P
+  #32 = Utf8               Main
+  #33 = Utf8               java/lang/Object
+  #34 = Utf8               java/lang/InstantiationException
+  #35 = Utf8               java/lang/IllegalAccessException
+  #36 = Utf8               java/lang/Class
+  #37 = Utf8               newInstance
+  #38 = Utf8               ()Ljava/lang/Object;
+{
+  Main();
+    flags: 
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return        
+      LineNumberTable:
+        line 1: 0
+        line 12: 4
+
+  public static void main(java.lang.String[]) throws java.lang.InstantiationException, java.lang.IllegalAccessException;
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=1, locals=2, args_size=1
+         0: ldc_w         #2                  // class Main$S
+         3: invokestatic  #3                  // Method create:(Ljava/lang/Class;)LMain$P;
+         6: checkcast     #2                  // class Main$S
+         9: astore_1      
+        10: return        
+      LineNumberTable:
+        line 4: 0
+        line 5: 10
+    Exceptions:
+      throws java.lang.InstantiationException, java.lang.IllegalAccessException
+
+  static <T extends Main$P> T create(java.lang.Class<T>) throws java.lang.InstantiationException, java.lang.IllegalAccessException;
+    flags: ACC_STATIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0       
+         1: invokevirtual #4                  // Method java/lang/Class.newInstance:()Ljava/lang/Object;
+         4: checkcast     #5                  // class Main$P
+         7: areturn       
+      LineNumberTable:
+        line 8: 0
+    Exceptions:
+      throws java.lang.InstantiationException, java.lang.IllegalAccessException
+    Signature: #23                          // <T:LMain$P;>(Ljava/lang/Class<TT;>;)TT;
+}
