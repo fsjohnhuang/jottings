@@ -1,4 +1,5 @@
-#`java.util.Iterable`
+#
+java.util.Iterable`
 实现该接口的类，可被`foreach`遍历<Br/>
 #`java.util.Iterator`
 #`java.util.Enumeration`
@@ -11,4 +12,15 @@
 队列：队列元素有序排列，无唯一性要求，按找先进先出操作<Br/>
 #`java.util.Map`
 #`java.util.Vector`
+
+![](imgs/java-collection-hierarchy.jpeg)
+## ArrayList
+一个容量可变的数组.
+
+## LinkedList
+一个双向链表,在增删元素上性能比ArrayList好,但查询上却不如ArrayList.除了实现了List接口还实现了Queue接口,因此比ArrayList和Vector多一些如`offer()`,`peek()`和`poll()`等方法.<br/>
+
+## Vector
+线程安全的ArrayList.当元素数目大于集合容量时,Vector的容量会翻倍增长,而ArrayList的容量会增多原来的50%.<br/>
+
 
