@@ -1,0 +1,6 @@
+若要禁用 8.3 名称创建所有的 NTFS 分区，请键入fsutil.exe 行为设置 disable8dot3 1在提升的命令提示符，然后按 Enter。
+
+此操作将立即生效 （无需重新启动）。   这是微软的建议。。。。。。
+
+SONG 2014/4/30 10:05:43
+fsutil behavior set disable8dot3 1
