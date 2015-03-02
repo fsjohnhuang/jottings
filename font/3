@@ -1,0 +1,109 @@
+## 字体类型(Typeface Type)
+### 1. 衬线体(Serif)
+ 衬线是笔画末端的装饰部分，用于更清晰地标明笔触末端，提高辨识率从而提高阅读速度。另外衬线字体感觉会更正统。下图红色部分就是衬线。<br/>
+![](serif.jpg)
+ 网页中英文衬线字体有`Times New Roman`和`Georgia`(下图为12px的Times New Roman左 和 Georiga右)。<br/>
+![](tnrg.jpg)
+ 网页中中文衬线字体有`宋体`。
+
+### 2. 非衬线体/无衬线体(Sans-serif)
+![](sans-serif.jpg)
+ 网页中英文无衬线字体有`Arial`,`Verdana`,`Tahoma`,`Helivetica`,`Calibri`等.(下图由左至右依次为Arial,Verdana,Tahoma)
+![](avt.jpg)
+ 10px~12px的衬线字体在屏幕下难以辨认，因此网页中常用无衬线字体而非衬线字体。(下图为10px的Verdana和Times New Roman对比)
+![](vt.jpg)
+
+### 3. 等宽字体(Monospace)
+ 等宽字体仅针对西文字体。由于英文字母的宽度各不相同，导致编程时代码排版很难看。在DOS命令中，看到的均是等宽字体。<br/>
+ 编程对等宽字体的要求：<br/>
+ 1. 所有字体等宽<br/>
+ 2. 字体简洁、清晰和规范<br/>
+ 3. 支持ASCII码为128以上的扩展字符集（如GBK,gb2312和unicode等）<br/>
+ 4. 空白字符(ASCII:0x20)与其他字符等宽<br/>
+ 5. 1,I和i能容易地区分<br/>
+ 6. 0,o和O能容易地区分<br/>
+ 7. 双引号、单引号前后部分易于区分，最好是镜像对称<br/>
+ 8. 标点符号外形清晰，尤其是大括号、圆括号和方括号<br/>
+ 宽字体有`Courier`和`Courier New`等<br/>
+
+### 4. 手写体/书法体(Calligraphy)
+### 5. 符号体(Symbol)
+  Windows中最著名符号就是Webdings。
+![](symbol.png)
+
+### CSS设置字体类型
+````
+font-family:
+````
+
+## 字体样式
+常见的字体样式为：正常(Normal)、粗体(Bold)和斜体(Italic)<br/>
+粗体(Bold)：会让字体颜色更深、更粗；<br/>
+斜体(Italic)：用于在当前段落中强调某段文字。<br/>
+
+### CSS设置字体样式
+CSS中通过`font-style`来设置正常和斜体两种字体样式。
+````
+font-style: normal; /* 默认样式 */
+font-style: italic; /* 斜体 */
+font-style: oblique; /* 倾斜的字体 */
+````
+CSS中通过`font-weight`(字重)来设置加粗的字体样式。
+````
+font-weight: normal; /* 默认样式 */
+font-weight: bold; /* 粗体 */
+font-weight: bolder; /* 粗体 */
+font-weight: lighter; /* 细体 */
+font-weight: 100; /* 字重代号 */
+font-weight: 200; /* 字重代号 */
+font-weight: n00; /* 字重代号 */
+font-weight: 900; /* 字重代号 */
+````
+100~900为字重代号，字体库会针对不同的字重代号提供不同等级的粗细程度的设计。如Zurich字体所包含的Zurich Light对应100~300三个代号，Zurich Regular对应400，Zurich Medium对应500，Zurich Bold对应600~700，Zurich Black对应800，Zurich UltraBlack对应900。
+
+## 单位
+### 1. 点(point/pt)
+````
+  72 pt = 1 inch // 1英寸是72个点
+  1 pica = 12 pt // 1皮卡是12个点
+````
+### 2. 像素(pixel/px)
+ 像素是屏幕上最小的图像单元，通俗上说就是屏幕上的一个点。
+### 3. DPI/PPI(Dots Per Inch/Pixel Per Inch)
+ 两者均是解析度(Resolution)的单位，分别表示1英寸下有多少个点或像素，数值越大表示颗粒越细，图像越细腻、清晰。<br/>
+ 对于扫描仪、打印机等则采用DPI。对于屏幕则采用PPI。意义上是一样的。<br/>
+```` 
+介质   		解析度    
+照片   		240dpi~300dpi
+杂志   		133dpi~150dpi
+精美的书	175dpi~200dpi
+高质量的书	350dpi~400dpi
+屏幕		72ppi
+````
+由于屏幕的解析度比书籍、图片的低，因此物理大小相同的字体书上的会比屏幕上的清晰很多，也是因为这样物理大小相同的字体，书籍上可以使用衬底字体，而屏幕上则需要无衬底字代替。
+
+### 4. 相对于小写字母x的高度(x-height/ex)
+ 1ex = 小写字母x的高度。也是基线(baseline)与中位线(median)的垂直距离。
+### 5. 相对字体大小(em)
+ 1em = 字体的大小的100%。
+### 6. (rem)
+
+## 间距
+### 1. 行距/行间距(Leading/Line-height)
+ 行距就是相邻行之间基线的距离。一般以em作为单位，也就是根据字体大小来设置行距。W3C建议浏览器的默认行距为1.0em~1.2em。若行距过小则会造成阅读时容易“串行”。经验值行距为1.5em最为适合。<br/>
+ 基线(baseline)是大部分字母所“坐”的，字体的下降部(descender)之上的直线。大部分字体（全部大写字母和部分小写字母）总是紧贴基线，并且位于基线之上。中文与英文的大写字母情况一样。<br/>
+![](baseline.jpg)
+
+### 2. 字间距(Tracking/Letter-spacing)
+ 字母之间的距离。 
+
+### 3. 字距调整(Kerning)
+ 是一种因视觉需要而做的技术处理。就是在两个特定的字符连排时，单独调整它们的字距使之与众不同。
+
+## ClearType
+ Windows提供的针对LCD液晶荧幕的字体平滑工具。<br/>
+### 原理
+ 将R、G、B各个次像素发光并进行色调微调，从而达到实际分辨率以上(水平方向分辨率的3倍)的纤细文字的显示效果。<br/>
+
+## Ref
+http://design.yesky.com/273/8841773.shtml
