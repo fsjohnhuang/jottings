@@ -1,17 +1,17 @@
 ## ×ÖÌåÀàĞÍ(Typeface Type)
 ### 1. ³ÄÏßÌå(Serif)
  ³ÄÏßÊÇ±Ê»­Ä©¶ËµÄ×°ÊÎ²¿·Ö£¬ÓÃÓÚ¸üÇåÎúµØ±êÃ÷±Ê´¥Ä©¶Ë£¬Ìá¸ß±æÊ¶ÂÊ´Ó¶øÌá¸ßÔÄ¶ÁËÙ¶È¡£ÁíÍâ³ÄÏß×ÖÌå¸Ğ¾õ»á¸üÕıÍ³¡£ÏÂÍ¼ºìÉ«²¿·Ö¾ÍÊÇ³ÄÏß¡£<br/>
-![](serif.jpg)
+![](serif.jpg)<br/>
  ÍøÒ³ÖĞÓ¢ÎÄ³ÄÏß×ÖÌåÓĞ`Times New Roman`ºÍ`Georgia`(ÏÂÍ¼Îª12pxµÄTimes New Roman×ó ºÍ GeorigaÓÒ)¡£<br/>
-![](tnrg.jpg)
- ÍøÒ³ÖĞÖĞÎÄ³ÄÏß×ÖÌåÓĞ`ËÎÌå`¡£
+![](tnrg.jpg)<br/>
+ ÍøÒ³ÖĞÖĞÎÄ³ÄÏß×ÖÌåÓĞ`ËÎÌå`¡£<br/>
 
 ### 2. ·Ç³ÄÏßÌå/ÎŞ³ÄÏßÌå(Sans-serif)
-![](sans-serif.jpg)
- ÍøÒ³ÖĞÓ¢ÎÄÎŞ³ÄÏß×ÖÌåÓĞ`Arial`,`Verdana`,`Tahoma`,`Helivetica`,`Calibri`µÈ.(ÏÂÍ¼ÓÉ×óÖÁÓÒÒÀ´ÎÎªArial,Verdana,Tahoma)
-![](avt.jpg)
- 10px~12pxµÄ³ÄÏß×ÖÌåÔÚÆÁÄ»ÏÂÄÑÒÔ±æÈÏ£¬Òò´ËÍøÒ³ÖĞ³£ÓÃÎŞ³ÄÏß×ÖÌå¶ø·Ç³ÄÏß×ÖÌå¡£(ÏÂÍ¼Îª10pxµÄVerdanaºÍTimes New Roman¶Ô±È)
-![](vt.jpg)
+![](sans-serif.jpg)<br/>
+ ÍøÒ³ÖĞÓ¢ÎÄÎŞ³ÄÏß×ÖÌåÓĞ`Arial`,`Verdana`,`Tahoma`,`Helivetica`,`Calibri`µÈ.(ÏÂÍ¼ÓÉ×óÖÁÓÒÒÀ´ÎÎªArial,Verdana,Tahoma)<br/>
+![](avt.jpg)<br/>
+ 10px~12pxµÄ³ÄÏß×ÖÌåÔÚÆÁÄ»ÏÂÄÑÒÔ±æÈÏ£¬Òò´ËÍøÒ³ÖĞ³£ÓÃÎŞ³ÄÏß×ÖÌå¶ø·Ç³ÄÏß×ÖÌå¡£(ÏÂÍ¼Îª10pxµÄVerdanaºÍTimes New Roman¶Ô±È)<br/>
+![](vt.jpg)<br/>
 
 ### 3. µÈ¿í×ÖÌå(Monospace)
  µÈ¿í×ÖÌå½öÕë¶ÔÎ÷ÎÄ×ÖÌå¡£ÓÉÓÚÓ¢ÎÄ×ÖÄ¸µÄ¿í¶È¸÷²»ÏàÍ¬£¬µ¼ÖÂ±à³ÌÊ±´úÂëÅÅ°æºÜÄÑ¿´¡£ÔÚDOSÃüÁîÖĞ£¬¿´µ½µÄ¾ùÊÇµÈ¿í×ÖÌå¡£<br/>
@@ -28,8 +28,8 @@
 
 ### 4. ÊÖĞ´Ìå/Êé·¨Ìå(Calligraphy)
 ### 5. ·ûºÅÌå(Symbol)
-  WindowsÖĞ×îÖøÃû·ûºÅ¾ÍÊÇWebdings¡£
-![](symbol.png)
+  WindowsÖĞ×îÖøÃû·ûºÅ¾ÍÊÇWebdings¡£<br/>
+![](symbol.png)<br/>
 
 ### CSSÉèÖÃ×ÖÌå
 CSSÖĞÍ¨¹ı`font-family`À´ÉèÖÃ×ÖÌå.
@@ -42,7 +42,9 @@ font-family: "Microsoft YaHei", sans-serif; /* ÖĞÎÄÎªÎ¢ÈíÑÅºÚ, Ó¢ÎÄ²ÉÓÃ·Ç³ÄÏß×ÖÌ
  *Àà×åÃû³Æ(generic-family):* ÊÇ×ÖÌåÀàĞÍÃû³Æ¶ø¾ßÌåµÄ×ÖÌåÔòÓÉä¯ÀÀÆ÷¾ö¶¨, Èç"serif","sans-serif","cursive","fantasy","monospace"<br/>
  **×¢Òâ:**<br/>
  1. `font-family`ÖĞÉèÖÃµÄ×ÖÌå²»»á±»ä¯ÀÀÆ÷×Ô¶¯ÏÂÔØ, ×ÖÌåÊÇ·ñ¿ÉÓÃÔòÍêÈ«ÒÀ¿¿¿Í»§¶ËÊÇ·ñÒÑ°²×°¸Ã×ÖÌå¶øÒÑ.<br/>
- 2. ÊôĞÔÖµÒÔ*Àà×åÃû³Æ(generic-family)*½áÎ²È·±£×ÖÌå»áÒÔÕıÈ·µÄĞÎÊ½½âÎöäÖÈ¾.<br/>
+ 2. ÊôĞÔÖµ±ØĞëÒÔ*Àà×åÃû³Æ(generic-family)*½áÎ²È·±£×ÖÌå»áÒÔÕıÈ·µÄĞÎÊ½½âÎöäÖÈ¾.<br/>
+ 3. *Àà×åÃû³Æ(generic-family)*ºóµÄ*×ÖÌå×åÃû³Æ(family-name)*²»»áÉúĞ§,Èç:AÊÇ`font-family:arial,sans-serif,"ËÎÌå"`,BÊÇ`font-family:arial,"ËÎÌå",sans-serif`¶øä¯ÀÀÆ÷Ä¬ÈÏ×ÖÌåÎª"Î¢ÈíÑÅºÚ",ÄÇÃ´½«AÍ¨¹ıÎ¢ÈíÑÅºÚÏÔÊ¾ÖĞÎÄ,¶øBÔòÓÃËÎÌåÏÔÊ¾ÖĞÎÄ.ÕâÊÇÒòÎªËÑË÷µ½sans-serif¾ÍÒÑ¾­ÔÚä¯ÀÀÆ÷Ä¬ÈÏ×ÖÌå¿âÖĞÕÒµ½×ÖÌåÁË,Òò´Ë²»»áËÑË÷ËÎÌå×Ö¿â.<br/>
+
  ÍÆ¼öµÄ×ÖÌå:`font-family:"ËÎÌå", "ºÚÌå", "Î¢ÈíÑÅºÚ",Arial, Helvetica, sans-serif;`<br/>
  ÓÉÓëÊ¹ÓÃÖĞÎÄÀ´ÉèÖÃ×ÖÌå×åÃû³Æ,»áµ¼ÖÂIE9ÏÂÍ¨¹ıĞĞ¾àÊµÏÖ´¹Ö±¾ÓÖĞµÄÊ§Ğ§(»¹ÓĞÆäËû¼æÈİĞÔÎÊÌâ),Òò´Ë½¨ÒéÊ¹ÓÃunicodeÀ´´úÌæÖĞÎÄ.ÍÆ¼öµÄ×ÖÌå:`font-family:"\5B8B\4F53","\9ED1\4F53","\5FAE\8F6F\96C5\9ED1",Arial, Helvetica, sans-serif;`<br/>
 
@@ -77,8 +79,8 @@ font-weight: 900; /* ×ÖÖØ´úºÅ */
 100~900Îª×ÖÖØ´úºÅ£¬×ÖÌå¿â»áÕë¶Ô²»Í¬µÄ×ÖÖØ´úºÅÌá¹©²»Í¬µÈ¼¶µÄ´ÖÏ¸³Ì¶ÈµÄÉè¼Æ¡£ÈçZurich×ÖÌåËù°üº¬µÄZurich Light¶ÔÓ¦100~300Èı¸ö´úºÅ£¬Zurich Regular¶ÔÓ¦400£¬Zurich Medium¶ÔÓ¦500£¬Zurich Bold¶ÔÓ¦600~700£¬Zurich Black¶ÔÓ¦800£¬Zurich UltraBlack¶ÔÓ¦900¡£
 
 ## ×ÖºÅµ¥Î»
-ÍøÒ³ÖĞÒ»°ãÊ¹ÓÃ11pt/12pxµÄ×ÖºÅ£¬ÕıÎÄÔò²ÉÓÃ11.5pt/14pxµÄ×ÖºÅ¡£
-![](unit.jpg)
+ÍøÒ³ÖĞÒ»°ãÊ¹ÓÃ11pt/12pxµÄ×ÖºÅ£¬ÕıÎÄÔò²ÉÓÃ11.5pt/14pxµÄ×ÖºÅ¡£<br/>
+![](unit.jpg)<br/>
 ### 1. µã(point/pt)
 ````
   72 pt = 1 inch // 1Ó¢´çÊÇ72¸öµã
@@ -127,7 +129,7 @@ p {
 ### 1. ĞĞ¾à/ĞĞ¼ä¾à(Leading/Line-height)
  ĞĞ¾à¾ÍÊÇÏàÁÚĞĞÖ®¼ä»ùÏßµÄ¾àÀë¡£Ò»°ãÒÔem×÷Îªµ¥Î»£¬Ò²¾ÍÊÇ¸ù¾İ×ÖÌå´óĞ¡À´ÉèÖÃĞĞ¾à¡£W3C½¨Òéä¯ÀÀÆ÷µÄÄ¬ÈÏĞĞ¾àÎª1.0em~1.2em¡£ÈôĞĞ¾à¹ıĞ¡Ôò»áÔì³ÉÔÄ¶ÁÊ±ÈİÒ×¡°´®ĞĞ¡±¡£¾­ÑéÖµĞĞ¾àÎª1.5em×îÎªÊÊºÏ¡£<br/>
  »ùÏß(baseline)ÊÇ´ó²¿·Ö×ÖÄ¸Ëù¡°×ø¡±µÄ£¬×ÖÌåµÄÏÂ½µ²¿(descender)Ö®ÉÏµÄÖ±Ïß¡£´ó²¿·Ö×ÖÌå£¨È«²¿´óĞ´×ÖÄ¸ºÍ²¿·ÖĞ¡Ğ´×ÖÄ¸£©×ÜÊÇ½ôÌù»ùÏß£¬²¢ÇÒÎ»ÓÚ»ùÏßÖ®ÉÏ¡£ÖĞÎÄÓëÓ¢ÎÄµÄ´óĞ´×ÖÄ¸Çé¿öÒ»Ñù¡£<br/>
-![](baseline.jpg)
+![](baseline.jpg)<br/>
 
 ### 2. ×Ö¼ä¾à(Tracking/Letter-spacing)
  ×ÖÄ¸Ö®¼äµÄ¾àÀë¡£ 
@@ -158,12 +160,13 @@ p {
  WindowsÏÂµÄËÎÌå¡¢ºÚÌåµÈ¾ùÓÉÖĞ¹ú±±¾©µÄÖĞÒ×¹«Ë¾¿ª·¢£¬Òò´Ë³ÆÎªÖĞÒ×ËÎÌå¡¢ÖĞÒ×ºÚÌå¡£
 ### Mac OSX
  Mac OSXÏÂµÄËÎÌå¡¢ºÚÌåµÈ¾ùÓÉÖĞ¹ú±±¾©µÄ»ªÎÄ¹«Ë¾¿ª·¢£¬Òò´Ë³ÆÎª»ªÎÄËÎÌå¡¢»ªÎÄºÚÌå¡£
-### Ubuntu+Chromium/chrom39
+### Ubuntu+Chromium/chrome39
  ±ê×¼×ÖÌå:"Times New Roman"<br/>
- Serif×ÖÌå:"Timers New Roman"<br/>
+ Serif×ÖÌå:"Times New Roman"<br/>
  Sans-serif×ÖÌå:"Arial"<br/>
  µÈ¿í×ÖÌå:"Monospace"<br/>
- ![](font-unicode.png)
+ ![](font-unicode.png)<br/>
+ chromeÖĞÓ¢ÎÄ×ÖºÅĞ¡ÓÚ12pxÊ±(Èç9pt),Ôò»á×Ô¶¯Ôö¼ÓÎª12px.¿ÉÍ¨¹ı`-webkit-text-size-adjust:none;`À´±£³ÖĞ¡ÓÚ12pxµÄ×ÖºÅ.<br/>
 
 
 ## ·Ö±æÂÊ
@@ -180,8 +183,10 @@ p {
 
 
 ## Ref
-http://design.yesky.com/273/8841773.shtml
-http://baike.baidu.com/link?url=OcfVwoAY66-PChDZmbBqEsUuC-h3lEa817IaSOPaVrOEB5c0e5uZlTKizdY8PrbP-JGQbKbwA-mYHj4cf4qHyq
-http://www.cnblogs.com/leejersey/p/3662612.html
-http://www.divcss5.com/rumen/r295.shtml
-http://www.divcss5.com/css-hack/c344.shtml
+http://design.yesky.com/273/8841773.shtml<br/>
+http://baike.baidu.com/link?url=OcfVwoAY66-PChDZmbBqEsUuC-h3lEa817IaSOPaVrOEB5c0e5uZlTKizdY8PrbP-JGQbKbwA-mYHj4cf4qHyq<br/>
+http://www.cnblogs.com/leejersey/p/3662612.html<br/>
+http://www.divcss5.com/rumen/r295.shtml<br/>
+http://www.divcss5.com/css-hack/c344.shtml<br/>
+http://www.zhangxinxu.com/wordpress/2010/06/%E5%8F%AF%E7%94%A8%E6%80%A7%E4%B9%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E9%BB%98%E8%AE%A4%E5%AD%97%E4%BD%93%E4%B8%8Ecss%E5%AD%97%E4%BD%93/<br/>
+
