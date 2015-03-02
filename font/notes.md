@@ -137,6 +137,32 @@ p {
 ### 3. 字距调整(Kerning)
  是一种因视觉需要而做的技术处理。就是在两个特定的字符连排时，单独调整它们的字距使之与众不同。
 
+## 字体装饰
+text-decoration
+
+## 字母
+````
+text-transform
+值:
+none,无转换发生
+capitalize,将每个单词的首字母换成大写
+uppercase,换成大写
+lowercase,换成小写
+````
+````
+font-variant
+值:
+normal,正常字体
+small-caps,小型的大写字母字体
+````
+
+## font
+````
+font:字号/行距 字体;
+font:16px/1.5 arial,"宋体",sans-serif;
+````
+
+
 ## ClearType
  Windows/Mac OS提供的针对LCD液晶荧幕的字体平滑工具。利用LCD色条排列的特性。<br/>
  WindowsXP开始引入ClearType，但默认是关闭的。Windows Vista则默认开启。<br/>
@@ -189,4 +215,5 @@ http://www.cnblogs.com/leejersey/p/3662612.html<br/>
 http://www.divcss5.com/rumen/r295.shtml<br/>
 http://www.divcss5.com/css-hack/c344.shtml<br/>
 http://www.zhangxinxu.com/wordpress/2010/06/%E5%8F%AF%E7%94%A8%E6%80%A7%E4%B9%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E9%BB%98%E8%AE%A4%E5%AD%97%E4%BD%93%E4%B8%8Ecss%E5%AD%97%E4%BD%93/<br/>
+http://www.divcss5.com/rumen/r75.shtml<br/>
 
