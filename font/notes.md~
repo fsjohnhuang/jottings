@@ -31,10 +31,20 @@
   Windows中最著名符号就是Webdings。
 ![](symbol.png)
 
-### CSS设置字体类型
+### CSS设置字体
+CSS中通过`font-family`来设置字体.
 ````
-font-family: "Microsoft YaHei"; /* 微软雅黑 */
+font-family: "Microsoft YaHei", sans-serif; /* 中文为微软雅黑, 英文采用非衬线字体 */
 ````
+ 属性值通过逗号`,`分隔多个字体名称, 当浏览器在解析渲染字体时会从左至右搜索,当在字体名称对应的字体库中存在该字体时,则渲染.否则就搜索下一个字体名称对应的字体库.若均搜索失败则使用浏览器默认的字体库.<br/>
+ 字体名称分为*字体族名称(family-name)*和*类族名称(generic-family)*<br/>
+ *字体族名称(family-name):* 是具体的字体名称, 如"times","courier","arial"<br/>
+ *类族名称(generic-family):* 是字体类型名称而具体的字体则由浏览器决定, 如"serif","sans-serif","cursive","fantasy","monospace"<br/>
+ **注意:**<br/>
+ 1. `font-family`中设置的字体不会被浏览器自动下载, 字体是否可用则完全依靠客户端是否已安装该字体而已.<br/>
+ 2. 属性值以*类族名称(generic-family)*结尾确保字体会以正确的形式解析渲染.<br/>
+ 推荐的字体:`font-family:"宋体", "黑体", "微软雅黑",Arial, Helvetica, sans-serif;`<br/>
+ 由与使用中文来设置字体族名称,会导致IE9下通过行距实现垂直居中的失效(还有其他兼容性问题),因此建议使用unicode来代替中文.推荐的字体:`font-family:"\5B8B\4F53","\9ED1\4F53","\5FAE\8F6F\96C5\9ED1",Arial, Helvetica, sans-serif;`<br/>
 
 ## 字体样式
 常见的字体样式为：正常(Normal)、粗体(Bold)和斜体(Italic)<br/>
@@ -146,6 +156,15 @@ p {
 ## 中文字体库
 ### Windows
  Windows下的宋体、黑体等均由中国北京的中易公司开发，因此称为中易宋体、中易黑体。
+### Mac OSX
+ Mac OSX下的宋体、黑体等均由中国北京的华文公司开发，因此称为华文宋体、华文黑体。
+### Ubuntu+Chromium/chrom39
+ 标准字体:"Times New Roman"<br/>
+ Serif字体:"Timers New Roman"<br/>
+ Sans-serif字体:"Arial"<br/>
+ 等宽字体:"Monospace"<br/>
+ ![](font-unicode.png)
+
 
 ## 分辨率
 分为**显示分辨率(屏幕分辨率)**和**图像分辨率(解析度)**两个方向
@@ -164,3 +183,5 @@ p {
 http://design.yesky.com/273/8841773.shtml
 http://baike.baidu.com/link?url=OcfVwoAY66-PChDZmbBqEsUuC-h3lEa817IaSOPaVrOEB5c0e5uZlTKizdY8PrbP-JGQbKbwA-mYHj4cf4qHyq
 http://www.cnblogs.com/leejersey/p/3662612.html
+http://www.divcss5.com/rumen/r295.shtml
+http://www.divcss5.com/css-hack/c344.shtml
