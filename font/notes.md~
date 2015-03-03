@@ -77,6 +77,9 @@ font-weight: n00; /* 字重代号 */
 font-weight: 900; /* 字重代号 */
 ````
 100~900为字重代号，字体库会针对不同的字重代号提供不同等级的粗细程度的设计。如Zurich字体所包含的Zurich Light对应100~300三个代号，Zurich Regular对应400，Zurich Medium对应500，Zurich Bold对应600~700，Zurich Black对应800，Zurich UltraBlack对应900。
+而400相当于normal，700相当于bold。
+若字体有加粗的版本，则将font-weight:bold时会使用加粗版本，若没有则采用伪粗。<br/>
+如微软雅黑，正常时使用msyh.ttf,加粗则使用msyhbd.ttf<br/>
 
 ## 字号单位
 网页中一般使用11pt/12px的字号，正文则采用11.5pt/14px的字号。<br/>
@@ -184,13 +187,75 @@ font:16px/1.5 arial,"宋体",sans-serif;
 ## 中文字体库
 ### Windows
  Windows下的宋体、黑体等均由中国北京的中易公司开发，因此称为中易宋体、中易黑体。
-### Mac OSX
- Mac OSX下的宋体、黑体等均由中国北京的华文公司开发，因此称为华文宋体、华文黑体。
+ Chrome
+ 标准字体:"宋体"<br/>
+ Serif字体:"宋体"<br/>
+ Sans-serif字体:"宋体"<br/>
+ 等宽字体:"新宋体"<br/>
+ 
+ IE
+ 网页字体:"Simsun" 就是宋体
+ 纯文本字体:"NSimsun" 就是新宋体
+
+ 简体中文Windows，浏览器的默认字体为中易宋体(SimSun)；
+ 由于SimSun采用点阵，因此在大字号的情况下效果不好。而SimSun的西文效果也无法接受。SimSun没有粗体。SimSun是衬线字体
+ 微软雅黑在没有开启ClearType时会一塌糊涂。微软雅黑有粗体。
+ 中易粗体(SimHei)没法用于正文，仅能用于大字号的场景，如标题。
+
+ 在没有开启DirectWrite技术的Windows下采用PostScript轮廓的字体（华文黑体）会渲染得很差。
+ 而OS X下渲染微软雅黑还可以。
+
+ 没有粗体或斜体的字体，在通过字重和样式得到的粗体和斜体称为伪粗和伪斜。
+ 伪粗（poor man's bold），是通过对字体glyph路径做一定的变换而成。
+ 伪斜（poor man's italic），是通过对字体进行矩阵做一定的变还而成。
+### Mac OS X
+ Mac OS X下的宋体、黑体等均由中国北京的华文公司开发，因此称为华文宋体、华文黑体。
+ 中文Mac OS X，浏览器的默认字体为华文黑体（重组后称为 黑体-简）；有粗体。西文部分效果很差，和中易宋体类似。
+ 华文黑体由华文黑体(STHeiti)和华文细黑(STXihei)组成。
+ OS X 10.6开始自带冬青黑体简体中文（Hiragino Sans GB）。
+
+### IOS
+ 中文IOS，浏览器的默认字体为华文黑体（黑体-简）；
+
+### Android
+ 中文Android，浏览器的默认字体为Droid Sans Fallback；效果和微软雅黑相似。
+
+### Linux
+ 中文Linux，浏览器的默认字体为文泉驿点阵宋体、文泉驿正黑和文泉驿微米黑（Droid Sans Fallback衍生而来）。
+
 ### Ubuntu+Chromium/chrome39
  标准字体:"Times New Roman"<br/>
  Serif字体:"Times New Roman"<br/>
  Sans-serif字体:"Arial"<br/>
  等宽字体:"Monospace"<br/>
+
+ "Lucida Grande"是Mac OS X默认的无衬线西文字体<br/>
+ "Verdana"是Windows下无衬线西文字体<br/>
+ "Lucida"是UNIX下的无衬线西文字体<br/>
+ "Arial"是无陈线西文的TrueType字体<br/>
+ 
+## 各平台建议的中文字体
+Windows下采用微软雅黑<br/>
+Mac OS X下采用冬青黑体简体中文<br/>
+IOS下采用华文黑体<br/>
+Linux下采用文泉驿微米黑<br/>
+Android下采用Droid Sans<br/>
+
+## 控制方式
+### 1. 自由
+````
+font-family: ..., "Hiragino Sans GB", sans-serif;
+````
+除了让OS X上尽量使用冬青黑体外，其他平台均不设置固定的中文字体，而是由浏览器/用户去决定。
+正文使用中易宋体或微软雅黑效果则见仁见智，但标题等大字号的文字还是固定为微软雅黑比较好。
+### 2. 控制
+````
+font-family: ..., "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+````
+### 3. 自适配
+通过UA来判断浏览器版本和操作系统，进而采用不同的字体。
+
+
  ![](font-unicode.png)<br/>
  chrome中英文字号小于12px时(如9pt),则会自动增加为12px.可通过`-webkit-text-size-adjust:none;`来保持小于12px的字号.<br/>
 
@@ -215,4 +280,6 @@ http://www.cnblogs.com/leejersey/p/3662612.html<br/>
 http://www.divcss5.com/rumen/r295.shtml<br/>
 http://www.divcss5.com/css-hack/c344.shtml<br/>
 http://www.zhangxinxu.com/wordpress/2010/06/%E5%8F%AF%E7%94%A8%E6%80%A7%E4%B9%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E9%BB%98%E8%AE%A4%E5%AD%97%E4%BD%93%E4%B8%8Ecss%E5%AD%97%E4%BD%93/<br/>
+http://www.divcss5.com/rumen/r75.shtml<br/>
+http://www.zhihu.com/question/19911793<br/>
 

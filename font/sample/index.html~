@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=gb2312">
+  </head>
+  <style type="text/css">
+    .b1{
+      font-family: "Microsoft YaHei";
+      font-size: 10px;
+    }
+    .b2{
+      font-family: "SimSun";
+      font-size: 10px;
+    }
+    .b3{
+      font-family: "Microsoft YaHei";
+      font-size: 100px;
+    }
+    .b4{
+      font-family: "SimSun";
+      font-size: 100px;
+    }
+    .b5{
+      font-family: "Microsoft YaHei";
+      font-size: 100px;
+      font-weight: bold;
+    }
+    .b6{
+      font-family: "SimSun";
+      font-size: 100px;
+      font-weight: bold;
+    }
+  </style>
+  <body>
+    <span>微软雅黑</span>
+    <span class="b1">
+      字号为10px,测试通过。
+    </span>
+    <br/>
+    <span>中易宋体</span>
+    <span class="b2">
+      字号为10px,测试通过。
+    </span>
+    <br/>
+    <br/>
+    <span>微软雅黑</span>
+    <span class="b3">
+      字号为100px,测试通过。
+    </span>
+    <br/>
+    <span>中易宋体</span>
+    <span class="b4">
+      字号为100px,测试通过。
+    </span>
+    <br/>
+    <br/>
+    <span>微软雅黑</span>
+    <span class="b5">
+      字号为100px,测试通过。
+    </span>
+    <br/>
+    <span>中易宋体</span>
+    <span class="b6">
+      字号为100px,测试通过。
+    </span>
+  </body>
+</html>
