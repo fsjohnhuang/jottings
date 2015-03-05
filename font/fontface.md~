@@ -1,0 +1,112 @@
+# @font-face
+````
+@font-face {
+    font-family: 'MicrosoftYaHei';
+    src: url('MicrosoftYaHei.eot'); /* IE9 Compat Modes */
+    src: url('MicrosoftYaHei.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+             url('MicrosoftYaHei.woff') format('woff'), /* Modern Browsers */
+             url('MicrosoftYaHei.ttf')  format('truetype'), /* Safari, Android, iOS */
+             url('MicrosoftYaHei.svg#MicrosoftYaHei') format('svg'); /* Legacy iOS */
+   }
+
+body{
+  font-family: "MicrosoftYaHei";
+}
+````
+**优点：**<br/>
+ 1. 即使系统没有安全该字体，也能使用。<br/>
+**缺点：**<br/>
+ 1. 需要下载字体库，因此会消耗用户流量；<br/>
+ 2. 下载会造成页面打开延迟。<br/> 
+
+## 浏览器支持
+IE4就已经支持了！<br/>
+![](font-face-browers.jpg)<br/>
+
+## 语法规则
+````
+/* 定义字体 */
+@font-face {
+      font-family: <YourWebFontName>;
+      src: <source> [<format>][,<source> [<format>]]*;
+      [font-weight: <weight>];
+      [font-style: <style>];
+    }
+````
+`font-family: <YourWebFontName>`：自定义字库名称（一般设置为所引入的字库名），后续样式规则中则通过该名称来引用该字库。<br/>
+`src`：设置字体的加载路径和格式，通过逗号分隔多个加载路径和格式<br/>
+`srouce`：字体的加载路径，可以是绝对或相对URL。<br/>
+`format`：字体的格式，主要用于浏览器识别，一般有以下几种——truetype,opentype,truetype-aat,embedded-opentype,avg等。<br/>
+`font-weight`和`font-style`和之前使用的是一致的。<br/>
+另外还有一个local(font name)字段，表示从用户系统中加载字体，失败后才加载webfont。
+````
+src: local(font name), url("font_name.ttf");
+````
+
+## 字体格式
+对于@font-face而言，兼容性问题就是各浏览器所能识别的字体格式不尽相同。
+### TrueType格式(.ttf)
+ Windows和Mac上常见的字体格式，是一种原始格式，因此它并没有为网页进行优化处理。<br/>
+ 浏览器支持：<br/>
+ IE9+,FireFox3.5+,Chrome4.0+,Safari3+,Opera10+,IOS Mobile Safari4.2+
+### OpenType格式(.otf)
+ 以TrueType为基础，也是一种原始格式，但提供更多的功能。<br/>
+ 浏览器支持：<br/>
+ FireFox3.5+,Chrome4.0+,Safari3.1+,Opera10.0+,IOS Mobile Safari4.2+
+### Web Open Font格式(.woff)
+ 针对网页进行特殊优化，因此是Web字体中最佳格式，它是一个开放的TrueType/OpenType的压缩版，同时支持元数据包的分离。<br/>
+ 浏览器支持：<br/>
+ IE9+, FireFox3.5+, Chrome6+, Safari3.6+,Opera11.1+
+### Embedded Open Type格式(.eot)
+ IE专用字体格式，可以从TrueType格式创建此格式字体。
+ 浏览器支持：<br/>
+ IE4+
+### SVG格式(.svg)
+ 基于SVG字体渲染的格式。
+ 浏览器支持：<br/>
+ Chrome4+, Safari3.1+, Opera10.0+, IOS Mobile Safari3.2+<br/>
+[Paul Irish](http://www.paulirish.com/)写了一个独特的@font-face语法称为Bulletproof @font-face解决兼容性问题。<br/>
+````
+ @font-face {
+	font-family: 'YourWebFontName';
+	src: url('YourWebFontName.eot'); /* IE9 Compat Modes */
+	src: url('YourWebFontName.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+             url('YourWebFontName.woff') format('woff'), /* Modern Browsers */
+             url('YourWebFontName.ttf')  format('truetype'), /* Safari, Android, iOS */
+             url('YourWebFontName.svg#YourWebFontName') format('svg'); /* Legacy iOS */
+   }
+````
+
+## 获取Web字体
+### 下载字体到本地服务器
+(Google Web Fonts)[http://www.google.com/webfonts]<br/>
+(Dafont.com)[http://www.dafont.com/]<br/>
+下载到.ttf文件后，通过(Font Squirrel)[http://www.fontsquirrel.com/tools/webfont-generator]来生成.woff等字体格式。<br/>
+
+### 直接下载字体
+(Webfonts)[http://webfonts.fonts.com/]<br/>
+(Typekit)[http://typekit.com/]<br/>
+(Kernest)[http://kernest.com/]<br/>
+(Niec Web Type)[http://nicewebtype.com/fonts/]<br/>
+
+## 注意
+1. 先定义后使用;<br/>
+2. 由于中文字体太大，因此建议中文字体还是使用图片。而英文字体则可以用@font-face代替图片;<br/>
+3. @font-face失效可能是字库路径错误导致。<br/>
+
+## 问题
+**问题1**: FireFox中使用@font-face时，如url为相对路径则无法显示。<br/>
+采用绝对路径则成功。<br/>
+假如uri scheme为file（`file:///`），那么由于FireFox默认的file uri origin策略十分严格，不同路径等级的则无法访问。所以相对路径会失败。可通过`about:config`进入浏览器设置界面，然后将`security.fileuri.strict_origin_policy`设置为false即可。<br/>
+假如uri scheme为http或https，
+
+
+
+
+
+## Ref
+http://www.w3cplus.com/content/css3-font-face
+http://stackoverflow.com/questions/2856502/css-font-face-not-working-with-firefox-but-working-with-chrome-and-ie
+http://www.dynamicdrive.com/forums/showthread.php?63628-font-face-not-working-in-Firefox-5
+http://www.w3cplus.com/css3/web-icon-with-font-face
+http://www.webhek.com/tag/web-font/

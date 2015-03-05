@@ -271,6 +271,22 @@ font-family: ..., "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", 
 ### 位分辨率
  又称为位深，用于衡量每个像素存储信息的位数，决定像素可标记的色彩等级上限。常见的有8、16、24和32位。若一幅8bit位深的图像，那么每个像素能够表现的色彩等级是256级。
  
+## IOS
+  默认中文字体是 Heiti SC<br/>
+  默认英文字体是 Helvetica<br/>
+  默认数字字体是 HelveticaNeue<br/>
+  无微软雅黑字体<br/>
+## Android
+  默认中文字体是 Droidsansfallback<br/>
+  默认英文和数字字体是Droid Sans<br/>
+  无微软雅黑字体<br/>
+## WinPhone
+  默认中文字体是 Dengxian(方正等线体)<br/>
+  默认英文和数字字体是 Segoe<br/>
+  无微软雅黑字体<br/>
+
+三个系统无需指定中文字体，使用系统默认即可。<br/>
+英文和数字字体可使用Helvetica。<br/>
 
 
 ## Ref
@@ -282,4 +298,5 @@ http://www.divcss5.com/css-hack/c344.shtml<br/>
 http://www.zhangxinxu.com/wordpress/2010/06/%E5%8F%AF%E7%94%A8%E6%80%A7%E4%B9%8B%E6%B5%8F%E8%A7%88%E5%99%A8%E9%BB%98%E8%AE%A4%E5%AD%97%E4%BD%93%E4%B8%8Ecss%E5%AD%97%E4%BD%93/<br/>
 http://www.divcss5.com/rumen/r75.shtml<br/>
 http://www.zhihu.com/question/19911793<br/>
+http://www.cnblogs.com/PeunZhang/p/3592096.html<br/>
 
