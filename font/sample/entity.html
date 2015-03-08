@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=gb2312">
+    <style type="text/css">
+#conflict::after{
+	content: "test";
+}
+.f{
+	float:left;
+}
+    </style>
+  </head>
+  <body>
+    <div id="conflict">
+	    &lt;
+    </div>
+    <div id="copy">
+    </div>
+    <textarea id="tconflict">&lt;</textarea>
+    <input type="text" id="txt"/>
+    <textarea id="tcopy">
+    </textarea>
+    <script type="text/javascript">
+	var con = document.getElementById('conflict')
+	  , copy = document.getElementById('copy')
+	  , tcon = document.getElementById('tconflict')
+	  , tcopy = document.getElementById('tcopy')
+	  , txt = document.getElementById('txt')
+	
+    </script>
+    <style type="text/css">
+ .line3, .line4{
+   float: left;
+ }
+ .line5::after{
+   content: "test"
+ }
+</style>
+<div id="view">
+</div>
+    <script type="text/javascript">
+	var view = document.getElementById('view')
+	
+    </script>
+  </body>
+</html>

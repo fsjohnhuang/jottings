@@ -1,0 +1,90 @@
+display
+block
+inline
+none
+inline-block，需要通过触发hasLayout来让IE6、7支持inline-block。
+注意：<br/>
+1. vertical-align属性会影响到inline-block元素，你可能会把它的值设置为top？
+2. 需要设置每一列的宽度
+3. 如果HTML源码中元素之间有空格，则列之间会产生空隙。
+flex
+
+[column](http://www.quirksmode.org/css/multicolumn.html)
+CSS3新属性，轻松实现文字的多列布局。
+IE9-和Opera Mini不支持。
+````
+.three-column{
+  padding: 1em;
+  -moz-column-count: 3;
+  -moz-column-gap: 1em;
+  -webkit-column-count: 3;
+  -webkit-column-gap: 1em;
+  column-count: 3;
+  column-gap: 1em;
+}
+````
+
+flexbox布局模式
+改动很多，因此通过[这里](https://css-tricks.com/old-flexbox-and-new-flexbox/)学习如何辨别一份资料是否过期，另外还有一份[最新标准的详细文章](http://bocoup.com/weblog/dive-into-flexbox/)。
+多列布局，水平垂直居中均可以。
+
+
+水平居中
+````
+#main1{
+  width: 600px;
+  margin: 0 auto;
+}
+
+/* IE7+支持max-width */
+#main2{
+  max-width: 600px;
+  margin: 0 auto;
+}
+````
+
+box-sizing: border-box.
+IE8+支持。
+
+
+position
+static(默认值)，表示元素不会被定位(positioned)，设置为其他值则表示他会被定位(positioned)
+relative
+fixed，相对视窗定位。移动浏览器对fixed的支持度很差。[解决方案](http://bradfrost.com/blog/mobile/fixed-position/)
+absolute
+
+float，用于文字围绕
+clear清除浮动
+清除浮动的clearfix hack
+````
+.clearfix{
+  overflow: auto;
+  zoom: 1;
+}
+````
+[清除浮动](http://stackoverflow.com/questions/211383/which-method-of-clearfix-is-best)
+
+
+响应式设设计(Responsive Design)，是一种让网站针对不同浏览器和设备“响应”不同显示效果的策略。
+
+媒体查询
+````
+@media screen and (min-width:600px) {
+  nav {
+    float: left;
+    width: 25%;
+  }
+  section {
+    margin-left: 25%;
+  }
+}
+@media screen and (max-width:599px) {
+  nav li {
+    display: inline;
+  }
+}
+````
+[meta viewport](https://dev.opera.com/articles/an-introduction-to-meta-viewport-and-viewport/)
+
+
+固定布局、流体布局
