@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style type="text/css">
+	body{
+		width: 400px;
+		margin: 0 auto;
+		overflow: hidden;
+	}
+  	#a{
+		width: 100px;
+		background: red;
+		margin-bottom: -99999px;
+		padding-bottom: 99999px;
+		float:left;
+		box-sizing:border-box;
+	}
+  	#b{
+		width: 100px;
+		background: blue;
+		margin-bottom: -99999px;
+		padding-bottom: 99999px;
+		float:left;
+		box-sizing:border-box;
+	}
+    </style>
+  </head>
+  <body>
+    <div id="a">
+	    <p>....</p>
+    </div>		
+    <div id="b">
+	    <p>....</p>
+    </div>		
+  </body>
+</html>
