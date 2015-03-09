@@ -1,0 +1,232 @@
+http://www.w3cplus.com/css/creaet-equal-height-columns
+http://www.adengweb.com/css-high-layout/
+http://aibusy.com/courseListMore.html
+http://blog.doyoe.com/?pn=1
+http://blog.sina.com.cn/s/blog_627f359f0100o5ix.html
+
+## 固定布局/约束布局
+固定的外表，里面的组件采用固定的宽度而不是百分比，并且页面各元素不能移动。结果是无论访问者屏幕分辨率多大，看到的都是同样的页面宽度。<br/>
+![](fixedlayout.jpg)<br/>
+优点：<br/>
+1. 设计师可预知最终的显示效果；<br/>
+2. 页面和页面组件的宽度固定，简化整体的设计。<br/>
+缺点：<br/>
+1. 屏幕分辨率大时，会造成过多的留白，从而破坏“黄金分割”、“三分法”、综合平衡等多种设计原则；<br/>
+2. 屏幕分辨率小时，会出现水平滚动条；<br/>
+3. 可用性方面会受损。<br/>
+缓解过多留白的问题：采用连续图像背景来适配大屏幕分辨率。<br/>
+固定布局的重心是 **页面主体居中**来保持整体平衡。<br/>
+
+## 流体布局/流动布局
+组件大多采用百分比宽度，以适应用户的屏幕分辨率。<br/>
+![](flowlayout.jpg)<br/>
+优点：<br/>
+1. 页面自动根据用户屏幕分辨率作调整；<br/>
+2. 在所有分辨率中，留白区域大小相近，从而保持主体与留白的比例；<br/>
+3. 设计得当，可以消除分辨率小时出现的水平滚动条。<br/>
+缺点：<br/>
+1. 设计者无法准确判断最终的显示效果；<br/>
+2. 图片、视频等内容可能需要多个宽度设置，以适应不同的屏幕分辨率；<br/>
+3. 屏幕分辨率大时，有可能因内容不足而导致主体部分出现多余的留白。<br/>
+通过min-width和max-width来设置在过小和过大的屏幕分辨率时，采用固定布局来保持页面的可用性。<br/>
+让IE6中使用min-width和max-width，通过expression。[参考](http://perishablepress.com/maximum-and-minimum-height-and-width-in-internet-explorer/)<br/>
+````
+* html #division{
+  width: expression(document.body.clientWidth < 333 ? '333px' : 'auto');
+  width: expression(document.body.clientWidth > 960 ? '960px' : 'auto');
+  width: expression(document.body.clientWidth > (500/12)*parseInt(document.body.currentStyle.fontSize) ? '33em' : 'auto');
+  height: expression(this.scrollHeight > 332 ? '333px' : 'auto');
+  height: expression(this.scrollHeight < 334 ? '333px' : 'auto');
+}
+
+#division{
+  min-width: 333px;
+  max-width: 960px;
+  max-width: 33em;
+  max-height: 333px;
+  min-height: 333px;
+}
+````
+IE6不识别min-width和max-width，而IE7会将表单元素的min-width识别为width。<br/>
+浏览器支持min-width和max-width的情况下，若元素的display为block则默认采用max-width，若为inline-block则采用auto。<br/>
+````
+<div id="txt"></div>
+<input id="content" type="text"/>
+````
+````
+#txt{
+  min-width: 100px;
+  max-width: 400px;
+  display: inline-block; 
+  
+  /* IE6 */
+  _overflow: hidden;
+  _width: expression(this.offsetWidth > 100 ? (this.offsetWidth < 400 ? 'auto' : '400px') : '100px');
+  /* 若改成_width: expression(this.offsetWidth > 100 ?  '100px' : (this.offsetWidth < 400 ? 'auto' : '400px')); 则IE会卡死*/
+}
+#content{
+  min-width: 100px;
+  max-width: 400px;
+  
+  /* IE7 */
+  *+min-width: auto;
+  *+width: expression(this.offsetWidth > 100 ? (this.offsetWidth < 400 ? 'auto' : '400px') : '100px');
+  /* IE6 */
+  _overflow: hidden;
+  _width: expression(this.offsetWidth > 100 ? (this.offsetWidth < 400 ? 'auto' : '400px') : '100px');
+}
+````
+通过JS修改表单元素value属性值时会令上述hack失效。<Br/>
+参考http://my.oschina.net/seast/blog/289160
+
+
+弹性布局
+采用em作为单位而不是百分比。<br/>
+
+混合布局
+
+布局的最终目的是可用性
+
+黄金分割
+三分法
+
+最小屏幕分辨率800*600，页面宽度760px。<br/>
+常用屏幕分辨率1024*768，标准页面宽度960px。<br/>
+查看浏览W3C网站的用户屏幕的分辨率比例：http://www.w3schools.com/browsers/browsers_display.asp<br/>
+由于浏览W3C网站的一般为设计师和开发人员，因此数据有偏差。<br/>
+还有这些网站可以查看用户屏幕分辨率：
+[W3Counter](http://www.w3counter.com/globalstats.php)
+[TheCounter.com Global Stats](http://www.thecounter.com/stats/2009/March/res.php)
+[OneStat.com](http://www.onestat.com/html/aboutus_pressbox31.html)
+
+
+
+定位的思想：允许你定义元素框相对于其正常位置应该出现的位置，或者相对于父元素、另一个元素甚至浏览器窗口本身的位置。<br/>
+
+CSS三种基本的定位机制：普通流、浮动和绝对定位。<br>
+**文档流(普通流)**，默认情况下所有元素均在普通流中定位。普通流的元素位置由它在HTML中的位置决定。<br/>
+将窗体自上而下分成一行行，并在每一行中按从左到右的顺序排放元素，即为文档流。<br/>
+有三种情况将使得元素脱离文档流，分别是浮动(float left or right)、绝对定位(position:absolute)、固定定位(position:fixed)。其中浮动引起的脱离文档流和定位引起的表现上又有所不同。关于这点不同，那就有待读者自行码demo了。<br/>
+
+IE6不支持fixed，通过expression来处理
+````
+.IE6fixed{
+  _position:absolute;
+  /* 始终相对可视区域居中 */
+  _top:expression(document.documentElement.scrollTop + document.documentElement.clientHeight/2);
+}
+/* 防止IE6滚动抖动 */
+html,*html body{
+  background-image:url(about:blank);
+  background-attachment: fixed; 
+}
+````
+
+动态添加link元素，IE不会马上应用该样式表。<br/>
+但可通过`document.createStyleSheet`来添加则马上生效。<br/>
+````
+function loadStyleSheet(url){
+  if (var css = document.createStyleSheet) return css.call(document, url)
+  var link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.type = 'text/css'
+  link.href = url
+  document.getElementsByTagName('head')[0].appendChild(link)
+}
+````
+
+`display:inline`：行内元素，设置width、height、margin-top、margin-bottom属性无效。行内元素间允许空白，因此元素间有换行、制表符和空格符也会产生空白。<br/>
+可通过在父容器设置`font-size:0;letter-spacing:-6px;`来去除空白。不同的字体它的letter-spacing是不同的，参考http://www.iyunlu.com/view/css-xhtml/58.html<br/>
+IE6/7下inline和inline-block，将父容器设置为`font-size:0;`，元素间依然有1px间隔的bug。而且不同的元素是不会对齐的。<br/>
+![](IE67.jpg)<br/>
+![](CFOE89.jpg)<br/>
+![](safari.jpg)<br/>
+````
+/* @一丝提供的解决方案*/
+.dib-wrap {
+font-size:0;/* 所有浏览器 */
+*word-spacing:-1px;/* IE6、7 */
+}
+.dib-wrap .dib{
+font-size: 12px;
+letter-spacing: normal;
+word-spacing: normal;
+vertical-align:top;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+/* firefox 中 letter-spacing 会导致脱离普通流的元素水平位移 */
+.dib-wrap{
+letter-spacing:-5px;/* Safari 等不支持字体大小为 0 的浏览器, N 根据父级字体调节*/
+}
+}
+.dib {
+display: inline-block;
+*display:inline;
+*zoom:1;
+}
+````
+![](normal.jpg)<br/>
+![](safari2.jpg)<br/>
+
+`display:block`：块级元素，设置width、height属性有效。<br/>
+`display:inline-block`：元素呈现为行内元素，但内容为块级元素呈现。就是设置width、height属性有效。<br/>
+IE8+支持`display:inline-block`<br/>
+IE6/7下通过触发layout来实现inline-block的表症。<br/>
+````
+/* 方式1：注意一定要分为写才有效 */
+.test{
+  display: inline-block; /* IE会将其当做block使用，但会触发layout */
+}
+.test{
+  display: inline;
+}
+/* 方式2 */
+.test{
+  zoom: 1; /* IE下触发layout */
+  display: inline;
+}
+````
+混合就是
+````
+.test{
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+````
+### 应用：类圆角按钮
+原理：子级margin为负值，可减小`display:inline-block`父容器的宽度。
+````
+<style type="text/css">
+  .wrapper{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 2px 0;
+    background:red;
+  } 
+  .content{
+    display: block;
+    margin: 0 -2px;
+    background:red;
+    padding: 0 10px;	
+  }
+</style>
+<a href="http://fsjohnhuang.cnblogs.com" class="wrapper">
+  <span class="content">
+    交流
+  </span>
+</a>
+````
+
+## haslayout
+haslayout是Windows Internet Explorer渲染引擎的一个内部组成部分。在InternetExplorer中，一个元素要么自己对自身的内容进行计算大小和组织，要么依赖于父元素来计算尺寸和组织内容。为了调节这两个不同的概念，渲染引擎采用了 hasLayout 的属性，属性值可以为true或false。当一个元素的 hasLayout属性值为true时，元素就会对自身的内容进行计算大小和组织，而不依赖于父元素。display:inline-block所触发的hasLayout是不可逆转的，所以当*display:inline的时候并不会使hasLayout=false。
+
+## 参考
+http://www.cnblogs.com/StormSpirit/archive/2012/10/17/2726994.html<br/>
+http://www.cnblogs.com/StormSpirit/archive/2012/10/24/2736453.html<br/>
+http://blog.doyoe.com/archives/<br/>
+http://blog.doyoe.com/2013/12/31/css/margin%E7%B3%BB%E5%88%97%E4%B9%8B%E5%B8%83%E5%B1%80%E7%AF%87/<br/>
+
+
+

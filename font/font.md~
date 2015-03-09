@@ -288,11 +288,6 @@ font-family: ..., "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", 
 三个系统无需指定中文字体，使用系统默认即可。<br/>
 英文和数字字体可使用Helvetica。<br/>
 
-## font
-````
-font: font-style font-variant font-weight font-size/line-height font-family;
-````
-
 
 ## Ref
 http://design.yesky.com/273/8841773.shtml<br/>

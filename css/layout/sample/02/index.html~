@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+<title>测试页面一</title> 
+<style type="text/css">
+  .outer{
+	  display:inline-block;
+	  width: 100px;
+	  background:red;
+	  height: 30px;
+  }
+
+  .inner{
+	/*margin:2px -2px 0;*/
+        height: 26px;
+	background:#333;
+	text-align: center;
+	line-height: 26px;
+  }
+</style>
+</head> 
+<body> 
+<div id="header">顶部区域</div> 
+<div id="mainer"> 
+<h1>使用负边距创建自适应宽度的流体布局</h1> 
+<p>随着越来越大的浏览器的出现及普及，网站界面如何能满足不同分辨率浏览器使用者的浏览需求，逐渐成为前端开发工程师必须面对的问题。采用百分比进行架构是个不错的主意。以往我们进行这类架构都是使用table表格。但，其实使用很小的技术就可以创建出符合WEB标准化的自适应布局。</p> 
+</div> 
+<div id="sideBar"> 
+<h2>最新文章</h2> 
+<ul> 
+<li>最新文章一</li> 
+<li>最新文章二</li> 
+<li>最新文章三</li> 
+</ul> 
+</div> 
+<div id="footer">底部区域</div>
+<style type="text/css">
+  .o{
+	  width: 100px;
+	  height: 100px;
+	  border: 20px solid red;
+	  position: relative;
+  }
+  .i{
+	  width: 50px;
+	  height: 50px;
+	  border: 2px solid #333;
+	  position: absolute;
+	  left: 0px;
+  }
+</style>
+<div class="o">
+<div class="i">
+</div>
+</div>
+</body> 
+</html> 
+

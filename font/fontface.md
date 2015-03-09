@@ -100,9 +100,22 @@ src: local(font name), url("font_name.ttf");
 假如uri scheme为file（`file:///`），那么由于FireFox默认的file uri origin策略十分严格，不同路径等级的则无法访问。所以相对路径会失败。可通过`about:config`进入浏览器设置界面，然后将`security.fileuri.strict_origin_policy`设置为false即可。<br/>
 假如uri scheme为http或https，则對以.ttf,.otf,eot等后续资源的响应头上添加`Access-Control-ALlow-Origin *`。另外可以通过data uri scheme将字体资源嵌入到样式中。<br/>
 
+## Font Icon
+Web实体符：每个字母、数字、符号对应一个Web符号。如WebSymbolsRegular<br/>
+![](css3-pager-2.png)<br/>
+然后就和使用@font-face的操作是一样的。<br/>
+### 免费的 Font Icon字体
+#### 1. Guifx字体
+![](webfonticon-2.jpg)
+#### 2. websymbols字体
+#### 3. Font Awesome字体
+由robmadole和supercodepoet两大师在Bootstrap Icon的基础上将Icon图片换成font icon。<br/>
+![](webfonticon-5.jpg)<br/>
 
-
-
+### 自定义Font Icon
+由于使用既定的Web字体库需要将整个字体库都下载下来，而实际上用到的Font Icon则只有数个而已，因此通过自定义Font Icon则可以个性化且减少字体库体积。<br/>
+工具：[Fontomas](http://nodeca.github.com/fontomas/)提供四种字体来制作Icon。分别是Entypo,IconicFill,IconicStroke,WebSymbolsRegular。<br/>
+Fontomas提供的是SVG格式字体，我们可以通过FontSquirrel或OnlineFontconverter来生成其他格式的字体。<br/>
 
 ## Ref
 http://www.w3cplus.com/content/css3-font-face
