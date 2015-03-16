@@ -98,7 +98,7 @@ src: local(font name), url("font_name.ttf");
 **问题1**: FireFox中使用@font-face时，如url为相对路径则无法显示。<br/>
 采用绝对路径则成功。<br/>
 假如uri scheme为file（`file:///`），那么由于FireFox默认的file uri origin策略十分严格，不同路径等级的则无法访问。所以相对路径会失败。可通过`about:config`进入浏览器设置界面，然后将`security.fileuri.strict_origin_policy`设置为false即可。<br/>
-假如uri scheme为http或https，则需要修改对.eot、.ttf和.woff等文件的响应头中加入`Access-Control-Allow-Origin: *`。<br/>
+假如uri scheme为http或https，则對以.ttf,.otf,eot等后续资源的响应头上添加`Access-Control-ALlow-Origin *`。另外可以通过data uri scheme将字体资源嵌入到样式中。<br/>
 
 ## Font Icon
 Web实体符：每个字母、数字、符号对应一个Web符号。如WebSymbolsRegular<br/>
