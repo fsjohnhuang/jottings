@@ -1,12 +1,64 @@
 <!DOCTYPE html> 
-<html style="margin-top:50px;"> 
+<html> 
 <head> 
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312"> 
 <title>测试页面一</title> 
 <style type="text/css">
-</style>
-</head> 
-<body style="border-top: solid 5px red;margin:0;margin-top:50px;">
+</style> 
+<body>
+<div style="width:30px;">
+  <span style="background:red;">before</span>
+  <span style="background:blue;">blue</span>
+</div>
+<div>&nbsp;</div>
+<div style="width:30px;">
+  <span style="background:red;">before</span>
+  <span style="background:blue;padding-top:10px;">blue</span>
+</div>
+<div>&nbsp;</div>
+<div style="width:30px;line-height:30px;">
+  <span style="background:red;">before</span>
+  <span style="background:blue;padding-top:10px;">blue</span>
+</div>
+
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<h3>No line box or inline box breaking</h3>
+<div style="line-height:50px;background:blue;height:10px;">
+  <span style="background:red;padding-bottom:10px;border-bottom:solid 10px green;">1st inline box</span><span style="background:#888;">2nd inline box</span>
+</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<h3>With line box and inline box breaking</h3>
+<div style="width:160px;line-height:50px;background:blue;height:10px;">
+  <span style="background:red;padding-bottom:10px;border-bottom:solid 10px green;">1st inline box</span><span style="background:#888;">2nd inline box</span>
+</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<span style="line-height:1">
+	<span>test</span>
+	<span style="font-size:30px;">test</span>
+</span>
+<div>&nbsp;</div>
+<span style="line-height:1">
+	<span style="vertical-align:middle;">test</span>
+	<span style="vertical-align:middle;font-size:30px;">test</span>
+</span>
+<div>&nbsp;</div>
+<span style="line-height:1">
+	<span style="vertical-align:sub;">test</span>
+	<span style="font-size:30px;">test</span>
+</span>
+<div>&nbsp;</div>
+<span style="line-height:5">
+	<span style="vertical-align:super;">test</span>
+	<span style="font-size:30px;">test</span>
+</span>
+<span style="vertical-align:middle;">test</span><span>test</span>
 </body> 
 </html> 
 
